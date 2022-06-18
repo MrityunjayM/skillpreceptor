@@ -1,0 +1,58 @@
+<%- include("../layouts/header"); -%>
+
+    <section class="container-fluid py-5">
+        <div class="row">
+            <div class="col col-3">
+                <%- include('../partials/adminSideBar')%>
+            </div>
+            <div class="col col-9">
+                <div class="mb-2">
+                    <a href="/webinar" class="btn btn-sm btn-secondary">Add</a>
+                    <button onclick="exportTableToExcel('all_product')" class="btn btn-sm btn-secondary">
+                        Export</button>
+                </div>
+                <table class="table table-striped" id="all_product">
+                    <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Product Title</th>
+                            <th scope="col">Instructor Name</th>
+                            <th scope="col">Industry</th>
+                            <th scope="col">Type</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% webinar.forEach((e,i)=> { %>
+                            <tr>
+                                <th scope="row">
+                                    <%=e.webinarId %>
+                                </th>
+                                <td>
+                                    <%=e.title %>
+                                </td>
+                                <td>
+                                    <%=e.name%>
+                                </td>
+                                <td>
+                                    <%=e.category%>
+                                </td>
+                                <td>
+                                    <%=e.types%>
+                                </td>
+                                <td>
+                                    <a href="/admin/update_the_visibility/<%=e._id %>" class="me-2">
+                                        <%= e.visibility? 'Hide' : 'Show' %>
+                                    </a>
+                                    <a href="/admin/edit_product/<%=e._id %>" class="me-2">Edit</a>
+                                    <a href="/admin/delete_product/<%=e._id %>?archive=1">Delete</a>
+                                </td>
+                            </tr>
+                            <%}); %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+    <%- include('../partials/export_to_excel') %>
+        <%- include("../layouts/footer"); -%>

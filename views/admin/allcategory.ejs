@@ -1,0 +1,58 @@
+<%- include("../layouts/header"); -%>
+
+    <section class="container-fluid py-5">
+        <div class="row">
+            <div class="col col-3">
+                <%- include('../partials/adminSideBar')%>
+            </div>
+            <div class="col col-9">
+                <div>
+                    <a href="/admin/category" class="btn btn-sm btn-secondary">Add</a>
+                </div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Order</th>
+                            <th scope="col">Name of Industry</th>
+                            <th scope="col">Action</th>
+                            <th scope="col">Alter Order</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <%category.forEach((e,i)=> { %>
+                            <tr>
+                                <th scope="row">
+                                    <%=e.order %>
+                                </th>
+                                <td>
+                                    <%=e.nameofdepartment%>
+                                </td>
+
+
+                                <td>
+                                    <a href="/admin/edit_category/<%=e._id %> " class="me-2">Edit</a>
+                                    <a href="/admin/update_the_visibility_of_category/<%=e._id %>">
+                                        <%= e.visibility? 'Hide' : 'Show' %>
+                                    </a>
+                                </td>
+
+                                <td>
+                                    <a href="/admin/upanddownthe_category/<%=e._id%>?position=<%=e.order%>&action=1"
+                                        class="me-2">
+                                        <i class="bi bi-arrow-up"></i>
+                                    </a>
+                                    <a href="/admin/upanddownthe_category/<%=e._id%>?position=<%=e.order%>&action=-1">
+                                        <i class="bi bi-arrow-down"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            <%}); %>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+
+    <%- include("../layouts/footer"); -%>

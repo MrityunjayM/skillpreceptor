@@ -1,0 +1,46 @@
+<%- include("../layouts/header"); -%>
+    <section class="container-fluid py-5">
+        <div class="row">
+            <div class="col col-3">
+                <%- include('../partials/adminSideBar')%>
+            </div>
+            <div class="col col-9">
+                <div class="container">
+                    <a href="/coupon/" class="btn btn-sm btn-secondary mb-3">ADD</a>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Code</th>
+                                <th scope="col" class="text-center">Discount (in %)</th>
+                                <th scope="col" class="text-center">Discount (in $) </th>
+                                <th scope="col" class="text-center">Action.</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <%coupons.forEach((c,i)=> { %>
+                                <tr>
+                                    <th scope="row">
+                                        <%=c.coupon %>
+                                    </th>
+                                    <td class="text-center">
+                                        <%=c.discountinpercentage%>
+                                    </td>
+                                    <td class="text-center">
+                                        <%=c.discountinprice %>
+                                    </td>
+
+                                    <td class="text-center">
+                                        <a href="/coupon/edit_coupon/<%=c._id %>">Edit</a>
+                                    </td>
+                                </tr>
+                                <%}); %>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <%- include("../layouts/footer"); -%>

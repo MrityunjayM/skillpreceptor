@@ -1,0 +1,160 @@
+<%- include("../layouts/header"); -%>
+
+    <section class="container-fluid py-5">
+        <div class="row">
+            <div class="col col-3">
+                <%- include('../partials/adminSideBar')%>
+            </div>
+            <div class="col col-9">
+                <div class="container">
+                    <a href="/admin/allProduct" class="btn btn-sm btn-secondary mb-3">Back to Products</a>
+                    <form method="post" action="/webinar" class="needs-validation" enctype="multipart/form-data"
+                        nonvalidate>
+                        <div class="row">
+                            <div class="col col-md-4 col-xl-3 mb-3">
+                                <div class="input-group">
+                                    <label class="input-group-text bg-soft-secondary rounded-0" for="types"
+                                        style="height: 49px;">
+                                        Type<sup class="text-danger">*</sup></label>
+                                    <select class="form-select rounded-0" name="types" id="types" style="height: 49px;">
+                                        <option value="Webinar">Webinar</option>
+                                        <option value="Seminar">Seminar</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col col-md-4 col-xl-3 mb-3">
+                                <div class="input-group">
+                                    <label class="input-group-text bg-soft-secondary rounded-0" for="status"
+                                        style="height: 49px;">Status<sup class="text-danger">*</sup></label>
+                                    <select class="form-select rounded-0" name="status" id="status"
+                                        style="height: 49px;">
+                                        <option value="Live">Live</option>
+                                        <option value="Recorded">Recorded</option>
+                                    </select>
+                                </div>
+
+                            </div>
+                            <div class="col col-md-4 col-xl-3 mb-3">
+                                <div class="input-group">
+                                    <label class="input-group-text bg-soft-secondary rounded-0" for="category"
+                                        style="height: 49px;">Industry<sup class="text-danger">*</sup></label>
+                                    <select class="form-select rounded-0" name="category" id="category"
+                                        style="height: 49px;">
+                                        <% categories.forEach(function(cat){ %>
+                                            <option value="<%=cat.nameofdepartment%>">
+                                                <%=cat.nameofdepartment%>
+                                            </option>
+                                            <% }); %>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col col-md-5 col-xl-4 mb-3 pt-4">
+                                <div class="input-group">
+                                    <label class="input-group-text bg-soft-secondary rounded-0" for="name"
+                                        style="height: 49px;">Instructor<sup class="text-danger">*</sup></label>
+                                    <select class="form-select rounded-0" name="name" id="name" style="height: 49px;">
+                                        <% portfolio.forEach((p)=>{ %>
+                                            <option value="<%=p.name%>">
+                                                <%=p.name%>
+                                            </option>
+                                            <% }); %>
+                                    </select>
+                                </div>
+                                <span>Not found? <a href="/portfolio">Add Instructor</a></span>
+
+                            </div>
+                            <div class="col col-md-4 col-xl-3 mb-3">
+                                <label for="title" class="form-label">Title<sup class="text-danger">*</sup></label>
+                                <input type="text" class="form-control rounded-0" id="title" name="title"
+                                    placeholder="Give a Title" required>
+                                <div class="valid-feedback">
+                                    Looks good!
+                                </div>
+                            </div>
+                            <div class="col col-md-4 col-xl-3 mb-3">
+                                <label for="webinartiming" class="form-label">Date<sup
+                                        class="text-danger">*</sup></label>
+                                <input type="date" class="form-control rounded-0" id="webinartiming"
+                                    name="webinartiming" required>
+                                <div class="valid-feedback">
+                                    Looks good!
+                                </div>
+                            </div>
+                            <div class="col col-md-4 col-xl-3 mb-3">
+                                <label for="time" class="form-label">Time<sup class="text-danger">*</sup></label>
+                                <input type="time" name="time" id="time" placeholder="Time"
+                                    class="form-control rounded-0" min="00:00" max="24:00" required>
+                                <div class="valid-feedback">
+                                    Looks good!
+                                </div>
+                            </div>
+                            <div class="col col-md-4 col-xl-3 mb-3">
+                                <label for="duration" class="form-label">Duration</label>
+                                <input type="Number" name="duration" id="duration" placeholder="Time"
+                                    class="form-control rounded-0" required>
+                                <div class="valid-feedback">
+                                    Looks good!
+                                </div>
+                            </div>
+                            <div class="col col-md-4 col-xl-3 mb-3">
+                                <label for="seotitle" class="form-label">SEO Title<sup class="text-danger">*</sup>
+                                </label>
+                                <input type="text" name="seotitle" id="seotitle" placeholder="SEO Title"
+                                    class="form-control rounded-0" required>
+                                <div class="valid-feedback">
+                                    Looks good!
+                                </div>
+                            </div>
+                            <div class="col col-md-4 col-xl-3 mb-3">
+                                <label for="slug" class="form-label">Slug detail</label>
+                                <input type="text" name="slug" id="slug" placeholder="sort-description"
+                                    class="form-control rounded-0" required>
+                                <div class="valid-feedback">
+                                    Looks good!
+                                </div>
+                            </div>
+
+                            <div class="col col-md-4 col-xl-3 mb-2">
+                                <label for="image">Image</label>
+                                <input type="file" class="form-control rounded-0" name="image" id="image">
+                            </div>
+                            <div class="col col-md-5 col-xl-4 mb-3">
+                                <label for="description" class="form-label">Description</label>
+                                <textarea name="description" id="description" class="form-control rounded-0" cols="30"
+                                    rows="3" placeholder="Description"></textarea>
+                                <div class="valid-feedback">
+                                    Looks good!
+                                </div>
+                            </div>
+                            <div class="col col-md-6 mb-3">
+                                <label for="urlofseminar" class="form-label">Recording Link</label>
+                                <input type="text" name="urlofseminar" id="urlofseminar"
+                                    placeholder="Recordeding link of webinar or seminar" class="form-control rounded-0"
+                                    required>
+                                <div class="valid-feedback">
+                                    Looks good!
+                                </div>
+                            </div>
+                            <div class="col col-md-6 mb-3">
+                                <label for="liveLink" class="form-label">Live Link</label>
+                                <input type="url" name="liveLink" id="liveLink" placeholder="Enter live link here"
+                                    class="form-control rounded-0" required>
+                                <div class="valid-feedback">
+                                    Looks good!
+                                </div>
+                            </div>
+
+                        </div>
+                        <p class="text-muted"><sup class="text-danger">*</sup> All fields are required.</p>
+                        <button type="submit" class="btn btn-secondary">NEXT</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Bootstrap Form Validation Plugin -->
+    <%- include('../partials/form-validation') %>
+
+        <%- include("../layouts/footer"); -%>

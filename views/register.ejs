@@ -1,0 +1,120 @@
+<%- include("./layouts/header"); -%>
+
+    <div class="container-fluid bg-soft-secondary mb-6 px-sm-9 py-3 py-sm-6">
+        <h2 class="page-title">
+            Register
+        </h2>
+        <div class="surface text-center"></div>
+        <form method="post" action="/user/register" class="needs-validation" id="formdata" nonvalidate>
+            <div class="row justify-content-sm-center">
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <input type="text" name="firstname" class="form-control rounded-0" placeholder="First Name"
+                            value="<%= typeof userData != 'undefined' ? userData.firstname : '' %>" required>
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                    </div>
+                    <div class="form-group mb-3">
+                        <input type="text" name="lastname" class="form-control rounded-0" placeholder="Last Name"
+                            value="<%= typeof userData != 'undefined' ? userData.lastname : '' %>" required>
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <input type="email" name="email" class="form-control rounded-0" placeholder="Email"
+                            value="<%= typeof userData != 'undefined' ? userData.email : '' %>" required>
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <input type="password" name="password" class="form-control rounded-0" id="password"
+                            placeholder="Password" required>
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                        <% if(typeof userData !="undefined" ){ %>
+                            <% if(typeof userData.password !='undefined' && userData.password.length<8 ){ %>
+                                <div id="p1">
+                                    <p style="width:fit-content; margin-top: 2px; height: fit-content; color: red;">
+                                        Password must be at least 8 characters</p>
+                                </div>
+                                <% } %>
+                                    <% } %>
+                    </div>
+                    <div class="form-group mb-3">
+                        <input type="password" id="password2" name="password2" class="form-control rounded-0"
+                            placeholder="Confirm Password" required />
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                        <% if(typeof userData !=="undefined" ){ %>
+                            <% if(typeof userData.password2 !=='undefined' && match ){ %>
+                                <div id="p2">
+                                    <p id="p2"
+                                        style="width:fit-content; margin-top: 2px; height: fit-content; color: red;">
+                                        Passwords do not match
+                                    </p>
+                                </div>
+                                <% } %>
+                                    <% } %>
+
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <input type="tel" name="phone" class="form-control rounded-0" placeholder="Phone"
+                            value="<%= typeof userData != 'undefined' ? userData.phone : '' %>" required>
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                    </div>
+                    <div class="form-group mb-3">
+                        <input type="text" name="address" class="form-control rounded-0" placeholder="Address"
+                            value="<%= typeof userData != 'undefined' ? userData.address : '' %>" required>
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-3">
+
+                        <input type="text" name="company" class="form-control rounded-0" placeholder="Company Name"
+                            value="<%= typeof userData != 'undefined' ? userData.company : '' %>" required>
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <input type="text" name="jobtitle" class="form-control rounded-0" placeholder="Job Title"
+                            value="<%= typeof userData != 'undefined' ? userData.jobtitle : '' %>" required>
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                    </div>
+                    <div class="form-group mb-3">
+                        <div class="g-recaptcha" data-sitekey="6LfuimkgAAAAAPVdtLlNT6VUaLjNFaihFrBmItS7"></div>
+                        <br />
+                        <p class="text-danger">
+                            <%= (typeof captcha_error=='undefined' )? '' :captcha_error %>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" id="btn" class="btn btn-secondary">Submit</button>
+            <a href="/user/login" class="btn btn-outline-secondary" role="button">LogIn</a>
+        </form>
+    </div>
+
+    <!-- reCaptcha v2 script -->
+    <%- include('partials/reCaptcha.ejs'); %>
+
+        <!-- Bootstrap plugin for form validation -->
+        <%- include('partials/form-validation.ejs'); %>
+
+            <%- include("./layouts/footer"); -%>

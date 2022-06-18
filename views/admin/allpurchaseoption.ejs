@@ -1,0 +1,55 @@
+<%- include("../layouts/header"); -%>
+
+    <section class="container-fluid py-5">
+        <div class="row">
+            <div class="col col-3">
+                <%- include('../partials/adminSideBar')%>
+            </div>
+            <div class="col col-9">
+                <div class="container">
+                    <a href="/price" class="btn btn-sm btn-secondary mb-3"> ADD </a>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">Order</th>
+                                <th scope="col">Offer Name</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% purchase.forEach((p,i)=> { %>
+                                <tr>
+                                    <th scope="row">
+                                        <a href="/price/upanddownthe_price/<%=p._id%>?position=<%=p.order%>&action=1"
+                                            class="me-1"><i class="bi bi-arrow-up"></i></a>
+
+                                        <%=p.order%>
+
+                                            <a
+                                                href="/price/upanddownthe_price/<%=p._id%>?position=<%=p.order%>&action=-1"><i
+                                                    class="bi bi-arrow-down"></i></a>
+                                    </th>
+                                    <td>
+                                        <%=p.nameofpurchase %>
+                                    </td>
+                                    <td>
+                                        <%=p.price %>
+                                    </td>
+                                    <td>
+                                        <a href="/price/edit_purchase/<%=p._id %>" class="me-2">Edit</a>
+                                        <a href="/price/delete_purchase/<%=p._id %>" class="me-2">Delete</a>
+
+                                    </td>
+                                </tr>
+                                <%}); %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <%- include("../layouts/footer"); -%>
