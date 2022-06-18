@@ -158,7 +158,6 @@ app.use((err, req, res, next) => {
 
 // this is for handling unexpected
 app.use((err, req, res, next) => {
-  console.log(err)
   if (err) {
     req.flash("error", "Something went wrong, please try later.")
     return res.redirect(req.header("Referer") || "/")
