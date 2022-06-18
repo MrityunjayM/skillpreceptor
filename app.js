@@ -129,6 +129,25 @@ app.use("/training", Training)
 app.use("/admin/lead", Lead)
 app.use("/coupon", Coupon)
 
+// Home route
+app.get("/", async (req, res) => {
+  const webinars = (
+    await WebinarModel.find({ visibility: true }).populate("portfolio")
+  ).slice(0, 4)
+  const departments = await Department.find({ visibility: true })
+  const instructors = await Instructor.find({})
+  return res.render("home", { departments, webinars, instructors })
+})
+// Redirect routes
+app.get("/home", (_, res) => res.redirect("/"))
+app.get("/aboutus", (_, res) => res.render("aboutUs"))
+app.get("/contact", (_, res) => res.render("contactUs"))
+app.get("/user", (_, res) => res.redirect("/user/dashboard"))
+app.get("/login", (_, res) => res.redirect("/user/login"))
+app.get("/forgetpassword", (_, res) => res.redirect("/user/forgetpassword"))
+app.get("/logout", (_, res) => res.redirect("/user/logout"))
+app.get("/register", (_, res) => res.redirect("/user/register"))
+
 const handleValidationErr = (err) => {
   return new AppError("Please fill up all the required field carefully", 400)
 }
@@ -151,30 +170,12 @@ app.use((err, req, res, next) => {
 })
 
 // this is for handling unexpected
-app.use((err, req, res) => {
+app.use((err, req, res, next) => {
   if (err) {
     req.flash("error", "Something went wrong, please try later.")
     return res.redirect(req.header("Referer") || "/")
   }
 })
-
-app.get("/", async (req, res) => {
-  const webinars = (
-    await WebinarModel.find({ visibility: true }).populate("portfolio")
-  ).slice(0, 4)
-  const departments = await Department.find({ visibility: true })
-  const instructors = await Instructor.find({})
-  return res.render("home", { departments, webinars, instructors })
-})
-
-app.get("/home", (_, res) => res.redirect("/"))
-app.get("/aboutus", (_, res) => res.render("aboutUs"))
-app.get("/contact", (_, res) => res.render("contactUs"))
-app.get("/user", (_, res) => res.redirect("/user/dashboard"))
-app.get("/login", (_, res) => res.redirect("/user/login"))
-app.get("/forgetpassword", (_, res) => res.redirect("/user/forgetpassword"))
-app.get("/logout", (_, res) => res.redirect("/user/logout"))
-app.get("/register", (_, res) => res.redirect("/user/register"))
 
 app.get("*", (_, res) =>
   res.render("404", { msg: "Page not found", err: { status: 404 } })
