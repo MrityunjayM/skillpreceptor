@@ -11,8 +11,10 @@ const methodOverride = require("method-override")
 const passport = require("passport")
 const LocalStrategy = require("passport-local")
 const fs = require("fs")
-const dbUrl = process.env.DB_URL || "mongodb://localhost:27017/project-banglore"
+const dbUrl =
+  process.env.MONGO_DB_LOCAL || "mongodb://localhost:27017/project-banglore"
 const Department = require("./models/department")
+const Instructor = require("./models/portfolio")
 const Webinar = require("./routes/detailofwebinar")
 const Seminar = require("./routes/seminar")
 const Portfolio = require("./routes/portfolio")
@@ -59,9 +61,9 @@ app.use(
 
 app.use(express.json())
 
-function id_generator() {
-  return Math.floor(Math.random() * 899999 + 100000)
-}
+// function id_generator() {
+//   return Math.floor(Math.random() * 899999 + 100000)
+// }
 
 const store = new MongoDBStore({
   mongoUrl: dbUrl,
@@ -156,6 +158,7 @@ app.use((err, req, res, next) => {
 
 // this is for handling unexpected
 app.use((err, req, res, next) => {
+  console.log(err)
   if (err) {
     req.flash("error", "Something went wrong, please try later.")
     return res.redirect(req.header("Referer") || "/")
@@ -167,7 +170,8 @@ app.get("/", async (req, res) => {
     await WebinarModel.find({ visibility: true }).populate("portfolio")
   ).slice(0, 4)
   const departments = await Department.find({ visibility: true })
-  return res.render("home", { departments, webinars })
+  const instructors = await Instructor.find({})
+  return res.render("home", { departments, webinars, instructors })
 })
 
 app.get("/home", (_, res) => res.redirect("/"))

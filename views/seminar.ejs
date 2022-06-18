@@ -94,7 +94,6 @@
                             </span>
                             <select class="form-select rounded-0 py-0 bg-soft-secondary" name="purchasecategory"
                                 style="height: 48px;">
-                                <option selected>Select</option>
                                 <% purchases.forEach((purchase)=>{%>
                                     <option value="<%= purchase.nameofpurchase %>">
                                         <%= purchase.nameofpurchase %> ($<%= purchase.price %>)

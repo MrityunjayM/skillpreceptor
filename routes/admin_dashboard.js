@@ -2,18 +2,47 @@ const express = require("express")
 const Webinar = require("../models/webinar.js")
 const Category = require("../models/department")
 const Portfolio = require("../models/portfolio.js")
+const Cart = require("../models/cart")
+const User = require("../models/user.js")
 const router = express.Router()
+
 const { upload } = require("../helper/multer")
 const AppError = require("../controlError/AppError")
 const wrapAsync = require("../controlError/wrapAsync")
 const { timingFormat } = require("../helper/date")
-const Cart = require("../models/cart")
-const User = require("../models/user.js")
+
+const {
+  getTodayRevenue,
+  getMonthlyRevenue,
+  getWeeklyRevenue,
+} = require("../helper/admin_middleware")
+
 //its admin dashboard route.
 router.get(
   "/",
   wrapAsync(async (req, res) => {
-    res.render("admin/dashboard")
+    const todayRevenue = await getTodayRevenue()
+    const weeklyRevenue = await getWeeklyRevenue()
+    const monthlyRevenue = await getMonthlyRevenue()
+
+    const todayRevenueAmount = todayRevenue.reduce(
+      (acc, { amount }) => acc + amount,
+      0
+    )
+    const weeklyRevenueAmount = weeklyRevenue.reduce(
+      (acc, { amount }) => acc + amount,
+      0
+    )
+    const monthlyRevenueAmount = monthlyRevenue.reduce(
+      (acc, { amount }) => acc + amount,
+      0
+    )
+
+    res.render("admin/dashboard", {
+      todayRevenueAmount,
+      weeklyRevenueAmount,
+      monthlyRevenueAmount,
+    })
   })
 )
 // all listed webinar
@@ -252,5 +281,41 @@ router.get("/cartdata_to_no_purchase", async (req, res) => {
   const user = await User.find({}).populate("cart")
   res.render("admin/cartAbandon", { cart, user })
 })
+
+router.post(
+  "/listedproductsearching",
+  wrapAsync(async (req, res) => {
+    if (!req.body.product) {
+      req.flash("error", "No match found")
+      return req.redirect("/admin/allproduct")
+    }
+    str = '"' + req.body.product + '"'
+    str1 = "'" + str + "'"
+
+    let searchedWebinar = []
+    if (str1.trim().indexOf(" ") != -1) {
+      searchedWebinar = await Webinar.find({
+        $text: { $search: str1 },
+      })
+      if (searchedWebinar.length > 0) {
+        const webinar = searchedWebinar
+        return res.render("admin/listedproduct", { webinar })
+      }
+    }
+    if (!searchedWebinar.length) {
+      //create searching
+      const webinar = await Webinar.find(
+        { $text: { $search: req.body.product } },
+        { score: { $meta: "textScore" } }
+      ).sort({ score: { $meta: "textScore" } })
+
+      if (webinar.length) {
+        return res.render("admin/listedproduct", { webinar })
+      }
+    }
+    req.flash("error", "No match found")
+    return res.redirect("/admin/allproduct")
+  })
+)
 
 module.exports = router

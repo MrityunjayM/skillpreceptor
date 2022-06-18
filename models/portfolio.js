@@ -21,8 +21,9 @@ const PortfolioSchema = new mongoose.Schema({
   description: {
     type: String,
   },
-  visible: {
-    type: String,
+  visibility: {
+    type: Boolean,
+    default: true,
   },
 })
 

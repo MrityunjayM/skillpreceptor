@@ -1,10 +1,15 @@
-// this page is just for all the control of admin on transaction.
-const express = require("express")
-const router = express.Router()
 const TransactionDetail = require("../models/transaction")
-const { transactionWeekFormat, timingFormat } = require("../helper/date")
-// /transactiondetail of every weekkkk they can check itt okay.
-router.get("/weekly", async (req, res) => {
+const { transactionWeekFormat, timingFormat } = require("./date")
+
+module.exports.getTodayRevenue = async () => {
+  const dateNow = timingFormat(new Date())
+  const transactionDetail = await TransactionDetail.find({
+    date: dateNow.dateformattransaction,
+  })
+  return transactionDetail
+}
+
+module.exports.getWeeklyRevenue = async () => {
   //below line will give us the date of now.
   const dateNow = timingFormat(new Date())
   // basically below line will give us the monday and sunday of this week.
@@ -38,12 +43,10 @@ router.get("/weekly", async (req, res) => {
   const transactionDetail = await TransactionDetail.find({
     date: { $in: newList },
   })
+  return transactionDetail
+}
 
-  res.send(transactionDetail)
-})
-
-// 2022-06-14
-router.get("/monthly", async (req, res) => {
+module.exports.getMonthlyRevenue = async () => {
   const dateNow = timingFormat(new Date())
   const { month, year } = dateNow
   const firstDayOfMonth = year + "-" + month + "-" + "01"
@@ -71,7 +74,5 @@ router.get("/monthly", async (req, res) => {
   const transactionDetail = await TransactionDetail.find({
     date: { $in: newList },
   })
-  res.send(transactionDetail)
-})
-
-module.exports = router
+  return transactionDetail
+}

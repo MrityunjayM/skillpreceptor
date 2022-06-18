@@ -1,16 +1,16 @@
-const multer = require("multer");
+const multer = require("multer")
 
 const multerStorage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "public");
+    cb(null, "public/images")
   },
   filename: (req, file, cb) => {
-    const fileName = file.originalname.toLowerCase().split(" ").join("-");
-    cb(null, fileName);
+    const fileName = file.originalname.toLowerCase().split(" ").join("-")
+    cb(null, fileName)
     // const ext =file.mimetype.split("/")[1];
     // cb(null, `files\admin-${file.fieldname}-${Date.now()}.${ext}`);
   },
-});
+})
 
 module.exports.upload = multer({
   storage: multerStorage,
@@ -21,10 +21,10 @@ module.exports.upload = multer({
       file.mimetype == "image/jpeg" ||
       file.mimetype == "image/gif"
     ) {
-      cb(null, true);
+      cb(null, true)
     } else {
-      cb(null, false);
-      return cb(new Error("Allowed only .png, .jpg, .jpeg and .gif"));
+      cb(null, false)
+      return cb(new Error("Allowed only .png, .jpg, .jpeg and .gif"))
     }
   },
-});
+})

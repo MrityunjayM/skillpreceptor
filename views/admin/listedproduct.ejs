@@ -6,10 +6,18 @@
                 <%- include('../partials/adminSideBar')%>
             </div>
             <div class="col col-9">
-                <div class="mb-2">
-                    <a href="/webinar" class="btn btn-sm btn-secondary">Add</a>
-                    <button onclick="exportTableToExcel('all_product')" class="btn btn-sm btn-secondary">
+                <div class="row mb-2">
+                    <a href="/webinar" class="col-1 btn btn-sm btn-secondary text-center">Add</a>
+                    <button onclick="exportTableToExcel('all_product')" class="col-2 btn btn-sm btn-secondary ms-2">
                         Export</button>
+                    <!-- Filter Form -->
+                    <form action="/admin/listedproductsearching/" method="post" class="col-4">
+                        <div class="form-group">
+                            <input type="text" name="product" id="product" class="form-control rounded-0"
+                                placeholder="Filter by title">
+                        </div>
+                    </form>
+
                 </div>
                 <table class="table table-striped" id="all_product">
                     <thead>

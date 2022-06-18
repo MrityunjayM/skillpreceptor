@@ -8,51 +8,47 @@
             <div class="col col-9">
                 <hr />
                 <div class="card">
-                    <%purchase_history.forEach(e=> { %>
-                        <% if(e.product.status=="Recorded" ) {%>
-                            <div class="row">
-                                <p class="col-3 card-subtitle fs-2 mb-3">ProductId: </p>
-                                <p class="col-9 card-subtitle fs-2 mb-3">
-                                    <%=e.product.webinarId %>
-                                </p>
-                            </div>
-                            <div class="row">
-                                <p class="col-3 card-subtitle fs-2 mb-3">Webinar Name: </p>
-                                <p class="col-9 card-subtitle fs-2 mb-3">
-                                    <%=e.product.title %>
-                                </p>
-                            </div>
-                            <div class="row">
-                                <p class="col-3 card-subtitle fs-2 mb-3">Duration: </p>
-                                <p class="col-9 card-subtitle fs-2 mb-3">
-                                    <%=e.product.duration %> minutes
-                                </p>
-                            </div>
-                            <div class="row">
-                                <p class="col-3 card-subtitle fs-2 mb-3">Speaker: </p>
-                                <p class="col-9 card-subtitle fs-2 mb-3">
-                                    <%=e.product.name %>
-                                </p>
-                            </div>
-                            <div class="row">
-                                <p class="col-3 card-subtitle fs-2 mb-3">Watch Now: </p>
-                                <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                data-bs-target="#exampleModal">
-                                Launch demo modal
-                            </button> -->
+                    <%- purchase_history.length?'':'<h4 class="text-center mt-5">No Credentials Found.</h4>' %>
+                        <%purchase_history.forEach(e=> { %>
+                            <% if(e?.product?.status=="Recorded" ) {%>
+                                <div class="row">
+                                    <p class="col-3 card-subtitle fs-2 mb-3">ProductId: </p>
+                                    <p class="col-9 card-subtitle fs-2 mb-3">
+                                        <%=e.product.webinarId %>
+                                    </p>
+                                </div>
+                                <div class="row">
+                                    <p class="col-3 card-subtitle fs-2 mb-3">Webinar Name: </p>
+                                    <p class="col-9 card-subtitle fs-2 mb-3">
+                                        <%=e.product.title %>
+                                    </p>
+                                </div>
+                                <div class="row">
+                                    <p class="col-3 card-subtitle fs-2 mb-3">Duration: </p>
+                                    <p class="col-9 card-subtitle fs-2 mb-3">
+                                        <%=e.product.duration %> minutes
+                                    </p>
+                                </div>
+                                <div class="row">
+                                    <p class="col-3 card-subtitle fs-2 mb-3">Speaker: </p>
+                                    <p class="col-9 card-subtitle fs-2 mb-3">
+                                        <%=e.product.name %>
+                                    </p>
+                                </div>
+                                <div class="row">
+                                    <p class="col-3 card-subtitle fs-2 mb-3">Watch Now: </p>
 
-                                <a class="col-2 nav-link card-subtitle fs-2 mb-3" data-bs-toggle="modal"
-                                    data-bs-target="#exampleModal" href="<%=e.product.urlofseminar %>">
-                                    Click
-                                    Here </a>
-                            </div>
-                            <div class="row">
-                                <p class="col-3 card-subtitle fs-2 mb-3">Download Transcript: </p>
-                                <a class="col-2 nav-link card-subtitle fs-2 mb-3" href="#seminarId"> Click Here </a>
-                            </div>
-                            <% } %>
-                                <% }) %>
-
+                                    <a class="col-2 nav-link card-subtitle fs-2 mb-3" data-bs-toggle="modal"
+                                        data-bs-target="#exampleModal" href="<%=e.product.urlofseminar %>">
+                                        Click
+                                        Here </a>
+                                </div>
+                                <div class="row">
+                                    <p class="col-3 card-subtitle fs-2 mb-3">Download Transcript: </p>
+                                    <a class="col-2 nav-link card-subtitle fs-2 mb-3" href="#seminarId"> Click Here </a>
+                                </div>
+                                <% } %>
+                                    <% }) %>
                 </div>
             </div>
         </div>

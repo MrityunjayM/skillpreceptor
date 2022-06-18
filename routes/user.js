@@ -65,7 +65,7 @@ router.post(
         phone,
         address,
         company,
-        jobtitle,
+        jobtitle,verify:true
       })
       const registeredUser = await User.register(user, password)
       req.session.ids = registeredUser._id || null

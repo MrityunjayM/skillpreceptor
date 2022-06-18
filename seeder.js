@@ -27,7 +27,7 @@ async function seedDB() {
   const d = Math.floor(Math.random() * department.length)
   const p = Math.floor(Math.random() * portfolio.length)
 
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 21; i++) {
     const hello = {
       name: portfolio[0].name,
       title: generateString(6),
@@ -40,7 +40,7 @@ async function seedDB() {
       duration: 90,
       time: `12:40`,
       agenda: str,
-      types: "Seminar",
+      types: "Webinar",
       webinartiming: new Date(),
       status: "Live",
       bestfor: str,
@@ -54,4 +54,4 @@ async function seedDB() {
     await h.save()
   }
 }
-seedDB()
+seedDB().then(() => process.exit(0))

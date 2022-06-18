@@ -167,6 +167,7 @@ router.post(
   "/search",
   wrapAsync(async (req, res) => {
     const department = await Department.find({}).sort("order")
+    console.log(department, req.body.courses)
     if (!req.body.courses) {
       req.flash("error", "No match found")
       return req.redirect("/")
@@ -190,9 +191,13 @@ router.post(
         { $text: { $search: req.body.courses } },
         { score: { $meta: "textScore" } }
       ).sort({ score: { $meta: "textScore" } })
-
+      console.log(allWebinar)
       if (allWebinar.length) {
-        return res.render("allwebinar", { allWebinar, department })
+        return res.render("allwebinar", {
+          allWebinar,
+          department,
+          categoryList: [],
+        })
       }
     }
     res.send("no matches found")
