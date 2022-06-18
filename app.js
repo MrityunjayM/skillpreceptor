@@ -53,17 +53,12 @@ app.set("view engine", "ejs")
 app.set("views", path.join(__dirname, "views"))
 app.use(express.static(__dirname + "/public"))
 app.use(express.urlencoded({ extended: true }))
+app.use(express.json())
 app.use(methodOverride("_method"))
 app.use(
   "/tinymce",
   express.static(path.join(__dirname, "node_modules", "tinymce"))
 )
-
-app.use(express.json())
-
-// function id_generator() {
-//   return Math.floor(Math.random() * 899999 + 100000)
-// }
 
 const store = new MongoDBStore({
   mongoUrl: dbUrl,
@@ -157,7 +152,7 @@ app.use((err, req, res, next) => {
 })
 
 // this is for handling unexpected
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
   if (err) {
     req.flash("error", "Something went wrong, please try later.")
     return res.redirect(req.header("Referer") || "/")
