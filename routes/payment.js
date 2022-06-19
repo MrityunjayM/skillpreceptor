@@ -1,5 +1,4 @@
-const express = require("express")
-const router = express.Router()
+const router = require("express").Router()
 const Cart = require("../models/cart")
 const Coupon = require("../models/coupon_code")
 const AppError = require("../controlError/AppError")
@@ -7,20 +6,14 @@ const wrapAsync = require("../controlError/wrapAsync")
 const paypal = require("paypal-rest-sdk")
 const { isSuccess } = require("../helper/successtransaction_middleware")
 
-//stripe credential.
-const PUBLISHABLE_KEY =
-  "pk_test_51KTsAkSCz6YD7QQyTrES0nTpBH1THPy0tkcQyqmsunOkdyzTaFYlO3cySz8tisvKxF588bZXzA5OqOn6NhOMH72h0080OZDqHh"
-const SECRET_KEY =
-  "sk_test_51KTsAkSCz6YD7QQytElBt5LdtRIgvpauD7S6UuNy5U1AEiQJNbY7hWkRgZ60VjHp3KmhBfCJAuIq4SCjLCn3H7hd00F7BIykKO"
-const stripe = require("stripe")(SECRET_KEY)
 const YOUR_DOMAIN = "http://test.mrityunjay.com:5000/payment"
+//stripe credential.
+const stripe = require("stripe")(process.env.SECRET_KEY)
 //paypal credential.
 paypal.configure({
   mode: "sandbox", //sandbox or live
-  client_id:
-    "ARBSCb6iNGaHIC3byeoOUuZyMwmN0fdtiylOXupMoMoKHjJbn5fNfaFbLoKqAhm-DLkVIJQTBuK4Qc-9",
-  client_secret:
-    "EFbnaSsvOF6knHvTNewuxNk0SSSoO-YWYzqYPN3eRAYhL-uJ9OKfBTf04L7nS44vdLZIElLYIU4p_qMx",
+  client_id: process.env.CLIENT_ID,
+  client_secret: process.env.CLIENT_SECRET,
 })
 
 // checking if a user got a coupone code.
@@ -152,7 +145,7 @@ router.get(
 router.post(
   "/paymentwithpaypal",
   wrapAsync(async (req, res, next) => {
-    const priced = req.body.totalpayment.toFixed(2)
+    const priced = req.body.totalpayment
     req.session.amount = priced
     const create_payment_json = {
       intent: "sale",
@@ -160,9 +153,8 @@ router.post(
         payment_method: "paypal",
       },
       redirect_urls: {
-        return_url:
-          "http://test.mrityunjay.com:5000/payment/successtransaction",
-        cancel_url: "http://test.mrityunjay.com:5000/payment/canceltransaction",
+        return_url: `${YOUR_DOMAIN}/successtransaction`,
+        cancel_url: `${YOUR_DOMAIN}/canceltransaction`,
       },
       transactions: [
         {

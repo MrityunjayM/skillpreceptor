@@ -29,7 +29,6 @@ const Webinar = require("./routes/detailofwebinar")
 const NewsLetter = require("./routes/news_letter")
 const UserRoute = require("./routes/user")
 const Payment = require("./routes/payment")
-const Pdf_page = require("./routes/dummy")
 const Coupon = require("./routes/coupon_code")
 const AdminDashboard = require("./routes/admin_dashboard")
 const UserDashboard = require("./routes/user_dashboard")
@@ -114,11 +113,11 @@ passport.deserializeUser(function (user, done) {
 
 app.use((req, res, next) => {
   res.locals.currentUser = req.user
-  res.locals.captcha_error = req.flash("captcha_error")
   req.session.count = 1
   res.locals.gotmail = req.session.count
   res.locals.success = req.flash("success")
   res.locals.error = req.flash("error")
+  res.locals.captcha_error = req.flash("captcha_error")
   next()
 })
 app.use("/webinar", Webinar)
@@ -131,7 +130,6 @@ app.use("/user", UserRoute)
 app.use("/user/dashboard", isLoggedIn, UserDashboard)
 app.use("/payment", Payment)
 app.use("/newsletter", NewsLetter)
-app.use("/pdf", isAdmin, Pdf_page)
 app.use("/transactiondetail", isAdmin, TransactionDetail)
 app.use("/customer-feedback", CustomerFeedback)
 app.use("/training", Training)

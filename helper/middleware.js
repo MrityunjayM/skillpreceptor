@@ -38,5 +38,5 @@ module.exports.verifyCaptcha =
         captcha_error: "Captcha validation failed.",
       })
     }
-    return console.log(data)
+    return 0
   }
