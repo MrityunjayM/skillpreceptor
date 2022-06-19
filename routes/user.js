@@ -65,7 +65,8 @@ router.post(
         phone,
         address,
         company,
-        jobtitle,verify:true
+        jobtitle,
+        verify: true,
       })
       const registeredUser = await User.register(user, password)
       req.session.ids = registeredUser._id || null
@@ -137,6 +138,7 @@ router.get(
     if (Date.now() >= req.session.exp * 1000) {
       delete req.session.token
       delete req.session.exp
+      await req.session.save()
       return res.redirect("/user/sendthemailagain")
     }
     if (id === req.session.token) {
@@ -150,6 +152,7 @@ router.get(
       // deleting the token from the session after verification.
       delete req.session.token
       delete req.session.exp
+      await req.session.save()
       req.flash("success", "YOU ARE VERIFIED NOW")
       return res.redirect("/user/login")
     }
@@ -170,7 +173,7 @@ router.post(
     req.session.foremail = email
 
     const user = await User.findOne({ email })
-    if (!user) throw new AppError("Email not Registered", 400)
+    if (!user) throw new AppError("Email not Registered", 555)
     if (user) {
       // all these things are used for generating token 1.
       const name = generateString(5)
@@ -196,7 +199,7 @@ router.post(
         )
         return res.redirect("/forgetpassword")
       } else {
-        return new AppError("Something going wrong,Please try again later.")
+        throw new AppError("Something going wrong,Please try again later.", 555)
       }
     }
   })
@@ -212,6 +215,7 @@ router.get(
     if (Date.now() >= req.session.exp * 1000) {
       delete req.session.token
       delete req.session.exp
+      await req.session.save()
       req.session.forget = 1
       return res.redirect("/user/sendthemailagain")
     }
@@ -219,9 +223,10 @@ router.get(
     if (id === req.session.token) {
       delete req.session.token
       delete req.session.exp
+      await req.session.save()
       return res.render("detailforchangepassword")
     }
-    throw AppError("Something went wrong", 555)
+    throw new AppError("Something went wrong", 555)
   })
 )
 
@@ -257,7 +262,7 @@ router.post(
 
       user.setPassword(req.body.password, async (err, user) => {
         if (err) {
-          throw new AppError("Something going wrong,please try again")
+          throw new AppError("Something going wrong,please try again", 555)
         }
         await user.save()
       })
@@ -292,7 +297,8 @@ router.post("/changepassword", async (req, res) => {
   user.changePassword(currentpassword, password, async (err, user) => {
     if (err) {
       throw new AppError(
-        "Something going wrong,please try again or fill your last credential carefully"
+        "Something going wrong,please try again or fill your last credential carefully",
+        555
       )
     }
     await user.save()
@@ -335,6 +341,7 @@ router.post(
     if (req.session.forget) {
       const result = await mailForForgetpassword(email, req.session.token)
       delete req.session.forget
+      await req.session.save()
       if (result.accepted[0]) {
         req.flash(
           "success",
@@ -382,7 +389,7 @@ router.post(
     })
     await newUser.save()
     if (!newUser) {
-      throw new AppError("Something going wrong", 404)
+      throw new AppError("Something going wrong", 555)
     }
     req.flash("success", "Thanks for subscribing our news letter.")
     return res.redirect("/")
@@ -398,7 +405,7 @@ router.post(
     userforunsubscribe.subscribed = false
     await userforunsubscribe.save()
     if (!userforunsubscribe) {
-      throw new AppError("Something going wrong,please try again.", 404)
+      throw new AppError("Something going wrong,please try again.", 555)
     }
     req.flash("error", "you won't get any mails anymore.")
     return res.redirect("/")

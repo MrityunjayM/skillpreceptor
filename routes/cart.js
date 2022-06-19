@@ -17,13 +17,13 @@ router.get(
     let total = cart.reduce((acc, { categoryofprice }) => {
       return (
         acc +
-        categoryofprice.reduce(
-          (itemTotal, { totalPrice }) => itemTotal + totalPrice,
-          acc
-        )
+        categoryofprice.reduce((itemTotal, { price, quantity }) => {
+          return itemTotal + price * quantity
+        }, 0)
       )
     }, 0)
     console.log(total)
+
     if (req.session.discountinprice) {
       total = total - req.session.discountinprice
     } else if (req.session.discountinpercentage) {
@@ -113,11 +113,6 @@ router.post(
         ],
       })
       await newCart.save()
-      // storing in session for the user who is not logged in
-      if (!req.session.cartsofnonregisteruser) {
-        req.session.cartsofnonregisteruser = []
-      }
-      req.session.cartsofnonregisteruser.push(newCart)
       if (req.user) {
         const user = await User.findById(req.user._id)
         user.cart = newCart._id

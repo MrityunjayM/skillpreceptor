@@ -98,11 +98,38 @@ router.post(
 router.get(
   "/all",
   wrapAsync(async (req, res) => {
-    const { category = "", status = "" } = req.query
+    const { category = "", month = "" } = req.query
     let categoryList = category.split("_")
     let query = { visibility: true, types: "Webinar" }
     if (category.length) query.category = { $in: [...categoryList] }
-    if (status.length) query.status = { $in: [status] }
+
+    if (month.length && typeof month == "string") {
+      if (month === "current") {
+        query.dateforSort = firsttwomonthfromnow().currentMonth
+      }
+      if (month === "next") {
+        query.dateforSort = firsttwomonthfromnow().firstmonthfromnow
+      }
+      if (month === "nextofnext") {
+        query.dateforSort = firsttwomonthfromnow().secondmonthfromnow
+      }
+    } else if (month.length) {
+      let dateforSort = []
+      if (month.includes("current")) {
+        dateforSort = [...dateforSort, firsttwomonthfromnow().currentMonth]
+      }
+      if (month.includes("next")) {
+        dateforSort = [...dateforSort, firsttwomonthfromnow().firstmonthfromnow]
+      }
+      if (month.includes("nextofnext")) {
+        dateforSort = [
+          ...dateforSort,
+          firsttwomonthfromnow().secondmonthfromnow,
+        ]
+      }
+      query.dateforSort = { $in: dateforSort }
+    }
+
     const department = await Department.find({}).sort("order")
     // i want to ask ki what will be your order on the basis of sort.
     const allWebinar = await Webinar.find(query)
@@ -112,8 +139,12 @@ router.get(
         webinartiming: "-1",
       })
       .populate("portfolio")
+    // just for handling something.
 
-    // added by me.
+    if (!allWebinar.length && (category.length || month.length)) {
+      req.flash("error", "No match found")
+      return res.redirect("/webinar/all")
+    }
     if (!allWebinar.length) {
       req.flash(
         "error",
@@ -121,12 +152,7 @@ router.get(
       )
       return res.redirect("/")
     }
-    // just for handling something.
 
-    if (!allWebinar.length) {
-      req.flash("error", "No match found")
-      return res.redirect("/webinar/all")
-    }
     return res.render("allwebinar", {
       allWebinar,
       department,
@@ -167,7 +193,7 @@ router.post(
   "/search",
   wrapAsync(async (req, res) => {
     const department = await Department.find({}).sort("order")
-    console.log(department, req.body.courses)
+
     if (!req.body.courses) {
       req.flash("error", "No match found")
       return req.redirect("/")
@@ -191,7 +217,7 @@ router.post(
         { $text: { $search: req.body.courses } },
         { score: { $meta: "textScore" } }
       ).sort({ score: { $meta: "textScore" } })
-      console.log(allWebinar)
+
       if (allWebinar.length) {
         return res.render("allwebinar", {
           allWebinar,
@@ -200,7 +226,9 @@ router.post(
         })
       }
     }
-    res.send("no matches found")
+
+    req.flash("error", "No match found.")
+    return res.status(200).redirect(req.header("Referer"))
   })
 )
 

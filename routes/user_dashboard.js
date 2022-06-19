@@ -49,7 +49,7 @@ router.get(
     const allPurchase = await PurchaseOfUser.find({
       orderId: purchase.orderId,
     }).populate(["userId", "product"])
-
+    console.log(allPurchase)
     return res.render("invoice/index", {
       allPurchase,
       purchaseId: purchase.orderId,

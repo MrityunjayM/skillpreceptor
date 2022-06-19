@@ -38,6 +38,7 @@ const TransactionDetail = require("./routes/transation_control_admin")
 
 const AppError = require("./controlError/AppError")
 const { isLoggedIn } = require("./helper/middleware")
+const wrapAsync = require("./controlError/wrapAsync")
 
 mongoose
   .connect(dbUrl, {
@@ -135,14 +136,17 @@ app.use("/admin/lead", Lead)
 app.use("/coupon", Coupon)
 
 // Home route
-app.get("/", async (req, res) => {
-  const webinars = (
-    await WebinarModel.find({ visibility: true }).populate("portfolio")
-  ).slice(0, 4)
-  const departments = await Department.find({ visibility: true })
-  const instructors = await Instructor.find({})
-  return res.render("home", { departments, webinars, instructors })
-})
+app.get(
+  "/",
+  wrapAsync(async (req, res) => {
+    const webinars = (
+      await WebinarModel.find({ visibility: true }).populate("portfolio")
+    ).slice(0, 4)
+    const departments = await Department.find({ visibility: true })
+    const instructors = await Instructor.find({})
+    return res.render("home", { departments, webinars, instructors })
+  })
+)
 // Redirect routes
 app.get("/home", (_, res) => res.redirect("/"))
 app.get("/aboutus", (_, res) => res.render("aboutUs"))
