@@ -41,6 +41,22 @@ router.get(
   })
 )
 
+router.get(
+  "/download/invoice/:orderId",
+  wrapAsync(async (req, res) => {
+    const { orderId } = req.params
+    const purchase = await PurchaseOfUser.findById(orderId)
+    const allPurchase = await PurchaseOfUser.find({
+      orderId: purchase.orderId,
+    }).populate(["userId", "product"])
+
+    return res.render("invoice/index", {
+      allPurchase,
+      purchaseId: purchase.orderId,
+    })
+  })
+)
+
 router
   .route("/edit_profile")
   .get(

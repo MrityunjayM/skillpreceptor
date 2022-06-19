@@ -25,6 +25,12 @@ module.exports.isSuccess = wrapAsync(async (req, res, next) => {
     delete req.session.discountinpercentage
   }
   await req.session.save()
+  // finding previous purchase id.
+  const lastPurchase = await PurchaseOfUser.find({})
+  if (lastPurchase.length) {
+    var id = lastPurchase[lastPurchase.length - 1].orderId
+  }
+  orderId = !id ? 1111 : id + 1
   for (let i = 0; i < allCartofuser.length; i++) {
     var purchaseOfUser = new PurchaseOfUser({
       userId: req.user._id,
@@ -32,6 +38,7 @@ module.exports.isSuccess = wrapAsync(async (req, res, next) => {
       date: dateformat.dateformattransaction,
       method: req.session.method,
       discount: discount,
+      orderId: orderId,
     })
 
     for (let j = 0; j < allCartofuser[i].categoryofprice.length; j++) {
@@ -51,11 +58,6 @@ module.exports.isSuccess = wrapAsync(async (req, res, next) => {
   delete req.session.method
   // for storing current date.
   const dateNow = timingFormat(new Date())
-  // finding previous purchase id.
-  const lastPurchase = await TransactionDetail.find({})
-  if (lastPurchase.length) {
-    var id = lastPurchase[lastPurchase.length - 1].purchaseId
-  }
 
   // storing it for admin purpose.
 
@@ -65,7 +67,6 @@ module.exports.isSuccess = wrapAsync(async (req, res, next) => {
     date: dateNow.dateformattransaction,
   })
 
-  amount.purchaseId = !id ? 1111 : id + 1
   await amount.save()
   delete req.session.amount
   await req.session.save()

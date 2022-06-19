@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require("mongoose")
 // this is the schema specially for transaction storation for admin purpse.
 const TransactionSchema = new mongoose.Schema(
   {
@@ -9,6 +9,10 @@ const TransactionSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
+    // purchaseId: {
+    //   type: mongoose.Schema.Types.ObjectId,
+    //   ref: "PurchaseOfUser",
+    // },
     date: {
       type: String,
     },
@@ -19,11 +23,11 @@ const TransactionSchema = new mongoose.Schema(
       type: Number,
     },
     // this is basically order id.
-    purchaseId: {
-      type: Number,
-      default: 1111,
-    },
+    // orderId: {
+    //   type: Number,
+    //   default: 1111,
+    // },
   },
   { timestamps: true }
-);
-module.exports = mongoose.model("TransactionDetail", TransactionSchema);
+)
+module.exports = mongoose.model("TransactionDetail", TransactionSchema)

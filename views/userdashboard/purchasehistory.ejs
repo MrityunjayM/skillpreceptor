@@ -41,7 +41,8 @@
                                                             <td>
                                                                 <%=item.method %>
                                                             </td>
-                                                            <td><a href="#downloadInvoice" class="nav-link">Download</a>
+                                                            <td><a href="/user/dashboard/download/invoice/<%= item?._id %>"
+                                                                    class="nav-link" target="_blank">Download</a>
                                                             </td>
                                         </tr>
                                         <%})%>

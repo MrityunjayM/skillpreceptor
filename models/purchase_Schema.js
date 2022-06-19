@@ -33,7 +33,6 @@ const PurchaseOfUser = new mongoose.Schema(
     date: {
       type: String,
     },
-
     modifiedOn: {
       type: Date,
       default: Date.now,
@@ -41,6 +40,10 @@ const PurchaseOfUser = new mongoose.Schema(
     status: {
       type: Boolean,
       default: false,
+    },
+    orderId: {
+      type: Number,
+      default: 1111,
     },
   },
   { timestamps: true }
