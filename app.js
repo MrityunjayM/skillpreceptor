@@ -148,6 +148,13 @@ app.get(
     return res.render("home", { departments, webinars, instructors })
   })
 )
+
+// static pages...
+app.get("/faqs", (_, res) => res.render("faqs"))
+app.get("/termsofservice", (_, res) => res.render("termsOfService"))
+app.get("/privacy_policy", (_, res) => res.render("privacyPolicy"))
+app.get("/refund_policy", (_, res) => res.render("refundPolicy"))
+
 // Redirect routes
 app.get("/home", (_, res) => res.redirect("/"))
 app.get("/aboutus", (_, res) => res.render("aboutUs"))
