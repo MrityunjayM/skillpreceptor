@@ -1,12 +1,12 @@
 const router = require("express").Router()
 const Cart = require("../models/cart")
 const Coupon = require("../models/coupon_code")
-const AppError = require("../controlError/AppError")
 const wrapAsync = require("../controlError/wrapAsync")
 const paypal = require("paypal-rest-sdk")
 const { isSuccess } = require("../helper/successtransaction_middleware")
 
-const YOUR_DOMAIN = "http://test.mrityunjay.com:5000/payment"
+const YOUR_DOMAIN =
+  process.env.YOUR_DOMAIN || "http://test.mrityunjay.com:5000/payment"
 //stripe credential.
 const stripe = require("stripe")(process.env.SECRET_KEY)
 //paypal credential.
