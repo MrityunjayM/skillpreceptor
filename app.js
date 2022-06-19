@@ -3,6 +3,7 @@ if (process.env.NODE_ENV !== "production") {
 }
 const express = require("express")
 const path = require("path")
+const compression = require("compression")
 const mongoose = require("mongoose")
 const session = require("express-session")
 const MongoDBStore = require("connect-mongo")
@@ -59,6 +60,7 @@ app.set("views", path.join(__dirname, "views"))
 app.use(express.static(__dirname + "/public"))
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
+app.use(compression())
 app.use(methodOverride("_method"))
 app.use(
   "/tinymce",

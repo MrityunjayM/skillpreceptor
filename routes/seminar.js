@@ -50,8 +50,10 @@ router.get(
 // home page category route all data webinar and seminar.
 router.get("/webinar", async (req, res) => {
   const { category } = req.query
-  const webinar = await Webinar.find({ category })
-  return res.send(webinar)
+  const allWebinar = await Webinar.find({ category })
+  return res.render("industries", {
+    allWebinar,
+  })
 })
 
 // route for show-page.
