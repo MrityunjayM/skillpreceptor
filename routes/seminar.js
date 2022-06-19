@@ -59,18 +59,22 @@ router.get("/webinar", async (req, res) => {
 // route for show-page.
 router.get("/s/:id/:slug", async (req, res) => {
   const { agenda = false } = req.query
+  const purchases = await Purchase.find({}).sort("order")
   const seminar = await Webinar.findById(req.params.id).populate("portfolio")
-  console.log(seminar)
+
   if (!seminar?.visibility) {
     req.flash("error", "This webinar is not available")
     return res.redirect("/seminar/all")
   }
+  let renderData = {
+    seminar,
+    purchases,
+    agenda,
+    title: seminar.seotitle,
+  }
   req.session.backUrl = req.originalUrl
-  // payment options
-  const purchases = await Purchase.find({}).sort("order")
-  return res
-    .status(200)
-    .render("seminar", { seminar, purchases, agenda, title: seminar.seotitle })
+  if (seminar.archive) renderData.error = "This is an archived product."
+  return res.status(200).render("seminar", renderData)
 })
 
 module.exports = router

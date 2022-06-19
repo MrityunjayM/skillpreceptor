@@ -27,20 +27,6 @@ router.post(
     return res.status(200).redirect(req.header("Referer") || "/")
   })
 )
-// newsletter subscription.
-// router.post(
-//   "/newsletter",
-//   wrapAsync(async (req, res) => {
-//     const date = timingFormat(new Date())
-//     const newuserforNewsletter = new Email({
-//       email: req.body.email,
-//       date: date.dateformattransaction,
-//     })
-//     await newuserforNewsletter.save()
-//     req.flash("success", "Thanks for subscribing the newsLetter")
-//     res.redirect("/")
-//   })
-// )
 
 router.post(
   "/enquery",

@@ -24,9 +24,8 @@ paypal.configure({
 })
 
 // checking if a user got a coupone code.
-router.get("/haveaCouponecode", async (req, res) => {
-  return res.render("haveaCouponecode")
-})
+router.get("/haveaCouponecode", (req, res) => res.render("haveaCouponecode"))
+
 // checking whether the user entering the right coupon code or not.
 router.post(
   "/haveaCouponecode",

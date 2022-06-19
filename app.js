@@ -38,8 +38,9 @@ const CustomerFeedback = require("./routes/customer-feedback")
 const TransactionDetail = require("./routes/transation_control_admin")
 
 const AppError = require("./controlError/AppError")
-const { isLoggedIn, isAdmin } = require("./helper/middleware")
 const wrapAsync = require("./controlError/wrapAsync")
+// Auth Middleware
+const { isLoggedIn, isAdmin } = require("./helper/middleware")
 
 mongoose
   .connect(dbUrl, {
@@ -130,12 +131,12 @@ app.use("/user", UserRoute)
 app.use("/user/dashboard", isLoggedIn, UserDashboard)
 app.use("/payment", Payment)
 app.use("/newsletter", NewsLetter)
-app.use("/pdf", Pdf_page)
-app.use("/transactiondetail", TransactionDetail)
+app.use("/pdf", isAdmin, Pdf_page)
+app.use("/transactiondetail", isAdmin, TransactionDetail)
 app.use("/customer-feedback", CustomerFeedback)
 app.use("/training", Training)
-app.use("/admin/lead", Lead)
-app.use("/coupon", Coupon)
+app.use("/admin/lead", isAdmin, Lead)
+app.use("/coupon", isAdmin, Coupon)
 
 // Home route
 app.get(

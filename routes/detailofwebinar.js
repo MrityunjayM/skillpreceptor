@@ -12,6 +12,7 @@ const {
   firsttwomonthfromnow,
 } = require("../helper/date")
 const { isAdmin } = require("../helper/middleware.js")
+const SendmailTransport = require("nodemailer/lib/sendmail-transport/index.js")
 
 // add the first page detail of webinar.
 router.get(
@@ -175,19 +176,21 @@ router.get(
   "/allnext/:id/:slug",
   wrapAsync(async (req, res) => {
     const { id } = req.params
+    const purchases = await Purchase.find({}).sort("order")
     const webinar = await Webinar.findById(id).populate("portfolio")
     if (!webinar?.visibility) {
-      req.flash("error", "This webinar is not available")
+      req.flash("error", "This webinar is not available.")
       return res.redirect("/webinar/all")
     }
-    req.session.backUrl = req.originalUrl
-    // payment options...
-    const purchases = await Purchase.find({}).sort("order")
-    res.render("nextdetailofwebinar", {
+    let renderData = {
       webinar,
       purchases,
       title: webinar.seotitle,
-    })
+    }
+    req.session.backUrl = req.originalUrl
+    if (webinar.archive) renderData.error = "This is an archived product."
+    // payment options...
+    res.render("nextdetailofwebinar", renderData)
   })
 )
 

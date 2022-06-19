@@ -103,16 +103,11 @@
                             </select>
                         </div>
 
-                        <!-- <% purchases.forEach((purchase)=>{%>
-                            <div class="input-group mb-3 align-items-center gap-2">
-                                <input type="checkbox" name="purchasePlan" id="purchansePlan"
-                                    value="<%= purchase.nameofpurchase %> ($<%=purchase.price %>)">
-                                <label for="purchaseOption" class="fs-2 mb-0">
-                                    <%= purchase.nameofpurchase %> ($<%=purchase.price %>)
-                                </label>
-                            </div>
-                            <%})%> -->
-                        <button type="submit" class="btn btn-secondary fw-normal">Add to Cart</button>
+                        <% if (seminar?.archive) { %>
+                            <h5>This is an archived product, can't be purchased.</h5>
+                            <% } else{%>
+                                <button type="submit" class="btn btn-secondary fw-normal">Add to Cart</button>
+                                <% } %>
                     </form>
 
                 </div>

@@ -23,7 +23,7 @@ const WebinarSchema = new mongoose.Schema(
       url: {
         type: String,
         default:
-          "https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50",
+          "https://images.pexels.com/photos/1229861/pexels-photo-1229861.jpeg",
       },
       filename: String,
     },

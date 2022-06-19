@@ -34,7 +34,7 @@ async function seedDB(types = "Webinar", status = "Live") {
       description: str,
       about: str,
       image: {
-        url: "https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        url: "https://images.pexels.com/photos/1229861/pexels-photo-1229861.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
       },
       duration: 90,
       time: `12:40`,
