@@ -66,11 +66,10 @@ router.post(
         address,
         company,
         jobtitle,
-        verify: true,
       })
       const registeredUser = await User.register(user, password)
       req.session.ids = registeredUser._id || null
-      if (registeredUser.verify) res.redirect("/login")
+      // if (registeredUser.verify) res.redirect("/login")
       if (typeof registeredUser != "undefined") {
         const result = await mailForVerify(email, req.session.token)
         // result ko bhi check karna hai.

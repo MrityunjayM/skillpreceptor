@@ -222,10 +222,10 @@ router.get(
         } else {
           req.session.method = "Paypal"
           isSuccess(req, res, next)
-          res.send("Success")
         }
       }
     )
+    return res.redirect("/user/dashboard/purchase_history")
   })
 )
 

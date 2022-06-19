@@ -21,8 +21,8 @@
             <div class="col-6">
                 <p class="fs-4">Invoice No: #<%= purchaseId %>
                 </p>
-                <h3>SKILLPRECEPTOR (DBA SARGENIX)</h3>
-                <h5>Address:</h5> Lorem ipsum dolor sit amet consectetur.
+                <h3>SKILLPRECEPTOR</h3>
+                <h5>Address:</h5> 1309 Coffine Avenue STE 1200 Sheridan, Wyoming 82801
             </div>
             <div class="col-6 ">
                 <div class="d-flex justify-content-end w-100">
@@ -91,10 +91,10 @@
                             <!-- Total Price -->
                             <tr>
                                 <th scope="row">Total:</th>
-                                <td colspan="3">{Two Hundreds Ninty Eight Dallers}</td>
+                                <td colspan="3"></td>
                                 <td>
                                     $<%= allPurchase.reduce((acc, {purchaseOrder})=>
-                                        acc+purchaseOrder.reduce((accm,{totalPrice})=> accm+totalPrice,acc),0) %>
+                                        acc+purchaseOrder.reduce((accm,{totalPrice})=> accm+totalPrice,0),0) %>
                                 </td>
                             </tr>
                 </tbody>
