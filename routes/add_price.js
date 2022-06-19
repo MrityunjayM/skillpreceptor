@@ -3,12 +3,12 @@ const Purchase = require("../models/purchase.js")
 const router = express.Router()
 const AppError = require("../controlError/AppError")
 const wrapAsync = require("../controlError/wrapAsync")
-const { isLoggedIn } = require("../helper/middleware")
+const { isLoggedIn, isAdmin } = require("../helper/middleware")
 
 // route for all purchaseoption added by admin
 router.get(
   "/all",
-  isLoggedIn,
+  isAdmin,
   wrapAsync(async (req, res) => {
     const purchase = await Purchase.find({}).sort("order")
     res.render("admin/allpurchaseoption", { purchase })
@@ -17,14 +17,14 @@ router.get(
 // rendering the category of pricing page.
 router.get(
   "/",
-  isLoggedIn,
+  isAdmin,
   wrapAsync(async (req, res) => res.render("admin/addprice"))
 )
 
 // adding the category of pricing in database.
 router.post(
   "/",
-  isLoggedIn,
+  isAdmin,
   wrapAsync(async (req, res) => {
     const newPurchase = new Purchase(req.body)
     await newPurchase.save()
@@ -35,7 +35,7 @@ router.post(
 // route of rendering the editing form for category of price.
 router.get(
   "/edit_purchase/:id",
-  isLoggedIn,
+  isAdmin,
   wrapAsync(async (req, res) => {
     const { id } = req.params
     const purchase = await Purchase.findById(id)
@@ -46,7 +46,7 @@ router.get(
 // this route will update the selected category of price.
 router.put(
   "/edit_purchase/:id",
-  isLoggedIn,
+  isAdmin,
   wrapAsync(async (req, res) => {
     const { id } = req.params
     await Purchase.findByIdAndUpdate(id, req.body, {
@@ -60,6 +60,7 @@ router.put(
 // deleting the selected category of price
 router.get(
   "/delete_purchase/:id",
+  isAdmin,
   wrapAsync(async (req, res, next) => {
     const { id } = req.params
     await Purchase.findByIdAndDelete(id)
@@ -70,6 +71,7 @@ router.get(
 // for ups and down.
 router.get(
   "/upanddownthe_price/:id",
+  isAdmin,
   wrapAsync(async (req, res) => {
     const { id } = req.params
     let { action, position } = req.query

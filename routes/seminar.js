@@ -57,7 +57,7 @@ router.get("/webinar", async (req, res) => {
 })
 
 // route for show-page.
-router.get("/s/:id", async (req, res) => {
+router.get("/s/:id/:slug", async (req, res) => {
   const { agenda = false } = req.query
   const seminar = await Webinar.findById(req.params.id).populate("portfolio")
   console.log(seminar)
@@ -68,7 +68,9 @@ router.get("/s/:id", async (req, res) => {
   req.session.backUrl = req.originalUrl
   // payment options
   const purchases = await Purchase.find({}).sort("order")
-  return res.status(200).render("seminar", { seminar, purchases, agenda })
+  return res
+    .status(200)
+    .render("seminar", { seminar, purchases, agenda, title: seminar.seotitle })
 })
 
 module.exports = router

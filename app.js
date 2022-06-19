@@ -38,7 +38,7 @@ const CustomerFeedback = require("./routes/customer-feedback")
 const TransactionDetail = require("./routes/transation_control_admin")
 
 const AppError = require("./controlError/AppError")
-const { isLoggedIn } = require("./helper/middleware")
+const { isLoggedIn, isAdmin } = require("./helper/middleware")
 const wrapAsync = require("./controlError/wrapAsync")
 
 mongoose
@@ -123,7 +123,7 @@ app.use((req, res, next) => {
 app.use("/webinar", Webinar)
 app.use("/seminar", Seminar)
 app.use("/portfolio", Portfolio)
-app.use("/admin", AdminDashboard)
+app.use("/admin", isAdmin, AdminDashboard)
 app.use("/price", AddPrice)
 app.use("/cart", Cart)
 app.use("/user", UserRoute)

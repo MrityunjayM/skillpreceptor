@@ -1,11 +1,9 @@
-const dbUrl =
-  process.env.MONGO_DB_LOCAL ||
-  "mongodb+srv://admin1:XJe8Rvq0nlQvGL9X@example1.9cdlb.mongodb.net/bngproject?retryWrites=true&w=majority"
 const Webinar = require("./models/webinar")
 const { generateString } = require("./helper/string_generator")
 const Department = require("./models/department")
 const Portfolio = require("./models/portfolio")
 const mongoose = require("mongoose")
+const dbUrl = process.env.MONGO_DB_LOCAL
 
 const str = `Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis, temporibus, id iure minima, harum laboriosam
     ut eligendi facere iste error autem quibusdam doloremque itaque ducimus maxime aliquid. Cupiditate, dolorem
@@ -48,6 +46,7 @@ async function seedDB(types = "Webinar", status = "Live") {
       advantageous: str,
       abouttopic: str,
       seotitle: "mrityunjay",
+      slug: "mrityunjay-testing",
       portfolio: portfolio[p]._id,
       visibility: true,
     }

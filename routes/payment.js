@@ -6,6 +6,7 @@ const AppError = require("../controlError/AppError")
 const wrapAsync = require("../controlError/wrapAsync")
 const paypal = require("paypal-rest-sdk")
 const { isSuccess } = require("../helper/successtransaction_middleware")
+
 //stripe credential.
 const PUBLISHABLE_KEY =
   "pk_test_51KTsAkSCz6YD7QQyTrES0nTpBH1THPy0tkcQyqmsunOkdyzTaFYlO3cySz8tisvKxF588bZXzA5OqOn6NhOMH72h0080OZDqHh"
@@ -32,7 +33,7 @@ router.post(
   wrapAsync(async (req, res) => {
     const { coupon } = req.body
     const [matchingtheCouponCode] = await Coupon.find({ coupon })
-    console.log(matchingtheCouponCode)
+    // console.log(matchingtheCouponCode)
     if (matchingtheCouponCode) {
       req.session.discountinpercentage =
         matchingtheCouponCode.discountinpercentage
@@ -62,7 +63,7 @@ router.get(
     if (req.session.discountinpercentage) {
       total = total - total * (req.session.discountinpercentage / 100)
     }
-    res.render("checkout", { cart, total: parseInt(total) })
+    res.render("checkout", { cart, total: total.toFixed(2) })
   })
 )
 
@@ -78,7 +79,7 @@ router.post(
           price_data: {
             currency: "usd",
             product_data: {
-              name: "your selected product",
+              name: req?.user?.firstname || "" + req?.user?.lastname || "",
             },
             unit_amount: req.body.totalprice * 100,
           },
@@ -103,6 +104,7 @@ router.get(
       req.session.method = "Stripe"
       isSuccess(req, res, next)
     }
+
     return res.redirect("/user/dashboard/purchase_history")
   })
 )
@@ -144,14 +146,14 @@ router.get(
     if (req.session.discountinpercentage) {
       total = total - total * (req.session.discountinpercentage / 100)
     }
-    res.render("paypal_payment", { total })
+    res.render("paypal_payment", { total: total.toFixed(2) })
   })
 )
 //paymentprocessingwithpaypal post route.
 router.post(
   "/paymentwithpaypal",
   wrapAsync(async (req, res, next) => {
-    const priced = parseInt(req.body.totalpayment)
+    const priced = req.body.totalpayment.toFixed(2)
     req.session.amount = priced
     const create_payment_json = {
       intent: "sale",

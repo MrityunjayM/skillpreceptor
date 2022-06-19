@@ -83,20 +83,25 @@
                                 <%= purchase?.purchaseOrder.reduce((acc,{quantity})=> acc+quantity,0) %>
                             </td>
                             <td>
-                                $<%= purchase?.purchaseOrder.reduce((acc,{price})=> acc+price,0) %>
+                                $<%= (purchase?.purchaseOrder.reduce((acc,{price})=> acc+price,0)).toFixed(2) %>
                             </td>
                         </tr>
                         <% }) %>
 
                             <!-- Total Price -->
-                            <tr>
-                                <th scope="row">Total:</th>
-                                <td colspan="3"></td>
-                                <td>
-                                    $<%= allPurchase.reduce((acc, {purchaseOrder})=>
-                                        acc+purchaseOrder.reduce((accm,{totalPrice})=> accm+totalPrice,0),0) %>
-                                </td>
-                            </tr>
+                            <% totalPrice=(allPurchase.reduce((acc, {purchaseOrder})=>
+                                acc+purchaseOrder.reduce((accm,{totalPrice})=> accm+totalPrice,0),0)) %>
+                                <% discountPrice=allPurchase[0].discount %>
+                                    <% discount=discountPrice< 1? totalPrice*discountPrice : discountPrice %>
+                                        <tr>
+                                            <th scope="row">Total:</th>
+                                            <td colspan="3" class="text-center fw-semibold">
+                                                $ <%= discount? 'Discount: ' + discount.toFixed(2) : '' %>
+                                            </td>
+                                            <td>
+                                                $ <%= (totalPrice - discount).toFixed(2) %>
+                                            </td>
+                                        </tr>
                 </tbody>
             </table>
         </section>

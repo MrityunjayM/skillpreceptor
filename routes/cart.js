@@ -22,7 +22,6 @@ router.get(
         }, 0)
       )
     }, 0)
-    console.log(total)
 
     if (req.session.discountinprice) {
       total = total - req.session.discountinprice
@@ -32,7 +31,7 @@ router.get(
 
     return res.status(200).render("checkout", {
       cart,
-      total: parseInt(total),
+      total: total.toFixed(2),
       userdata: cart[0].userId,
     })
   })
@@ -146,11 +145,11 @@ router.get(
     if (clear && req.user) {
       if (req.session.discountinprice) {
         delete req.session.discountinprice
-        console.log("lets,see 1", req.session.discountinprice)
+        // console.log("lets,see 1", req.session.discountinprice)
       }
       if (req.session.discountinpercentage) {
         delete req.session.discountinpercentage
-        console.log("lets,see 2", req.session.discountinpercentage)
+        // console.log("lets,see 2", req.session.discountinpercentage)
       }
       await req.session.save()
       // await Cart.findOneAndDelete({ userId: req.user._id });
@@ -168,11 +167,11 @@ router.get(
     if (clear && !req.user) {
       if (req.session.discountinprice) {
         delete req.session.discountinprice
-        console.log("lets,see 1", req.session.discountinprice)
+        // console.log("lets,see 1", req.session.discountinprice)
       }
       if (req.session.discountinpercentage) {
         delete req.session.discountinpercentage
-        console.log("lets,see 2", req.session.discountinpercentage)
+        // console.log("lets,see 2", req.session.discountinpercentage)
       }
       await req.session.save()
       // await Cart.findOneAndDelete({ userId: req.user._id });

@@ -70,7 +70,7 @@
                                                 <%= webinar.showingDate %>
                                             </h6>
                                             <a class="text-muted fs-1 stretched-link text-decoration-none"
-                                                href="/<%= webinar.types=='Seminar'? 'seminar/s':'webinar/allnext'%>/<%=webinar._id%>">
+                                                href="/<%= webinar.types=='Seminar'? 'seminar/s':'webinar/allnext'%>/<%=webinar._id%>/<%=webinar.slug%>">
                                                 <%= webinar.category %>
                                             </a>
                                         </div>
@@ -106,7 +106,7 @@
                                                             <%= webinar.duration %> min %>
                                                         </h6>
                                                         <a class="text-muted fs-1 stretched-link text-decoration-none"
-                                                            href="/<%= webinar.types=='Seminar'? 'seminar/s':'webinar/allnext'%>/<%=webinar._id%>">
+                                                            href="/<%= webinar.types=='Seminar'? 'seminar/s':'webinar/allnext'%>/<%=webinar._id%>/<%=webinar.slug%>">
                                                             <%= webinar.category %>
                                                         </a>
                                                     </div>

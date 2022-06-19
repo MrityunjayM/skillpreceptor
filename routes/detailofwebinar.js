@@ -2,7 +2,6 @@ const express = require("express")
 const Webinar = require("../models/webinar.js")
 const Purchase = require("../models/purchase")
 const router = express.Router()
-const AppError = require("../controlError/AppError")
 const wrapAsync = require("../controlError/wrapAsync.js")
 const { upload } = require("../helper/multer")
 const Department = require("../models/department")
@@ -12,10 +11,12 @@ const {
   addtimeinAmPmFormat,
   firsttwomonthfromnow,
 } = require("../helper/date")
+const { isAdmin } = require("../helper/middleware.js")
 
 // add the first page detail of webinar.
 router.get(
   "/",
+  isAdmin,
   wrapAsync(async (req, res) => {
     const categories = await Department.find({}).sort("order")
     const portfolio = await Portfolio.find({}).sort("name")
@@ -34,6 +35,7 @@ router.get(
 // adding the first page of webinar form here in database.
 router.post(
   "/",
+  isAdmin,
   upload.single("image"),
   wrapAsync(async (req, res) => {
     const { webinartiming, time } = req.body
@@ -48,7 +50,12 @@ router.post(
     if (typeof req.file != "undefined") {
       newWebinar.image.filename = req.file.filename
     }
-
+    if (!req.body.slug) {
+      newWebinar.slug = req.body.seotitle.toLowerCase()
+    }
+    if (req.body.slug) {
+      newWebinar.slug = req.body.seotitle.toLowerCase().split(" ").join("-")
+    }
     // now adding the webinar id,we will show that on user interface.
     // below line is just for showing special type of date format on frontend(for user purpose).
     if (webinartiming) {
@@ -73,6 +80,7 @@ router.post(
 // rendering the form of 2nd page of webinar.
 router.get(
   "/moredetail",
+  isAdmin,
   wrapAsync(async (req, res) => {
     const detailOfNew = req.session.newWebinarData
     res.render("admin/webinar_detail_two", { detailOfNew })
@@ -82,6 +90,7 @@ router.get(
 // adding the 2nd page detail in databases.
 router.post(
   "/moredetail/:id",
+  isAdmin,
   wrapAsync(async (req, res) => {
     const { id } = req.params
     const { advantageous, abouttopic, bestfor, agenda } = req.body
@@ -161,18 +170,9 @@ router.get(
   })
 )
 
-// for finding monthwise data for 2 month from this month.
-router.get("/monthwise", async (req, res) => {
-  const monthFormat = firsttwomonthfromnow()
-  const webinar = await Webinar.find({
-    dateforSort: monthFormat.secondmonthfromnow,
-  })
-  res.send(webinar)
-})
-
 // just view the detail route of any webinar or seminar.
 router.get(
-  "/allnext/:id",
+  "/allnext/:id/:slug",
   wrapAsync(async (req, res) => {
     const { id } = req.params
     const webinar = await Webinar.findById(id).populate("portfolio")
@@ -183,7 +183,11 @@ router.get(
     req.session.backUrl = req.originalUrl
     // payment options...
     const purchases = await Purchase.find({}).sort("order")
-    res.render("nextdetailofwebinar", { webinar, purchases })
+    res.render("nextdetailofwebinar", {
+      webinar,
+      purchases,
+      title: webinar.seotitle,
+    })
   })
 )
 
