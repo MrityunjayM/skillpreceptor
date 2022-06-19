@@ -16,15 +16,17 @@
                     </thead>
                     <tbody>
                         <% user.forEach(e=>{ %>
-                            <tr>
-                                <td>
-                                    <%= e?.firstname +' '+ e?.lastname%> </td>
-                                <td>
-                                    <a href="/cart/all?id=<%=e._id %>">Click here to user' s cart</a>
-                                </td>
-                            </tr>
-
-                            <% }) %>
+                            <% if (e.cart) { %>
+                                <tr>
+                                    <td>
+                                        <%= e?.firstname +' '+ e?.lastname%> 
+                                    </td>
+                                    <td>
+                                        <a href="/cart/all?id=<%=e._id %>">Click here to user' s cart</a>
+                                    </td>
+                                </tr>
+                                <% } %>
+                                    <% }) %>
 
                     </tbody>
                 </table>

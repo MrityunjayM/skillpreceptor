@@ -47,6 +47,9 @@
                                 </p>
                             </div>
                             <div class="col-4">
+                                <a href="/portfolio/visibilityofportfolio/<%=p?._id %>" class="me-2">
+                                    <%= p?.visibility? 'Hide' : 'Show' %>
+                                </a>
                                 <a href="/portfolio/edit/<%=p._id%>" class="me-2">Edit</a>
                                 <a href="/portfolio/delete/<%=p._id%>">Delete</a>
                             </div>

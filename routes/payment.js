@@ -87,7 +87,7 @@ router.post(
       ],
       mode: "payment",
       success_url: `${YOUR_DOMAIN}/success`,
-      cancel_url: `${YOUR_DOMAIN}/cancel`,
+      cancel_url: `${YOUR_DOMAIN}/canceltransaction`,
     })
 
     res.redirect(303, session.url)
@@ -108,10 +108,24 @@ router.get(
 )
 
 // cancel route of payment with stripe processing
-router.get("/cancel", (req, res) => {
-  delete req.session.amount
-  return res.render("cancel")
-})
+router.get(
+  "/canceltransaction",
+  wrapAsync(async (req, res) => {
+    if (req.session.discountinprice) {
+      // i assumed that you will not give less than $1 discount in price always more than that.
+      discount = req.session.discountinprice
+      delete req.session.discountinprice
+    }
+    if (req.session.discountinpercentage) {
+      discount = req.session.discountinpercentage / 100
+      delete req.session.discountinpercentage
+    }
+    delete req.session.amount
+    await req.session.save()
+    req.flash("error", "Payment canceled")
+    return res.redirect("/cart/all")
+  })
+)
 // paypal integration.
 //paymentwithpaypa"l page.
 router.get(
@@ -214,10 +228,5 @@ router.get(
     )
   })
 )
-// cancel route of payment with paypal processing
-router.get("/canceltransaction", (req, res) => {
-  delete req.session.amount
-  res.send("Cancelled")
-})
 
 module.exports = router

@@ -1,11 +1,11 @@
 const express = require("express")
 const User = require("../models/user")
-const Cart = require("../models/cart")
 const router = express.Router()
 const wrapAsync = require("../controlError/wrapAsync.js")
 const Department = require("../models/department")
 // this model is just for storing purchased data from cart.
 const PurchaseOfUser = require("../models/purchase_Schema")
+
 // user dashboard
 router.get(
   "/",
@@ -101,11 +101,13 @@ router.get("/certificates", (req, res) =>
 router.get(
   "/live_credentials",
   wrapAsync(async (req, res) => {
-    let purchase_history = await PurchaseOfUser.find({
-      userId: req.user._id,
-    })
-      .populate("product")
-      .sort({ modifiedOn: "-1" })
+    let purchase_history = (
+      await PurchaseOfUser.find({
+        userId: req.user._id,
+      })
+        .populate("product")
+        .sort({ modifiedOn: "-1" })
+    ).filter(({ product }) => product.status === "Live")
     res.render("userdashboard/live_credentials", {
       path: "live_credentials",
       purchase_history,
@@ -115,48 +117,14 @@ router.get(
 
 // recorded
 router.get("/recorded", async (req, res) => {
-  let purchase_history = await PurchaseOfUser.find({
-    userId: req.user._id,
-  })
-    .populate("product")
-    .sort({ modifiedOn: "-1" })
+  let purchase_history = (
+    await PurchaseOfUser.find({
+      userId: req.user._id,
+    })
+      .populate("product")
+      .sort({ modifiedOn: "-1" })
+  ).filter(({ product }) => product.status === "Recorded")
   res.render("userdashboard/recorded", { path: "recorded", purchase_history })
 })
-
-//added by me.
-// adding new user for newsLetter.
-router.post(
-  "/addnewuser",
-  wrapAsync(async (req, res) => {
-    const { email } = req.body
-    const dateNow = timingFormat(new Date())
-    const newUser = new Email({
-      email: email,
-      date: dateNow.dateformattransaction,
-    })
-    await newUser.save()
-    if (!newUser) {
-      throw new AppError("Something going wrong", 404)
-    }
-    req.flash("success", "Thanks for subscribing our news letter.")
-    return res.redirect("/")
-  })
-)
-
-// route if someone will unsubscribe us.
-router.post(
-  "/unsubscribe",
-  wrapAsync(async (req, res) => {
-    const { email } = req.body
-    const userforunsubscribe = await Email.findOne({ email: email })
-    userforunsubscribe.subscribed = false
-    await userforunsubscribe.save()
-    if (!userforunsubscribe) {
-      throw new AppError("Something going wrong,please try again.", 404)
-    }
-    req.flash("error", "you won't get any mails anymore.")
-    return res.redirect("/")
-  })
-)
 
 module.exports = router

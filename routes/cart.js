@@ -6,21 +6,33 @@ const router = express.Router()
 const AppError = require("../controlError/AppError")
 const wrapAsync = require("../controlError/wrapAsync")
 const User = require("../models/user.js")
+const { isLoggedIn } = require("../helper/middleware")
 
 router.get(
   "/checkout",
+  isLoggedIn,
   wrapAsync(async (req, res) => {
     const { _id: userId } = req.user
     const cart = await Cart.find({ userId }).populate(["userId", "product"])
-    let total = 0
-    cart.forEach((c) => {
-      c.categoryofprice.forEach((cat) => {
-        total = total + cat.totalPrice
-      })
-    })
+    let total = cart.reduce((acc, { categoryofprice }) => {
+      return (
+        acc +
+        categoryofprice.reduce(
+          (itemTotal, { totalPrice }) => itemTotal + totalPrice,
+          acc
+        )
+      )
+    }, 0)
+    console.log(total)
+    if (req.session.discountinprice) {
+      total = total - req.session.discountinprice
+    } else if (req.session.discountinpercentage) {
+      total = total - total * (req.session.discountinpercentage / 100)
+    }
+
     return res.status(200).render("checkout", {
       cart,
-      total,
+      total: parseInt(total),
       userdata: cart[0].userId,
     })
   })

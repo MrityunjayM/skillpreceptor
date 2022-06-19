@@ -2,6 +2,7 @@ const express = require("express")
 const Webinar = require("../models/webinar.js")
 const Category = require("../models/department")
 const Portfolio = require("../models/portfolio.js")
+const ContactForm = require("../models/contactform")
 const Cart = require("../models/cart")
 const User = require("../models/user.js")
 const router = express.Router()
@@ -15,6 +16,7 @@ const {
   getTodayRevenue,
   getMonthlyRevenue,
   getWeeklyRevenue,
+  getMonthlySubscriber,
 } = require("../helper/admin_middleware")
 
 //its admin dashboard route.
@@ -24,6 +26,8 @@ router.get(
     const todayRevenue = await getTodayRevenue()
     const weeklyRevenue = await getWeeklyRevenue()
     const monthlyRevenue = await getMonthlyRevenue()
+    const monthlySubscriber = (await getMonthlySubscriber()).length
+    const leads = await ContactForm.find({}).sort({ date: -1 })
 
     const todayRevenueAmount = todayRevenue.reduce(
       (acc, { amount }) => acc + amount,
@@ -39,9 +43,11 @@ router.get(
     )
 
     res.render("admin/dashboard", {
+      leads,
       todayRevenueAmount,
       weeklyRevenueAmount,
       monthlyRevenueAmount,
+      monthlySubscriber,
     })
   })
 )
@@ -49,7 +55,9 @@ router.get(
 router.get(
   "/allproduct",
   wrapAsync(async (req, res) => {
-    const webinar = await Webinar.find({})
+    const webinar = await Webinar.find({ archive: false }).sort({
+      webinartiming: -1,
+    })
     if (!webinar) {
       req.flash("error", "First Enter the detail of webinar.")
       return res.redirect("/webinar")
@@ -123,9 +131,22 @@ router.get(
   "/delete_product/:id",
   wrapAsync(async (req, res, next) => {
     const { id } = req.params
-    const { archive } = req.query
+    const { archive, restore } = req.query
+    if (restore) {
+      await Webinar.findByIdAndUpdate(
+        id,
+        {
+          archive: false,
+        },
+        {
+          runValidators: true,
+          new: true,
+        }
+      )
+      return res.redirect("/admin/allproduct")
+    }
     if (archive) {
-      const archiveProduct = await Webinar.findByIdAndUpdate(
+      await Webinar.findByIdAndUpdate(
         id,
         {
           archive: true,
@@ -137,8 +158,8 @@ router.get(
       )
       return res.redirect("/admin/allproduct")
     }
-    const deletedProduct = await Webinar.findByIdAndDelete(id)
-    req.flash("success", "webinar  deleted")
+    await Webinar.findByIdAndDelete(id)
+    req.flash("success", "Webinar Deleted")
     res.redirect("/admin/allproduct")
   })
 )
@@ -276,10 +297,9 @@ router.get("/update_the_visibility_of_category/:id", async (req, res) => {
   return res.redirect("/admin/allcategories")
 })
 // finding all the data of cart with every users
-router.get("/cartdata_to_no_purchase", async (req, res) => {
-  const cart = await Cart.find({}).populate(["product", "userId"])
+router.get("/cartdata_to_no_purchase", async (_, res) => {
   const user = await User.find({}).populate("cart")
-  res.render("admin/cartAbandon", { cart, user })
+  return res.render("admin/cartAbandon", { user })
 })
 
 router.post(

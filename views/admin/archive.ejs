@@ -16,6 +16,9 @@
                                 <%=e.title %>
                             </span>
 
+                            <a href="/admin/delete_product/<%=e._id%>?restore=1"
+                                class="btn btn-sm btn-outline-secondary">Restore</a>
+
                             <a href="/<%= e.types=='Seminar'?'seminar/s': 'webinar/allnext'%>/<%=e._id%>"
                                 class="btn btn-sm btn-outline-secondary"><i class="bi bi-eye-fill"></i></a>
                             <% }) %>

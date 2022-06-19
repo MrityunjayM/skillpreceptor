@@ -10,30 +10,35 @@ const flash = require("connect-flash")
 const methodOverride = require("method-override")
 const passport = require("passport")
 const LocalStrategy = require("passport-local")
-const fs = require("fs")
+
 const dbUrl = process.env.DB_URL || "mongodb://localhost:27017/project-banglore"
+// const dbUrl =
+//   "mongodb+srv://admin1:XJe8Rvq0nlQvGL9X@example1.9cdlb.mongodb.net/bngproject?retryWrites=true&w=majority"
 const Department = require("./models/department")
 const Instructor = require("./models/portfolio")
-const Webinar = require("./routes/detailofwebinar")
+const WebinarModel = require("./models/webinar.js")
+const User = require("./models/user")
+
+const Lead = require("./routes/lead")
+const Cart = require("./routes/cart")
 const Seminar = require("./routes/seminar")
 const Portfolio = require("./routes/portfolio")
-const AdminDashboard = require("./routes/admin_dashboard")
-const WebinarModel = require("./models/webinar.js")
 const AddPrice = require("./routes/add_price")
-const Cart = require("./routes/cart")
+const Webinar = require("./routes/detailofwebinar")
+const NewsLetter = require("./routes/news_letter")
 const UserRoute = require("./routes/user")
-const User = require("./models/user")
 const Payment = require("./routes/payment")
 const Pdf_page = require("./routes/dummy")
-const SubscribedUser = require("./routes/subscribed_user")
 const Coupon = require("./routes/coupon_code")
-const jwt = require("jsonwebtoken")
+const AdminDashboard = require("./routes/admin_dashboard")
 const UserDashboard = require("./routes/user_dashboard")
-const TransactionDetail = require("./routes/transation_control_admin")
 const Training = require("./routes/training")
 const CustomerFeedback = require("./routes/customer-feedback")
-const Lead = require("./routes/lead")
+const TransactionDetail = require("./routes/transation_control_admin")
+
 const AppError = require("./controlError/AppError")
+const { isLoggedIn } = require("./helper/middleware")
+
 mongoose
   .connect(dbUrl, {
     useUnifiedTopology: true,
@@ -119,10 +124,10 @@ app.use("/admin", AdminDashboard)
 app.use("/price", AddPrice)
 app.use("/cart", Cart)
 app.use("/user", UserRoute)
-app.use("/user/dashboard", UserDashboard)
+app.use("/user/dashboard", isLoggedIn, UserDashboard)
 app.use("/payment", Payment)
+app.use("/newsletter", NewsLetter)
 app.use("/pdf", Pdf_page)
-app.use("/subscribeduser", SubscribedUser)
 app.use("/transactiondetail", TransactionDetail)
 app.use("/customer-feedback", CustomerFeedback)
 app.use("/training", Training)
@@ -171,6 +176,7 @@ app.use((err, req, res, next) => {
 
 // this is for handling unexpected
 app.use((err, req, res, next) => {
+  console.error(err)
   if (err) {
     req.flash("error", "Something went wrong, please try later.")
     return res.redirect(req.header("Referer") || "/")

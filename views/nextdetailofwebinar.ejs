@@ -17,7 +17,7 @@
                     </h4>
                     <h4 class="card-subtitle mb-2 text-muted text-start">
                         Time: <%= webinar?.addtiminginpacific %> PST
-                            | <%= webinar?.addtimingineastern + ' EST' %>
+                            | <%= webinar?.addtimingineastern %> EST
                     </h4>
                     <h4 class="card-subtitle mb-2 text-muted">Duration: <%= webinar.duration %> min</h4>
                 </div>
@@ -149,7 +149,7 @@
             <div class="row g-0">
                 <div class="col-md-4">
                     <img src="<%= webinar?.portfolio?.image?.url || '/assets/img/gallery/peter.png' %>"
-                        class="img-fluid rounded-0" alt="<%= webinar?.portfolio?.name %>">
+                        class="img-fluid rounded-0" alt="<%= webinar?.portfolio?.name %>" width="180px" height="200px">
                 </div>
                 <div class="col-md-8">
                     <div class="card-body">

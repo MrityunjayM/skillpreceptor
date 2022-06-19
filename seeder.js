@@ -1,5 +1,6 @@
 const dbUrl =
-  process.env.MONGO_DB_LOCAL || "mongodb://localhost:27017/project-banglore"
+  process.env.MONGO_DB_LOCAL ||
+  "mongodb+srv://admin1:XJe8Rvq0nlQvGL9X@example1.9cdlb.mongodb.net/bngproject?retryWrites=true&w=majority"
 const Webinar = require("./models/webinar")
 const { generateString } = require("./helper/string_generator")
 const Department = require("./models/department")
@@ -21,7 +22,7 @@ mongoose
     console.error(err)
   })
 
-async function seedDB() {
+async function seedDB(types = "Webinar", status = "Live") {
   const department = await Department.find({})
   const portfolio = await Portfolio.find({})
   const d = Math.floor(Math.random() * department.length)
@@ -40,9 +41,9 @@ async function seedDB() {
       duration: 90,
       time: `12:40`,
       agenda: str,
-      types: "Webinar",
+      types,
       webinartiming: new Date(),
-      status: "Live",
+      status,
       bestfor: str,
       advantageous: str,
       abouttopic: str,
@@ -54,4 +55,7 @@ async function seedDB() {
     await h.save()
   }
 }
+seedDB("Webinar", "Recorded")
+seedDB("Seminar", "Recorded")
+seedDB("Seminar", "Live")
 seedDB().then(() => process.exit(0))
