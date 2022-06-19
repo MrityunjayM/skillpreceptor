@@ -6,14 +6,14 @@ const paypal = require("paypal-rest-sdk")
 const { isSuccess } = require("../helper/successtransaction_middleware")
 
 const YOUR_DOMAIN =
-  process.env.YOUR_DOMAIN || "http://test.mrityunjay.com:5000/payment"
+  process.env.YOUR_DOMAIN || "http://test.mrityunjay.com:5000/"
 //stripe credential.
-const stripe = require("stripe")(process.env.SECRET_KEY)
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY)
 //paypal credential.
 paypal.configure({
   mode: "sandbox", //sandbox or live
-  client_id: process.env.CLIENT_ID,
-  client_secret: process.env.CLIENT_SECRET,
+  client_id: process.env.PAYPAL_CLIENT_ID,
+  client_secret: process.env.PAYPAL_CLIENT_SECRET,
 })
 
 // checking if a user got a coupone code.
@@ -79,8 +79,8 @@ router.post(
         },
       ],
       mode: "payment",
-      success_url: `${YOUR_DOMAIN}/success`,
-      cancel_url: `${YOUR_DOMAIN}/canceltransaction`,
+      success_url: `${YOUR_DOMAIN}/payment/success`,
+      cancel_url: `${YOUR_DOMAIN}/payment/canceltransaction`,
     })
 
     res.redirect(303, session.url)
@@ -153,8 +153,8 @@ router.post(
         payment_method: "paypal",
       },
       redirect_urls: {
-        return_url: `${YOUR_DOMAIN}/successtransaction`,
-        cancel_url: `${YOUR_DOMAIN}/canceltransaction`,
+        return_url: `${YOUR_DOMAIN}/payment/successtransaction`,
+        cancel_url: `${YOUR_DOMAIN}/payment/canceltransaction`,
       },
       transactions: [
         {
