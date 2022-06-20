@@ -80,9 +80,13 @@ header.header {
 .nav_item:hover,
 .nav_item.active {
   color: #fff;
-  background-color: rgba(181, 181, 181, 0.8);
   text-decoration: none;
   border-radius: 4px;
+}
+/* dropdown on hover */
+.dropdown-nav:hover .dropdown-menu {
+  display: block;
+  margin-top: 0;
 }
 
 button.input-box-icon {

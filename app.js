@@ -111,15 +111,20 @@ passport.deserializeUser(function (user, done) {
   done(null, user)
 })
 
-app.use((req, res, next) => {
-  res.locals.currentUser = req.user
+app.use(async (req, res, next) => {
   req.session.count = 1
+  res.locals.currentUser = req.user
   res.locals.gotmail = req.session.count
-  res.locals.success = req.flash("success")
   res.locals.error = req.flash("error")
+  res.locals.success = req.flash("success")
   res.locals.captcha_error = req.flash("captcha_error")
+
+  // setting departments into local var
+  res.locals.inds = await Department.find({ visibility: true }).sort("order")
+
   next()
 })
+// Routes...
 app.use("/webinar", Webinar)
 app.use("/seminar", Seminar)
 app.use("/portfolio", isAdmin, Portfolio)

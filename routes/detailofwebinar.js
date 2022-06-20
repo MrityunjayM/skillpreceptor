@@ -114,10 +114,11 @@ router.post(
 router.get(
   "/all",
   wrapAsync(async (req, res) => {
-    const { category = "", month = "" } = req.query
+    const { category = "", month = "", status = "" } = req.query
     let categoryList = category.split("_")
     let query = { visibility: true, types: "Webinar" }
     if (category.length) query.category = { $in: [...categoryList] }
+    if (status.length) query.status = status
 
     if (month.length && typeof month == "string") {
       if (month === "current") {
@@ -157,14 +158,17 @@ router.get(
       .populate("portfolio")
     // just for handling something.
 
-    if (!allWebinar.length && (category.length || month.length)) {
+    if (
+      !allWebinar.length &&
+      (category.length || month.length || status.length)
+    ) {
       req.flash("error", "No match found")
       return res.redirect("/webinar/all")
     }
     if (!allWebinar.length) {
       req.flash(
         "error",
-        "We haven't added product,explore other section for now"
+        "We haven't added product for this section yet,explore other section for now"
       )
       return res.redirect("/")
     }
@@ -173,6 +177,7 @@ router.get(
       allWebinar,
       department,
       categoryList,
+      title: "All Webinars",
     })
   })
 )
@@ -229,7 +234,7 @@ router.post(
     if (str1.trim().indexOf(" ") != -1) {
       searchedWebinar = await Webinar.find({
         $text: { $search: str1 },
-      })
+      }).populate("portfolio")
       if (searchedWebinar.length > 0) {
         const allWebinar = searchedWebinar
         return res.render("allwebinar", { allWebinar, department })
@@ -240,7 +245,9 @@ router.post(
       const allWebinar = await Webinar.find(
         { $text: { $search: req.body.courses } },
         { score: { $meta: "textScore" } }
-      ).sort({ score: { $meta: "textScore" } })
+      )
+        .populate("portfolio")
+        .sort({ score: { $meta: "textScore" } })
 
       if (allWebinar.length) {
         return res.render("allwebinar", {

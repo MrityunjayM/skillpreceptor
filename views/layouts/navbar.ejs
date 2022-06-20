@@ -44,8 +44,39 @@
                 <li class="nav_item">
                     <a href="/home" class="nav_link active" aria-current="page"><i class="bi bi-house-fill"></i></a>
                 </li>
-                <li class="nav_item"><a href="/webinar/all" class="nav_link">Webinar</a></li>
+                <li class="nav_item">
+                    <div class="dropdown dropdown-nav">
+                        <a class="nav_link" href="/webinar/all">
+                            Webinar
+                        </a>
+
+                        <ul class="dropdown-menu rounded-0 py-0 mt-1" aria-labelledby="dropdownMenuLink">
+                            <li><a class="dropdown-item py-2 fw-medium" href="/webinar/all?status=Live">Live
+                                    Webinars</a></li>
+                            <li><a class="dropdown-item py-2 fw-medium" href="/webinar/all?status=Recorded">Recorded
+                                    Sessions</a></li>
+                        </ul>
+                    </div>
+                </li>
                 <li class="nav_item"><a href="/seminar/all" class="nav_link">Seminar</a></li>
+                <li class="nav_item">
+                    <div class="dropdown dropdown-nav">
+                        <a class="nav_link" href="#!">
+                            Industry
+                        </a>
+                        <% if (inds?.length) { %>
+                            <ul class="dropdown-menu rounded-0 py-0 mt-1" aria-labelledby="dropdownMenuLink">
+                                <% inds?.forEach(({_id, nameofdepartment})=> { %>
+                                    <li><a class="dropdown-item py-2 fw-medium"
+                                            href="/seminar/webinar?categoryId=<%=_id%>">
+                                            <%= nameofdepartment%>
+                                        </a></li>
+                                    <% }) %>
+
+                            </ul>
+                            <% } %>
+                    </div>
+                </li>
                 <li class="nav_item"><a href="/training" class="nav_link">Consulting</a></li>
                 <!-- <li class="nav_item"><a href="/#articles" class="nav_link">Articles Store</a></li>w -->
                 <li class="nav_item">
