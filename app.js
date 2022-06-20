@@ -122,13 +122,13 @@ app.use((req, res, next) => {
 })
 app.use("/webinar", Webinar)
 app.use("/seminar", Seminar)
-app.use("/portfolio", Portfolio)
+app.use("/portfolio", isAdmin, Portfolio)
 app.use("/admin", isAdmin, AdminDashboard)
-app.use("/price", AddPrice)
+app.use("/price", isAdmin, AddPrice)
 app.use("/cart", Cart)
 app.use("/user", UserRoute)
 app.use("/user/dashboard", isLoggedIn, UserDashboard)
-app.use("/payment", Payment)
+app.use("/payment", isLoggedIn, Payment)
 app.use("/newsletter", NewsLetter)
 app.use("/transactiondetail", isAdmin, TransactionDetail)
 app.use("/customer-feedback", CustomerFeedback)
@@ -145,20 +145,31 @@ app.get(
     ).slice(0, 4)
     const departments = await Department.find({ visibility: true })
     const instructors = await Instructor.find({})
-    return res.render("home", { departments, webinars, instructors })
+    return res.render("home", {
+      departments,
+      webinars,
+      instructors,
+      title: "Welcome",
+    })
   })
 )
 
 // static pages...
-app.get("/faqs", (_, res) => res.render("faqs"))
-app.get("/termsofservice", (_, res) => res.render("termsOfService"))
-app.get("/privacy_policy", (_, res) => res.render("privacyPolicy"))
-app.get("/refund_policy", (_, res) => res.render("refundPolicy"))
+app.get("/faqs", (_, res) => res.render("faqs", { title: "FAQ's" }))
+app.get("/termsofservice", (_, res) =>
+  res.render("termsOfService", { title: "Terms of Service" })
+)
+app.get("/privacy_policy", (_, res) =>
+  res.render("privacyPolicy", { title: "Privacy Policy" })
+)
+app.get("/refund_policy", (_, res) =>
+  res.render("refundPolicy", { title: "Refund Policy" })
+)
+app.get("/aboutus", (_, res) => res.render("aboutUs", { title: "About Us" }))
+app.get("/contact", (_, res) => res.render("contactUs", { title: "Contact" }))
 
 // Redirect routes
 app.get("/home", (_, res) => res.redirect("/"))
-app.get("/aboutus", (_, res) => res.render("aboutUs"))
-app.get("/contact", (_, res) => res.render("contactUs"))
 app.get("/user", (_, res) => res.redirect("/user/dashboard"))
 app.get("/login", (_, res) => res.redirect("/user/login"))
 app.get("/forgetpassword", (_, res) => res.redirect("/user/forgetpassword"))

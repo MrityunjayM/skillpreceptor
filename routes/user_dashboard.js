@@ -13,6 +13,7 @@ router.get(
     const userdata = await User.findById(req.user._id)
     const industries = await Department.find({ visibilty: true }).sort("order")
     return res.render("userdashboard/dashboard", {
+      title: userdata.firstname,
       userdata,
       industries,
       path: "dashboard",
@@ -33,6 +34,7 @@ router.get(
       .sort({ modifiedOn: "-1" })
     // res.send(purchase_history);
     res.render("userdashboard/purchasehistory", {
+      title: "Purchase History",
       purchase_history,
       Total,
       TotalPrice,
@@ -51,6 +53,7 @@ router.get(
     }).populate(["userId", "product"])
     console.log(allPurchase)
     return res.render("invoice/index", {
+      title: "Invoice",
       allPurchase,
       purchaseId: purchase.orderId,
     })
@@ -67,6 +70,7 @@ router
         "order"
       )
       return res.render("userdashboard/editInfo", {
+        title: "Edit Profile",
         userdata,
         industries,
         path: "dashboard",
@@ -110,7 +114,10 @@ router
 
 // my certificates.
 router.get("/certificates", (req, res) =>
-  res.render("userdashboard/certificates", { path: "certificates" })
+  res.render("userdashboard/certificates", {
+    title: "Certificates",
+    path: "certificates",
+  })
 )
 
 // live credential.
@@ -125,6 +132,7 @@ router.get(
         .sort({ modifiedOn: "-1" })
     ).filter(({ product }) => product.status === "Live")
     res.render("userdashboard/live_credentials", {
+      title: "Live Credentials",
       path: "live_credentials",
       purchase_history,
     })
@@ -140,7 +148,11 @@ router.get("/recorded", async (req, res) => {
       .populate("product")
       .sort({ modifiedOn: "-1" })
   ).filter(({ product }) => product.status === "Recorded")
-  res.render("userdashboard/recorded", { path: "recorded", purchase_history })
+  res.render("userdashboard/recorded", {
+    title: "Recorded",
+    path: "recorded",
+    purchase_history,
+  })
 })
 
 module.exports = router

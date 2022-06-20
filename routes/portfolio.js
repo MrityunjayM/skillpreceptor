@@ -3,7 +3,6 @@ const Portfolio = require("../models/portfolio.js")
 const router = express.Router()
 const { upload } = require("../helper/multer")
 const wrapAsync = require("../controlError/wrapAsync.js")
-const { isAdmin } = require("../helper/middleware.js")
 
 //all portfolio
 router.get(
@@ -15,12 +14,11 @@ router.get(
 )
 
 //form for adding portfolio
-router.get("/", isAdmin, (req, res) => res.render("admin/addportfolio"))
+router.get("/", (req, res) => res.render("admin/addportfolio"))
 
 //upload form portfolio
 router.post(
   "/",
-  isAdmin,
   upload.single("image"),
   wrapAsync(async (req, res) => {
     const newPortfolio = new Portfolio(req.body)
@@ -35,7 +33,6 @@ router.post(
 //portfolio editing form
 router.get(
   "/edit/:id",
-  isAdmin,
   wrapAsync(async (req, res) => {
     const { id } = req.params
     const portfolio = await Portfolio.findById(id)
@@ -46,7 +43,6 @@ router.get(
 //this route will update portfolio.
 router.put(
   "/edit/:id",
-  isAdmin,
   upload.single("image"),
   wrapAsync(async (req, res) => {
     const { id } = req.params
@@ -64,7 +60,6 @@ router.put(
 // this will delete portfolio
 router.get(
   "/delete/:id",
-  isAdmin,
   wrapAsync(async (req, res, next) => {
     const { id } = req.params
     await Portfolio.findByIdAndDelete(id)
@@ -75,7 +70,6 @@ router.get(
 
 router.get(
   "/visibilityofportfolio/:id",
-  isAdmin,
   wrapAsync(async (req, res) => {
     const { id } = req.params
     const portfoliotoupdate = await Portfolio.findById(id)

@@ -40,6 +40,7 @@ router.get(
       return res.redirect("/webinar/all")
     }
     return res.render("allwebinar", {
+      title: "All Catalog",
       allWebinar,
       department,
       categoryList,

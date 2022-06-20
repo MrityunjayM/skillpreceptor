@@ -30,6 +30,7 @@ router.get(
     }
 
     return res.status(200).render("checkout", {
+      title: "Checkout",
       cart,
       total: total.toFixed(2),
       userdata: cart[0].userId,
@@ -156,6 +157,7 @@ router.get(
       await Cart.deleteMany({ userId: req.user._id })
       cart = []
       return res.render("cart", {
+        title: "Cart",
         cart,
         Total,
         TotalPrice,
@@ -178,6 +180,7 @@ router.get(
       await Cart.deleteMany({ cartSessionId: req.sessionID })
       cart = []
       return res.render("cart", {
+        title: "Cart",
         cart,
         Total,
         TotalPrice,
@@ -191,6 +194,7 @@ router.get(
       let query2 = { userId: userid, visibility: true }
       var cart = await Cart.find(query2).populate("product")
       return res.render("cart", {
+        title: "Cart",
         cart,
         Total,
         TotalPrice,
@@ -200,6 +204,7 @@ router.get(
     }
 
     return res.render("cart", {
+      title: "Cart",
       cart,
       Total,
       TotalPrice,

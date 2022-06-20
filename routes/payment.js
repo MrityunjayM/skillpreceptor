@@ -17,7 +17,9 @@ paypal.configure({
 })
 
 // checking if a user got a coupone code.
-router.get("/haveaCouponecode", (req, res) => res.render("haveaCouponecode"))
+router.get("/haveaCouponecode", (req, res) =>
+  res.render("haveaCouponecode", { title: "Apply coupon code" })
+)
 
 // checking whether the user entering the right coupon code or not.
 router.post(
@@ -55,7 +57,11 @@ router.get(
     if (req.session.discountinpercentage) {
       total = total - total * (req.session.discountinpercentage / 100)
     }
-    res.render("checkout", { cart, total: total.toFixed(2) })
+    res.render("checkout", {
+      title: "Payment with Stripe",
+      cart,
+      total: total.toFixed(2),
+    })
   })
 )
 

@@ -13,7 +13,9 @@ const { generateString } = require("../helper/string_generator")
 const { verifyCaptcha } = require("../helper/middleware")
 
 // register form route
-router.get("/register", (_, res) => res.render("register"))
+router.get("/register", (_, res) =>
+  res.render("register", { title: "Register" })
+)
 
 // registering the user.
 router.post(
@@ -31,7 +33,7 @@ router.post(
         company,
         jobtitle,
       } = req.body)
-      // google captch validation
+      // google captcha validation
       verifyCaptcha(
         req,
         res
@@ -69,7 +71,7 @@ router.post(
       })
       const registeredUser = await User.register(user, password)
       req.session.ids = registeredUser._id || null
-      // if (registeredUser.verify) res.redirect("/login")
+
       if (typeof registeredUser != "undefined") {
         const result = await mailForVerify(email, req.session.token)
         // result ko bhi check karna hai.
@@ -78,11 +80,11 @@ router.post(
             "success",
             "We have sent a verification mail, please check your inbox."
           )
-          return res.redirect("/login")
+          return res.redirect("/user/login")
         }
       }
     } catch (e) {
-      req.flash("error", e.message)
+      req.flash("error", "something went wrong.")
       return res.redirect("/user/register")
     }
   })
@@ -92,7 +94,7 @@ router.post(
 router.get(
   "/login",
   wrapAsync(async (req, res, next) => {
-    res.render("login")
+    res.render("login", { title: "LogIn" })
   })
 )
 //logging the user.
@@ -150,7 +152,7 @@ router.get(
       )
       // deleting the token from the session after verification.
       delete req.session.token
-      delete req.session.exp
+      // delete req.session.exp
       await req.session.save()
       req.flash("success", "YOU ARE VERIFIED NOW")
       return res.redirect("/user/login")
@@ -196,14 +198,17 @@ router.post(
           "success",
           "We have sent a verification mail, please check your inbox."
         )
-        return res.redirect("/forgetpassword")
+        return res.redirect("/user/forgetpassword")
       } else {
-        throw new AppError("Something going wrong,Please try again later.", 555)
+        throw new AppError(
+          "Something going wrong, please try again later.",
+          555
+        )
       }
     }
   })
 )
-// taking user input as password and confirm password for the user who will  forget their password.
+//first verifying then taking user input as password and confirm password for the user who will forget their password.
 router.get(
   "/detailforchange/:id",
   wrapAsync(async (req, res, next) => {
@@ -221,9 +226,9 @@ router.get(
     const id = req.params.id
     if (id === req.session.token) {
       delete req.session.token
-      delete req.session.exp
+      // delete req.session.exp
       await req.session.save()
-      return res.render("detailforchangepassword")
+      return res.render("detailforchangepassword", { title: "Forget Password" })
     }
     throw new AppError("Something went wrong", 555)
   })
@@ -251,11 +256,13 @@ router.post(
         return res.render("detailforchangepassword", {
           userData,
           match: true,
+          title: "Change Password",
         })
       }
       if (password.length < 8) {
         return res.render("detailforchangepassword", {
           userData,
+          title: "Change Password",
         })
       }
 
@@ -275,7 +282,7 @@ router.post(
 )
 // for changing the password rendering the form.
 router.get("/changepassword", async (req, res) => {
-  res.render("userdashboard/changepassword")
+  res.render("userdashboard/changepassword", { title: "Change Password" })
 })
 // changing user password.
 router.post("/changepassword", async (req, res) => {
@@ -286,11 +293,13 @@ router.post("/changepassword", async (req, res) => {
     return res.render("pass_for_sec", {
       userData,
       match: true,
+      title: "Change Password",
     })
   }
   if (password.length < 8) {
     return res.render("pass_for_sec", {
       userData,
+      title: "Change Password",
     })
   }
   user.changePassword(currentpassword, password, async (err, user) => {
@@ -315,7 +324,9 @@ router.get(
   })
 )
 // sending the verificational link again.
-router.get("/sendthemailagain", (_, res) => res.render("sendtheLinkAgain"))
+router.get("/sendthemailagain", (_, res) =>
+  res.render("sendtheLinkAgain", { title: "Mail Verification" })
+)
 
 // by using this route user data will update for verificational purpose.
 router.post(
@@ -349,15 +360,14 @@ router.post(
         return res.redirect("/user/sendthemailagain")
       } else {
         req.flash("error", "Something going wrong,please try again")
+        return res.redirect(req.header("Referer"))
       }
     }
     // updating the user token with current token.
     const findingTheuser = await User.findOneAndUpdate(
       { email: req.body.email },
       { token: req.session.token },
-      {
-        new: true,
-      }
+      { new: true }
     )
     if (!findingTheuser) {
       req.flash("error", "please enter the correct mail id")
@@ -371,12 +381,15 @@ router.post(
         "success",
         "We have sent a verification mail, please check your inbox."
       )
-      return res.redirect("/login")
+      return res.redirect("/user/login")
     } else {
       req.flash("error", "Something going wrong,please try again")
+      return res.redirect(req.header("Referer"))
     }
   })
-) // adding new user for newsLetter.
+)
+
+// adding new user for newsLetter.
 router.post(
   "/addnewuser",
   wrapAsync(async (req, res) => {

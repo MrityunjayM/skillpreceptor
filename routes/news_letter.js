@@ -26,7 +26,7 @@ router.post(
 // route if someone will unsubscribe us.
 router
   .route("/unsubscribe")
-  .get((_, res) => res.render("unsubscribe"))
+  .get((_, res) => res.render("unsubscribe", { title: "Unsubscribe" }))
   .post(
     wrapAsync(async (req, res) => {
       const { email } = req.body
