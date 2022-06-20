@@ -2,13 +2,13 @@ const express = require("express")
 const Webinar = require("../models/webinar.js")
 const Category = require("../models/department")
 const Portfolio = require("../models/portfolio.js")
+const Purchase = require("../models/purchase")
 const ContactForm = require("../models/contactform")
 const Cart = require("../models/cart")
 const User = require("../models/user.js")
 const router = express.Router()
 
 const { upload } = require("../helper/multer")
-const AppError = require("../controlError/AppError")
 const wrapAsync = require("../controlError/wrapAsync")
 const { timingFormat } = require("../helper/date")
 
@@ -89,7 +89,6 @@ router.put(
   "/edit_product/:id",
   upload.single("image"),
   wrapAsync(async (req, res) => {
-    console.log("balajee", req.body)
     const { id } = req.params
     const webinar = await Webinar.findByIdAndUpdate(id, req.body, {
       runValidators: true,
@@ -209,7 +208,7 @@ router.put(
   "/category/:id",
   wrapAsync(async (req, res) => {
     const { id } = req.params
-    const category = await Category.findByIdAndUpdate(id, req.body, {
+    await Category.findByIdAndUpdate(id, req.body, {
       runValidators: true,
       new: true,
     })
@@ -301,7 +300,7 @@ router.get("/cartdata_to_no_purchase", async (_, res) => {
   const user = await User.find({}).populate("cart")
   return res.render("admin/cartAbandon", { user })
 })
-
+// Searching product
 router.post(
   "/listedproductsearching",
   wrapAsync(async (req, res) => {
@@ -335,6 +334,20 @@ router.post(
     }
     req.flash("error", "No match found")
     return res.redirect("/admin/allproduct")
+  })
+)
+
+// product page for admin
+router.get(
+  "/product/:id",
+  wrapAsync(async (req, res, next) => {
+    let { agenda = false } = req.query
+    const { id: productId } = req.params
+    const seminar = await Webinar.findById(productId).populate("portfolio")
+    const purchases = await Purchase.find({ for: seminar.types })
+    agenda = seminar.types == "Seminar" && agenda ? true : false
+    // return res.json({ seminar, purchase })
+    return res.render("seminar", { seminar, purchases, agenda })
   })
 )
 

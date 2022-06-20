@@ -48,12 +48,13 @@ router.put(
   "/edit_purchase/:id",
   isAdmin,
   wrapAsync(async (req, res) => {
-    const { id } = req.params
-    await Purchase.findByIdAndUpdate(id, req.body, {
+    const { id: _id } = req.params
+    console.log(_id)
+    await Purchase.findByIdAndUpdate({ _id }, req.body, {
       runValidators: true,
       new: true,
     })
-    req.flash("success", "purchase updated")
+    req.flash("success", "Payment option updated")
     res.redirect("/price/all")
   })
 )

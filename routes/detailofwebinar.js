@@ -12,7 +12,6 @@ const {
   firsttwomonthfromnow,
 } = require("../helper/date")
 const { isAdmin } = require("../helper/middleware.js")
-const SendmailTransport = require("nodemailer/lib/sendmail-transport/index.js")
 
 // add the first page detail of webinar.
 router.get(
@@ -52,10 +51,16 @@ router.post(
       newWebinar.image.filename = req.file.filename
     }
     if (!req.body.slug) {
-      newWebinar.slug = req.body.seotitle.toLowerCase()
+      newWebinar.slug = req.body.seotitle
+        .replace(/[^a-zA-Z]/g, "")
+        .toLowerCase()
     }
     if (req.body.slug) {
-      newWebinar.slug = req.body.seotitle.toLowerCase().split(" ").join("-")
+      newWebinar.slug = req.body.seotitle
+        .replace(/[^a-zA-Z]/g, "")
+        .toLowerCase()
+        .split(" ")
+        .join("-")
     }
     // now adding the webinar id,we will show that on user interface.
     // below line is just for showing special type of date format on frontend(for user purpose).
@@ -93,12 +98,13 @@ router.post(
   "/moredetail/:id",
   isAdmin,
   wrapAsync(async (req, res) => {
-    const { id } = req.params
+    const { id: _id } = req.params
     const { advantageous, abouttopic, bestfor, agenda } = req.body
     await Webinar.findOneAndUpdate(
-      { id },
+      { _id },
       { advantageous, abouttopic, bestfor, agenda }
     )
+    // delete added-webinar from session
     delete req.session.newWebinarData
     await req.session.save()
     res.redirect("/admin")
@@ -176,13 +182,25 @@ router.get(
   "/allnext/:id/:slug",
   wrapAsync(async (req, res) => {
     const { id } = req.params
-    const purchases = await Purchase.find({}).sort("order")
+    const purchases = await Purchase.find({ for: "Webinar" }).sort("order")
     const webinar = await Webinar.findById(id).populate("portfolio")
+    const webinars = (
+      await Webinar.find({
+        category: webinar.category,
+        types: webinar.types,
+        visibility: true,
+        archive: false,
+      })
+        .populate("portfolio")
+        .sort({ webinartiming: -1 })
+    ).slice(0, 4)
+
     if (!webinar?.visibility) {
       req.flash("error", "This webinar is not available.")
       return res.redirect("/webinar/all")
     }
     let renderData = {
+      webinars,
       webinar,
       purchases,
       title: webinar.seotitle,
@@ -195,7 +213,6 @@ router.get(
 )
 
 // serching of product.
-// searching wale ka bhi sorting karna hai.
 router.post(
   "/search",
   wrapAsync(async (req, res) => {

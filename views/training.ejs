@@ -6,12 +6,13 @@
                 <div class="card">
                     <div class="card-body">
                         <h2 class="card-title text-center">Consulting</h2>
-                        <p class="card-subtitle fw-normal fs-1 mt-2 text-justify">
+                        <p class="card-subtitle fw-normal fs--4 mt-2 text-justify">
                             No two businesses are exactly alike and neither are the challenges they face. Compliance
                             teams need continuous support and knowledge sharing to stay on top of global regulatory
                             initiatives. Strengthen your compliance program with our global team of compliance
                             professionals. Our team helps you to navigate the evolving regulatory landscape while
                             considering the complexity of your firm's unique compliance requirements.
+                            <br /><br />
                             Our team of industry experts help clients determine whether their compliance programs are
                             truly effective in preventing, detecting and addressing a wide array of compliance issues.
                             In addition to compliance audits, assessments and effectiveness reviews, our consultants
@@ -24,7 +25,7 @@
                         </p>
                     </div>
                     <div class="px-3">
-                        <h5>Some of the services we provide:</h5>
+                        <h4>Some of the services we provide:</h4>
                         <ul>
                             <li>Compliance Program Development and Enhancement</li>
                             <li>Compliance Program Reviews, Mock Exams, and Gap Analysis</li>
@@ -60,11 +61,11 @@
                     </div>
                     <div class="mb-3">
                         <textarea type="text" id="message" name="message" class="form-control rounded-0"
-                            placeholder="Mention your area in which you're looking for trainig or assistance." rows="3"
+                            placeholder="Mention your area in which you're looking for traninig or assistance." rows="3"
                             required></textarea>
                     </div>
                     <div class="form-group mb-3">
-                        <div class="g-recaptcha" data-sitekey="6LfuimkgAAAAAPVdtLlNT6VUaLjNFaihFrBmItS7"></div>
+                        <div class="g-recaptcha" data-sitekey="<%= process.env.GOOGLE_SITE_KEY%>"></div>
                         <br />
                         <p class="text-danger">
                             <%= (typeof captcha_error=='undefined' )? '' :captcha_error %>

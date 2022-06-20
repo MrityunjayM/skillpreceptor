@@ -72,9 +72,9 @@
                             <div class="card" style="background-color:#2257BF;">
                                 <div class="card-body border-bottom border-primary p-2 px-md-4 py-md-3 py-xl-4 p-sm-3">
                                     <div class="d-md-flex flex-between-center">
-                                        <p class="mb-0 text-primary fs-2"><strong>250,998 </strong>people are learning
-                                            with
-                                            us</p><a class="text-decoration-none text-light fw-bold" href="#product"
+                                        <p class="mb-0 text-primary fs-2">Your Partner in<strong> Compliance
+                                                Education</strong>
+                                        </p><a class="text-decoration-none text-light fw-bold" href="#product"
                                             role="button">LEARN MORE
                                             <svg class="bi bi-arrow-right text-primary ms-2"
                                                 xmlns="http://www.w3.org/2000/svg" width="32" height="32"
@@ -99,22 +99,24 @@
     <section class="py-6" id="product">
         <div class="container">
             <div class="row">
-                <h1 class="header-title display-4 header text-start mb-5"> TOP COURSES</h1>
+                <h1 class="header-title display-4 header text-start mb-5"> UPCOMING COURSES</h1>
 
                 <%webinars.forEach((webinar)=> { %>
                     <div class="col-sm-6 col-lg-3 mb-4 scale">
                         <div class="card border-0 h-100">
                             <div class="position-relative">
                                 <img class="w-100"
-                                    src="<%= webinar.image.name? '/'+webinar.image.name : webinar.image.url%>"
-                                    alt="<%= webinar.image.name%>" width="250" height="230" />
+                                    src="<%= webinar.image.filename? '/images/'+webinar.image.filename : webinar.image.url%>"
+                                    alt="<%= webinar.image.filename%>" width="250" height="210" />
                                 <div class="course-logo">
-                                    <img src="/assets/img/gallery/moma.png" alt="logo" />
+                                    <img src="<%= webinar?.portfolio?.image?.filename? '/images/'+webinar?.portfolio?.image?.filename : webinar?.portfolio?.image?.url%>"
+                                        alt="logo" width="68" height="68" />
                                 </div>
                             </div>
                             <div class="card-body px-0 py-3">
-                                <h5 class="mb-1 font-sans-serif fw-bold fs-md-0 fs-lg-1">
-                                    <%= webinar.title %>
+                                <h5
+                                    class="mb-1 font-sans-serif fw-bold fs-md-0 fs-lg-1 <%= webinar.title.length<26? 'mb-5':''%>">
+                                    <%= webinar.title.slice(0,75) %>
                                 </h5>
                                 <h6 class="card-subtitle mb-2 text-muted">
                                     <%= webinar.duration %> min | <%= webinar.time %>
@@ -145,7 +147,8 @@
 
         <div class="container">
             <div class="row g-3">
-                <h1 class="header-title-explore display-4 header text-start mb-5"> EXPLORE Skillpreceptor</h1>
+                <h1 class="header-title-explore display-4 header text-start mb-5"> OUR INDUSTRIES</h1>
+
                 <%departments.forEach((department)=>{%>
                     <div class="col-sm-6 col-lg-4">
                         <div class="card card-hover h-100">
@@ -161,7 +164,7 @@
                                         <h4 class="fs-lg-1 text-light mb-0">
                                             <%= department.nameofdepartment %>
                                         </h4><a class="stretched-link explore-link"
-                                            href="/seminar/webinar?category=<%=department.nameofdepartment%>"></a>
+                                            href="/seminar/webinar?categoryId=<%=department._id%>"></a>
                                     </div>
                                 </div>
                             </div>

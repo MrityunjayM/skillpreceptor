@@ -1,25 +1,4 @@
 <%- include("../layouts/header"); -%>
-
-    <!-- modal -->
-    <!-- <div class="modal" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Delete Confirmation</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p>Are you sure, you wanna delete this product?</p>
-                </div>
-                <div class="modal-footer">
-                    <a href="/admin/delete_product/<%= %>" class="btn btn-secondary">Archive</a>
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
-                </div>
-            </div>
-        </div>
-    </div> -->
-    <!-- modal end -->
-
     <section class="container-fluid py-5">
         <div class="row">
             <div class="col col-3">
@@ -57,7 +36,10 @@
                                     <%=e.webinarId %>
                                 </th>
                                 <td>
-                                    <%=e.title %>
+                                    <a href="/admin/product/<%= e._id %>" class="nav-link" target="_blank"
+                                        rel="noopener noreferrer">
+                                        <%=e.title %>
+                                    </a>
                                 </td>
                                 <td>
                                     <%=e.name%>

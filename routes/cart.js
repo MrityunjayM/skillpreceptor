@@ -49,7 +49,7 @@ router.post(
       nameofpurchase: purchasecategory,
     })
     const price = purchase.price
-    var query = null
+    var query = {}
     if (req.user) {
       query = { userId: req.user._id, product: id }
     }
@@ -59,9 +59,7 @@ router.post(
     const cart = await Cart.findOne(query)
     //cart existing and product selected is also existing in that case.
     if (cart && cart.product == id) {
-      const hi = cart.categoryofprice.filter(function (e) {
-        return price == e.price
-      })
+      const hi = cart.categoryofprice.filter((e) => price == e.price)
       //if product exist  but not from the same product category then we are adding that one.
       if (hi.length == 0) {
         cart.categoryofprice = [
@@ -89,9 +87,10 @@ router.post(
                 (hi[0].quantity + 1) * hi[0].price,
             },
           },
-          function (err, model) {
+          (err, model) => {
             if (err) {
-              return res.send(err)
+              req.flash("error", "Something went wrong...")
+              return res.redirect(req.header("Referer"))
             }
           }
         )
@@ -114,7 +113,7 @@ router.post(
       })
       await newCart.save()
       if (req.user) {
-        const user = await User.findById(req.user._id)
+        const user = await User.findOne({ _id: req.user._id })
         user.cart = newCart._id
         await user.save()
       }

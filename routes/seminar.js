@@ -3,7 +3,6 @@ const Webinar = require("../models/webinar.js")
 const Department = require("../models/department")
 const Purchase = require("../models/purchase")
 
-const AppError = require("../controlError/AppError")
 const wrapAsync = require("../controlError/wrapAsync")
 
 router.get(
@@ -11,7 +10,7 @@ router.get(
   wrapAsync(async (req, res) => {
     const { category = "", status = "" } = req.query
     let categoryList = category.split("_")
-    let query = { visibility: true, types: "Seminar" }
+    let query = { visibility: true, types: "Seminar", status: "Live" }
     if (category.length) query.category = { $in: [...categoryList] }
     if (status.length) query.status = { $in: [status] }
 
@@ -50,9 +49,15 @@ router.get(
 
 // home page category route all data webinar and seminar.
 router.get("/webinar", async (req, res) => {
-  const { category } = req.query
-  const allWebinar = await Webinar.find({ category })
+  const { categoryId } = req.query
+  const { nameofdepartment } = await Department.findById(categoryId)
+  const allWebinar = await Webinar.find({
+    category: nameofdepartment,
+  })
+    .populate("portfolio")
+    .sort({ webinartiming: "-1" })
   return res.render("industries", {
+    title: nameofdepartment,
     allWebinar,
   })
 })
@@ -60,14 +65,25 @@ router.get("/webinar", async (req, res) => {
 // route for show-page.
 router.get("/s/:id/:slug", async (req, res) => {
   const { agenda = false } = req.query
-  const purchases = await Purchase.find({}).sort("order")
+  const purchases = await Purchase.find({ for: "Seminar" }).sort("order")
   const seminar = await Webinar.findById(req.params.id).populate("portfolio")
+  const seminars = (
+    await Webinar.find({
+      category: seminar.category,
+      types: seminar.types,
+      visibility: true,
+      archive: false,
+    })
+      .populate("portfolio")
+      .sort({ webinartiming: -1 })
+  ).slice(0, 4)
 
   if (!seminar?.visibility) {
-    req.flash("error", "This webinar is not available")
+    req.flash("error", "This webinar is not available.")
     return res.redirect("/seminar/all")
   }
   let renderData = {
+    seminars,
     seminar,
     purchases,
     agenda,

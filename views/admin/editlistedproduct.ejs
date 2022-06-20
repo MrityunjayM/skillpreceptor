@@ -8,8 +8,8 @@
             <div class="col col-9">
                 <div class="container">
                     <a href="/admin/allProduct" class="btn btn-sm btn-secondary mb-3">Go Back</a>
-                    <form method="post" action="/webinar" class="needs-validation" enctype="multipart/form-data"
-                        nonvalidate>
+                    <form method="POST" action="/admin/edit_product/<%= webinar._id%>?_method=PUT"
+                        class="needs-validation" enctype="multipart/form-data" nonvalidate>
                         <div class="row">
                             <div class="col col-md-3 col-xl-4 mb-3">
                                 <div class="input-group ">
@@ -34,10 +34,10 @@
                                         style="height: 48px;">
                                         <% if(webinar.status=="Live" ){ %>
                                             <option value="Live" selected>Live</option>
-                                            <option value="Recorded">recorded</option>
+                                            <option value="Recorded">Recorded</option>
                                             <% } else{%>
                                                 <option value="Recorded" selected>Recorded</option>
-                                                <option value="Live">live</option>
+                                                <option value="Live">Live</option>
                                                 <% } %>
                                     </select>
                                 </div>
@@ -184,7 +184,6 @@
                                     Looks good!
                                 </div>
                             </div>
-
                             <div class="form-group mb-3 mx-3">
                                 <label for="agenda" class="form-label">Agenda,In case of seminar only</label>
                                 <textarea id="my-expressjs-tinymce-app" name="agenda"
@@ -197,7 +196,7 @@
 
                         </div>
                         <p class="text-muted"><sup class="text-danger">*</sup> All fields are required.</p>
-                        <button type="submit" class="btn btn-secondary">Add</button>
+                        <button type="submit" class="btn btn-secondary">Update</button>
                     </form>
                 </div>
             </div>

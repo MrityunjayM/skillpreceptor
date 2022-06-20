@@ -84,6 +84,10 @@ header.header {
   text-decoration: none;
   border-radius: 4px;
 }
+
+button.input-box-icon {
+  z-index: 99 !important;
+}
 /* Header Ends */
 
 .course-logo {
