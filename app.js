@@ -145,7 +145,9 @@ app.get(
   "/",
   wrapAsync(async (req, res) => {
     const webinars = (
-      await WebinarModel.find({ visibility: true }).populate("portfolio")
+      await WebinarModel.find({ visibility: true, status: "Live" }).populate(
+        "portfolio"
+      )
     ).slice(0, 8)
     const departments = await Department.find({ visibility: true })
     const instructors = await Instructor.find({})
