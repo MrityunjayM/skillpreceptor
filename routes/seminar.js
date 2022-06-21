@@ -10,7 +10,7 @@ router.get(
   wrapAsync(async (req, res) => {
     const { categoryId = "", month = "", status = "" } = req.query
     let categoryList = categoryId.split("_"),
-      categoryNames = []
+      categoryNames = (selectedMonth = [])
     let query = { visibility: true, types: "Seminar", status: "Live" }
     if (categoryId.length) {
       const categories = await Department.find({
@@ -25,6 +25,37 @@ router.get(
       }
     }
     if (status.length) query.status = status
+
+    if (month.length && typeof month == "string") {
+      if (month === "current") {
+        query.dateforSort = firsttwomonthfromnow().currentMonth
+      }
+      if (month === "next") {
+        query.dateforSort = firsttwomonthfromnow().firstmonthfromnow
+      }
+      if (month === "nextofnext") {
+        query.dateforSort = firsttwomonthfromnow().secondmonthfromnow
+      }
+      selectedMonth += month
+    } else if (month.length) {
+      let dateforSort = []
+      if (month.includes("current")) {
+        selectedMonth += month
+        dateforSort = [...dateforSort, firsttwomonthfromnow().currentMonth]
+      }
+      if (month.includes("next")) {
+        selectedMonth += month
+        dateforSort = [...dateforSort, firsttwomonthfromnow().firstmonthfromnow]
+      }
+      if (month.includes("nextofnext")) {
+        selectedMonth += month
+        dateforSort = [
+          ...dateforSort,
+          firsttwomonthfromnow().secondmonthfromnow,
+        ]
+      }
+      query.dateforSort = { $in: dateforSort }
+    }
 
     const department = await Department.find({}).sort("order")
     // i want to ask ki what will be your order on the basis of sort.
@@ -54,6 +85,7 @@ router.get(
       title: "All Catalog",
       allWebinar,
       department,
+      selectedMonth,
       categoryNames,
     })
   })

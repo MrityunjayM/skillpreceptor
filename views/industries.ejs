@@ -33,11 +33,11 @@
                                                 </h6>
 
                                                 <h6 class="card-subtitle mb-2 text-muted text-start">
-                                                    Time: <%= webinar?.addtiminginpacific %> PST
-                                                        | <%= webinar?.addtimingineastern %> EST
+                                                    Time: <%= webinar?.addtimingineastern %> EDT | <%=
+                                                            webinar?.addtiminginpacific %> PDT
                                                 </h6>
                                                 <h6 class="card-subtitle mb-2 text-muted">
-                                                    <%= webinar.showingDate %>
+                                                    Date: <%= webinar.showingDate %>
                                                 </h6>
                                                 <a class="text-muted fs-1 stretched-link text-decoration-none"
                                                     href="/<%= webinar.types=='Seminar'? 'seminar/s':'webinar/allnext'%>/<%=webinar._id%>/<%=webinar.slug%>">
@@ -78,6 +78,7 @@
                                                         <h6 class="card-subtitle mb-2 text-muted">
                                                             <%= webinar.duration %> min %>
                                                         </h6>
+
                                                         <a class="text-muted fs-1 stretched-link text-decoration-none"
                                                             href="/<%= webinar.types=='Seminar'? 'seminar/s':'webinar/allnext'%>/<%=webinar._id%>/<%=webinar.slug%>">
                                                             <%= webinar.category %>

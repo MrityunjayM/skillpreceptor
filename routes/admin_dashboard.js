@@ -1,16 +1,15 @@
-const express = require("express")
+const router = require("express").Router()
+const Cart = require("../models/cart")
+const User = require("../models/user.js")
+const Purchase = require("../models/purchase")
 const Webinar = require("../models/webinar.js")
 const Category = require("../models/department")
 const Portfolio = require("../models/portfolio.js")
-const Purchase = require("../models/purchase")
 const ContactForm = require("../models/contactform")
-const Cart = require("../models/cart")
-const User = require("../models/user.js")
-const router = express.Router()
 
 const { upload } = require("../helper/multer")
 const wrapAsync = require("../controlError/wrapAsync")
-const { timingFormat } = require("../helper/date")
+const { timingFormat, addtimeinAmPmFormat } = require("../helper/date")
 
 const {
   getTodayRevenue,
@@ -96,6 +95,17 @@ router.put(
     })
     if (typeof req.file != "undefined") {
       webinar.image.filename = req.file.filename
+    }
+    if (time) {
+      const timeinFormat = addtimeinAmPmFormat(time)
+      webinar.addtimingineastern = timeinFormat.eastern
+      webinar.addtiminginpacific = timeinFormat.pacific
+    }
+    if (webinartiming) {
+      const dateformat = timingFormat(webinartiming)
+      const datePattern = dateformat.givenDateShowpage
+      webinar.showingDate = datePattern
+      webinar.dateforSort = dateformat.monthandyear
     }
     webinar.category = req.body.nameofdepartment
     await webinar.save()

@@ -18,16 +18,18 @@
                 <h4>Month</h4>
                 <ul class="list-group rounded-0 mb-3">
                     <li class="list-group-item font-sans-serif fw-bold fs-md-0">
-                        <input class="form-check-input me-1" type="checkbox" value="current" name="month" id="month" />
+                        <input class="form-check-input me-1" type="checkbox" value="current" name="month" id="month"
+                            <%=selectedMonth.includes('current')?'checked':'' %>/>
                         Current Month
                     </li>
                     <li class="list-group-item font-sans-serif fw-bold fs-md-0">
-                        <input class="form-check-input me-1" type="checkbox" value="next" name="month" id="month" />
+                        <input class="form-check-input me-1" type="checkbox" value="next" name="month" id="month"
+                            <%=selectedMonth.includes('next')?'checked':'' %>/>
                         Next Month
                     </li>
                     <li class="list-group-item font-sans-serif fw-bold fs-md-0">
-                        <input class="form-check-input me-1" type="checkbox" value="nextofnext" name="month"
-                            id="month" />
+                        <input class="form-check-input me-1" type="checkbox" value="nextofnext" name="month" id="month"
+                            <%=selectedMonth.includes('nextofnext')?'checked':'' %>/>
                         Next of Next Month
                     </li>
                 </ul>
@@ -36,7 +38,6 @@
                 <!-- ============================================-->
                 <!-- <section> begin ============================-->
                 <section class="py-6">
-
                     <div class="container">
                         <div class="row">
                             <% allWebinar.filter(({status})=> status == 'Live').forEach((webinar)=> { %>
@@ -61,12 +62,12 @@
                                             </h6>
 
                                             <h6 class="card-subtitle mb-2 text-muted text-start">
-                                                Time: <%= webinar?.addtiminginpacific %> PDT
-                                                    | <%= webinar?.addtimingineastern %> EDT
+                                                Time: <%= webinar?.addtimingineastern %> EDT | <%=
+                                                        webinar?.addtiminginpacific %> PDT
                                             </h6>
 
                                             <h6 class="card-subtitle mb-2 text-muted">
-                                                <%= webinar.showingDate %>
+                                                Date: <%= webinar.showingDate %>
                                             </h6>
                                             <a class="text-muted fs-1 stretched-link text-decoration-none"
                                                 href="/<%= webinar.types=='Seminar'? 'seminar/s':'webinar/allnext'%>/<%=webinar._id%>/<%=webinar.slug%>">

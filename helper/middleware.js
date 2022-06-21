@@ -3,7 +3,7 @@ const { default: axios } = require("axios")
 module.exports.isLoggedIn = (req, res, next) => {
   if (!req.isAuthenticated()) {
     req.session.returnTo = req.originalUrl
-    req.flash("error", "you must be signed in first!")
+    req.flash("error", "You are not LoggedIn!")
     return res.redirect("/login")
   }
   next()
@@ -13,7 +13,7 @@ module.exports.isAdmin = (req, res, next) => {
   if (req.isAuthenticated() && req.user.admin == true) {
     next()
   } else {
-    req.flash("error", "Please log in as admin.")
+    req.flash("error", "Access Denied")
     res.redirect("/user/login")
     // res.redirect('/users/login');
   }

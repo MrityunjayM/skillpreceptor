@@ -115,8 +115,9 @@ router.get(
   "/all",
   wrapAsync(async (req, res) => {
     const { categoryId = "", month = "", status = "" } = req.query
-    let categoryList = categoryId.split("_"),
-      categoryNames = []
+    let categoryList = categoryId.split("_")
+    let categoryNames = []
+    let selectedMonth = []
     let query = { visibility: true, types: "Webinar" }
     if (categoryId.length) {
       const categories = await Department.find({
@@ -142,15 +143,19 @@ router.get(
       if (month === "nextofnext") {
         query.dateforSort = firsttwomonthfromnow().secondmonthfromnow
       }
+      selectedMonth += month
     } else if (month.length) {
       let dateforSort = []
       if (month.includes("current")) {
+        selectedMonth += month
         dateforSort = [...dateforSort, firsttwomonthfromnow().currentMonth]
       }
       if (month.includes("next")) {
+        selectedMonth += month
         dateforSort = [...dateforSort, firsttwomonthfromnow().firstmonthfromnow]
       }
       if (month.includes("nextofnext")) {
+        selectedMonth += month
         dateforSort = [
           ...dateforSort,
           firsttwomonthfromnow().secondmonthfromnow,
@@ -178,16 +183,14 @@ router.get(
       return res.redirect("/webinar/all")
     }
     if (!allWebinar.length) {
-      req.flash(
-        "error",
-        "We haven't added product for this section yet,explore other section for now"
-      )
+      req.flash("error", "Product not availale")
       return res.redirect("/")
     }
     return res.render("allwebinar", {
       allWebinar,
       department,
       categoryNames,
+      selectedMonth,
       title: "All Webinars",
     })
   })

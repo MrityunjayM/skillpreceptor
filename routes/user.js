@@ -100,30 +100,24 @@ router.get(
 //logging the user.
 router.post(
   "/login",
+  passport.authenticate("local", {
+    successFlash: true,
+    failureFlash: true,
+    failureRedirect: "/user/login",
+  }),
   wrapAsync(async (req, res, next) => {
     const { email } = req.body
     var user = await User.findOne({ email })
     if (!user) {
-      req.flash("error", "Please enter the detail carefully")
+      req.flash("error", "Please enter the detail carefully!!")
       return res.redirect("/user/login")
-      // throw new AppError(
-      //   "user not found,please enter the detail carefully",
-      //   200
-      // );
     }
-    if (user.verify) {
-      // req.flash("success", "welcome back");
-      next()
-    } else if (!user.verify) {
+    if (!user.verify) {
       req.flash("error", "Please first verify yourself")
       return res.redirect("/user/login")
     }
-  }),
-  passport.authenticate("local", {
-    failureFlash: true,
-    failureRedirect: "/user/login",
-    successFlash: true,
-    successRedirect: "/",
+    if (user.admin) return res.redirect("/admin")
+    return res.redirect("/user/dashboard")
   })
 )
 
