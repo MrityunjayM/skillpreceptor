@@ -95,7 +95,7 @@
                                 <label for="webinartiming" class="form-label">Date<sup
                                         class="text-danger">*</sup></label>
                                 <input type="date" class="form-control rounded-0" id="webinartiming"
-                                    name="webinartiming" value="<%= datePattern %>" required>
+                                    name="webinartiming" value="<%= datePattern %>">
                                 <div class="valid-feedback">
                                     Looks good!
                                 </div>
@@ -103,7 +103,7 @@
                             <div class="col col-md-4 col-xl-3 mb-3">
                                 <label for="time" class="form-label">Time<sup class="text-danger">*</sup></label>
                                 <input type="time" name="time" value="<%= webinar?.time%>" id="time" placeholder="Time"
-                                    class="form-control rounded-0" min="00:00" max="24:00" required>
+                                    class="form-control rounded-0" min="00:00" max="24:00">
                                 <div class="valid-feedback">
                                     Looks good!
                                 </div>
@@ -111,7 +111,7 @@
                             <div class="col col-md-4 col-xl-3 mb-3">
                                 <label for="duration" class="form-label">Duration</label>
                                 <input type="Number" name="duration" value="<%= webinar.duration %>" id="duration"
-                                    placeholder="Time" class="form-control rounded-0" required>
+                                    placeholder="Time" class="form-control rounded-0">
                                 <div class="valid-feedback">
                                     Looks good!
                                 </div>
@@ -128,7 +128,7 @@
                             <div class="col col-md-4 col-xl-3 mb-3">
                                 <label for="slug" class="form-label">Slug detail</label>
                                 <input type="text" name="slug" value="<%= webinar.slug%>" id="slug"
-                                    placeholder="sort-description" class="form-control rounded-0" required>
+                                    placeholder="sort-description" class="form-control rounded-0" />
                                 <div class="valid-feedback">
                                     Looks good!
                                 </div>
@@ -144,7 +144,7 @@
                                 <label for="urlofseminar" class="form-label">Recording Url</label>
                                 <input type="text" name="urlofseminar" id="urlofseminar"
                                     placeholder="Recorded webinar or seminar link." value="<%=webinar.urlofseminar%>"
-                                    class="form-control rounded-0" required>
+                                    class="form-control rounded-0">
                                 <div class="valid-feedback">
                                     Looks good!
                                 </div>
