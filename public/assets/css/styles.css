@@ -94,6 +94,9 @@ button.input-box-icon {
 }
 /* Header Ends */
 
+.carousel-caption {
+  bottom: 0.25rem !important;
+}
 .course-logo {
   bottom: -35px;
 }
