@@ -16,7 +16,7 @@
                                         <div class="card border-0 h-100">
                                             <div class="position-relative">
                                                 <img class="w-100"
-                                                    src="<%=webinar.image.name? '/'+webinar.image.name:webinar.image.url%>"
+                                                    src="<%= webinar?.image?.filename? '/images/'+webinar?.image?.filename : webinar?.image?.url%>"
                                                     alt="<%= webinar.image.name%>" />
                                                 <div class="course-logo">
                                                     <img src="<%= webinar?.portfolio?.image?.filename? '/images/'+webinar?.portfolio?.image?.filename : webinar?.portfolio?.image?.url%>"
