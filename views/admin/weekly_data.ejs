@@ -7,8 +7,8 @@
                 <th scope="col">Date</th>
                 <th scope="col">Method</th>
                 <th scope="col">Types</th>
-                <th scope="col">orderId</th>
                 <th scope="col">product</th>
+                <th scope="col">orderId</th>
                 <th scope="col">Amount</th>
             </tr>
         </thead>
@@ -64,7 +64,7 @@
                                 <%=t.product.title%>
                             </td>
                             <td>
-                                <%=t.product.orderId%>
+                                <%=t.orderId%>
                             </td>
                             <td>
                                 <% total=t.purchaseOrder.reduce((acc,curr)=> acc+curr.totalPrice,0)%>

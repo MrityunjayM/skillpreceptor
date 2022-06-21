@@ -106,7 +106,7 @@
                         </div>
 
                         <% if (seminar?.archive) { %>
-                            <h5>This is an archived product, can't be purchased.</h5>
+                            <h5>Product Unavailable.</h5>
                             <% } else{%>
                                 <button type="submit" class="btn btn-secondary fw-normal">Add to Cart</button>
                                 <% } %>
@@ -184,10 +184,10 @@
 
     <!-- Category catalog -->
     <section class="container-xxl px-md-4 px-lg-9 py-3">
-        <% if (seminars.length) { %>
+        <% if (seminars?.length) { %>
             <h3 class="mb-2">Related Topics</h3>
             <% } %>
-                <%seminars.forEach((webinar)=> { %>
+                <%seminars?.forEach((webinar)=> { %>
                     <div class="col-sm-6 col-lg-3 mb-4 scale">
                         <div class="card border-0 h-100">
                             <div class="position-relative">

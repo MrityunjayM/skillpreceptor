@@ -347,7 +347,7 @@ router.get(
     const purchases = await Purchase.find({ for: seminar.types })
     agenda = seminar.types == "Seminar" && agenda ? true : false
     // return res.json({ seminar, purchase })
-    return res.render("seminar", { seminar, purchases, agenda })
+    return res.render("seminar", { seminars: [], seminar, purchases, agenda })
   })
 )
 

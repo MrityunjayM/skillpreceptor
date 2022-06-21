@@ -8,11 +8,23 @@ const wrapAsync = require("../controlError/wrapAsync")
 router.get(
   "/all",
   wrapAsync(async (req, res) => {
-    const { category = "", status = "" } = req.query
-    let categoryList = category.split("_")
+    const { categoryId = "", month = "", status = "" } = req.query
+    let categoryList = categoryId.split("_"),
+      categoryNames = []
     let query = { visibility: true, types: "Seminar", status: "Live" }
-    if (category.length) query.category = { $in: [...categoryList] }
-    if (status.length) query.status = { $in: [status] }
+    if (categoryId.length) {
+      const categories = await Department.find({
+        _id: { $in: categoryList },
+      })
+      categoryNames = categories.reduce(
+        (cat, { nameofdepartment }) => [...cat, nameofdepartment],
+        []
+      )
+      query.category = {
+        $in: categoryNames,
+      }
+    }
+    if (status.length) query.status = status
 
     const department = await Department.find({}).sort("order")
     // i want to ask ki what will be your order on the basis of sort.
@@ -42,7 +54,7 @@ router.get(
       title: "All Catalog",
       allWebinar,
       department,
-      categoryList,
+      categoryNames,
     })
   })
 )
@@ -90,7 +102,7 @@ router.get("/s/:id/:slug", async (req, res) => {
     title: seminar.seotitle,
   }
   req.session.backUrl = req.originalUrl
-  if (seminar.archive) renderData.error = "This is an archived product."
+  if (seminar.archive) renderData.error = "This product is unavailable."
   return res.status(200).render("seminar", renderData)
 })
 

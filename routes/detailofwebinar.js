@@ -172,7 +172,7 @@ router.get(
 
     if (
       !allWebinar.length &&
-      (category.length || month.length || status.length)
+      (categoryId.length || month.length || status.length)
     ) {
       req.flash("error", "No match found")
       return res.redirect("/webinar/all")
@@ -184,7 +184,6 @@ router.get(
       )
       return res.redirect("/")
     }
-    console.log(categoryNames, "names")
     return res.render("allwebinar", {
       allWebinar,
       department,
@@ -223,7 +222,7 @@ router.get(
       title: webinar.seotitle,
     }
     req.session.backUrl = req.originalUrl
-    if (webinar.archive) renderData.error = "This is an archived product."
+    if (webinar.archive) renderData.error = "This product is unavailable."
     // payment options...
     res.render("nextdetailofwebinar", renderData)
   })
