@@ -14,7 +14,11 @@
                             <span class="fs-2 text-dark">
                                 $<%= todayRevenueAmount %>
                             </span>
-                            <div class="fs-3 text-dark">Today</div>
+                            <div class="fs-3 text-dark">
+                                <a href="/transactiondetail/today" class="nav-link">
+                                    Today
+                                </a>
+                            </div>
                         </div>
                     </div>
                     <div class="col col-sm-4 col-md-4 d-flex flex-center">
@@ -23,7 +27,9 @@
                             <span class="fs-2 text-dark">
                                 $<%= weeklyRevenueAmount %>
                             </span>
-                            <div class="fs-3 text-dark">Weekly</div>
+                            <div class="fs-3 text-dark">
+                                <a href="/transactiondetail/weekly" class="nav-link">Weekly</a>
+                            </div>
                         </div>
                     </div>
                     <div class="col col-sm-4 col-md-4 d-flex flex-center">
@@ -32,7 +38,9 @@
                             <span class="fs-2 text-dark">
                                 $<%= monthlyRevenueAmount %>
                             </span>
-                            <div class="fs-3 text-dark">Monthly</div>
+                            <div class="fs-3 text-dark">
+                                <a href="/transactiondetail/monthly" class="nav-link">Monthly</a>
+                            </div>
                         </div>
                     </div>
 
@@ -46,7 +54,11 @@
                                     style="width: 100px;height:100px;">
                                     <%= monthlySubscriber %>
                                 </span>
-                                <div class="text-dark mt-2 fw-medium">Subscriber's this month</div>
+                                <div class="text-dark mt-2 fw-medium">
+                                    <a href="/admin/lead/maillist" class="nav-link text-dark">
+                                        Subscriber's this month
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>

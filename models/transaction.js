@@ -9,10 +9,10 @@ const TransactionSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
-    // purchaseId: {
-    //   type: mongoose.Schema.Types.ObjectId,
-    //   ref: "PurchaseOfUser",
-    // },
+    purchaseId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "PurchaseOfUser",
+    },
     date: {
       type: String,
     },
@@ -23,10 +23,9 @@ const TransactionSchema = new mongoose.Schema(
       type: Number,
     },
     // this is basically order id.
-    // orderId: {
-    //   type: Number,
-    //   default: 1111,
-    // },
+    orderId: {
+      type: Number,
+    },
   },
   { timestamps: true }
 )

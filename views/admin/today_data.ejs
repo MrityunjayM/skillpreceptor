@@ -1,0 +1,87 @@
+<%- include("../layouts/header"); -%>
+    <table class="table table-dark">
+        <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Date</th>
+                <th scope="col">Method</th>
+                <th scope="col">Types</th>
+                <th scope="col">product</th>
+                <th scope="col">OrderId</th>
+                <th scope="col">Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% user.forEach((e)=>{ %>
+                <%transactionDetail.forEach((t,i)=> { %>
+                    <% if(i==0 && (t.userId._id.equals(e._id))) {%>
+                        <tr>
+                            <td>
+                                <%=t.userId.firstname %>
+                            </td>
+                            <td>
+                                <%=t.userId.email%>
+                            </td>
+                            <td>
+                                <%=t.date%>
+                            </td>
+                            <td>
+                                <%=t.method%>
+                            </td>
+
+                            <td>
+                                <%=t.product.types%>
+                            </td>
+                            <td>
+                                <%=t.product.title%>
+                            </td>
+                            <td>
+                                <%=t.orderId%>
+                            </td>
+                            <td>
+                                <% total=t.purchaseOrder.reduce((acc,curr)=> acc+curr.totalPrice,0)%>
+                                    $<%=total%>
+                            </td>
+                            <% } %>
+                                <% if(i!=0) {%>
+                        <tr>
+                            <td>
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                                <%=t.method%>
+                            </td>
+                            <td>
+                                <%=t.product.types%>
+                            </td>
+                            <td>
+                                <%=t.product.title%>
+                            </td>
+                            <td>
+                                <%=t.orderId%>
+                            </td>
+                            <td>
+                                <% total=t.purchaseOrder.reduce((acc,curr)=> acc+curr.totalPrice,0)%>
+                                    $<%=total%>
+                            </td>
+                            <% } %>
+                        </tr>
+                        <%}) %>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td style="color: red;">Next user</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <%}) %>
+        </tbody>
+    </table>
+    <%- include("../layouts/footer"); -%>

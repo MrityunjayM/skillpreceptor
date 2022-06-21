@@ -137,6 +137,8 @@ router.get(
     var cart = await Cart.find({
       query1,
     }).populate("product")
+    req.session.count = cart.length
+    await req.session.save()
     if (cart.length && req.user) {
       await Cart.find(query1).updateMany({}, { userId: req.user._id })
     }
@@ -151,6 +153,7 @@ router.get(
         delete req.session.discountinpercentage
         // console.log("lets,see 2", req.session.discountinpercentage)
       }
+      delete req.session.count
       await req.session.save()
       // await Cart.findOneAndDelete({ userId: req.user._id });
       await Cart.deleteMany({ userId: req.user._id })
@@ -170,10 +173,12 @@ router.get(
         delete req.session.discountinprice
         // console.log("lets,see 1", req.session.discountinprice)
       }
+
       if (req.session.discountinpercentage) {
         delete req.session.discountinpercentage
         // console.log("lets,see 2", req.session.discountinpercentage)
       }
+      delete req.session.count
       await req.session.save()
       // await Cart.findOneAndDelete({ userId: req.user._id });
       await Cart.deleteMany({ cartSessionId: req.sessionID })
@@ -192,6 +197,8 @@ router.get(
       var userid = id ? id : req.user._id
       let query2 = { userId: userid, visibility: true }
       var cart = await Cart.find(query2).populate("product")
+      req.session.count = cart.length
+      await req.session.save()
       return res.render("cart", {
         title: "Cart",
         cart,

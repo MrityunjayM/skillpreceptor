@@ -64,6 +64,7 @@ module.exports.isSuccess = wrapAsync(async (req, res, next) => {
   const amount = new TransactionDetail({
     userId: req.user._id,
     amount: req.session.amount,
+    orderId,
     date: dateNow.dateformattransaction,
   })
 
@@ -75,6 +76,7 @@ module.exports.isSuccess = wrapAsync(async (req, res, next) => {
   // basically here we will give null to cart of that user.
   const user = await User.findById(req.user._id)
   user.cart = null
+  user.orderId = orderId
   await user.save()
   // await PurchaseOfUser.find({ userId: req.user._id }).updateMany(
   //   {},

@@ -4,9 +4,9 @@ const Coupon = require("../models/coupon_code")
 const wrapAsync = require("../controlError/wrapAsync")
 const paypal = require("paypal-rest-sdk")
 const { isSuccess } = require("../helper/successtransaction_middleware")
+const User = require("../models/user")
 
-const YOUR_DOMAIN =
-  process.env.YOUR_DOMAIN || "http://test.mrityunjay.com:5000/"
+const YOUR_DOMAIN = process.env.YOUR_DOMAIN || "http://test.mrityunjay.com:5000"
 //stripe credential.
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY)
 //paypal credential.
@@ -102,6 +102,12 @@ router.get(
       req.session.method = "Stripe"
       isSuccess(req, res, next)
     }
+    // payment status -> success
+    const updatingTheUser = await User.findOne({ _id: req.user._id })
+    if (updatingTheUser.statusofPayment) {
+      updatingTheUser.statusofPayment = false
+      await updatingTheUser.save()
+    }
 
     return res.redirect("/user/dashboard/purchase_history")
   })
@@ -122,6 +128,9 @@ router.get(
     }
     delete req.session.amount
     await req.session.save()
+    const updatingTheUser = await User.findOne({ _id: req.user._id })
+    updatingTheUser.statusofPayment = true
+    await updatingTheUser.save()
     req.flash("error", "Payment canceled")
     return res.redirect("/cart/all")
   })
@@ -224,6 +233,12 @@ router.get(
         }
       }
     )
+    // payment status -> success
+    const updatingTheUser = await User.findOne({ _id: req.user._id })
+    if (updatingTheUser.statusofPayment) {
+      updatingTheUser.statusofPayment = false
+      await updatingTheUser.save()
+    }
     return res.redirect("/user/dashboard/purchase_history")
   })
 )

@@ -31,7 +31,7 @@
                                     <% TotalPrice=TotalPrice+Total; %>
                                         <tr>
                                             <th scope="row" style="max-width: 40%;" class="align-middle">
-                                                <%=c.product.title%>
+                                                <%=c?.product?.title%>
                                             </th>
                                             <td class="align-middle">
                                                 $<%=(e.price).toFixed(2)%>

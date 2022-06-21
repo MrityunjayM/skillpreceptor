@@ -1,4 +1,5 @@
 const mongoose = require("mongoose")
+
 const PurchaseOfUser = new mongoose.Schema(
   {
     method: {

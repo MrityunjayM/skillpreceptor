@@ -8,9 +8,8 @@
                 <ul class="list-group rounded-0 mb-3">
                     <%department.forEach(e=>{%>
                         <li class="list-group-item font-sans-serif fw-bold fs-md-0">
-                            <input class="form-check-input me-1" type="checkbox" name="category" id="category"
-                                value="<%=e.nameofdepartment%>"
-                                <%=(categoryList.includes(e.nameofdepartment))?'checked':''%> />
+                            <input class="form-check-input me-1" type="checkbox" name="categoryId" id="category"
+                                value="<%=e._id%>" <%=(categoryNames?.includes(e.nameofdepartment))?'checked':''%> />
                             <%= e.nameofdepartment %>
                         </li>
                         <% }) %>

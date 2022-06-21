@@ -114,10 +114,22 @@ router.post(
 router.get(
   "/all",
   wrapAsync(async (req, res) => {
-    const { category = "", month = "", status = "" } = req.query
-    let categoryList = category.split("_")
+    const { categoryId = "", month = "", status = "" } = req.query
+    let categoryList = categoryId.split("_"),
+      categoryNames = []
     let query = { visibility: true, types: "Webinar" }
-    if (category.length) query.category = { $in: [...categoryList] }
+    if (categoryId.length) {
+      const categories = await Department.find({
+        _id: { $in: categoryList },
+      })
+      categoryNames = categories.reduce(
+        (cat, { nameofdepartment }) => [...cat, nameofdepartment],
+        []
+      )
+      query.category = {
+        $in: categoryNames,
+      }
+    }
     if (status.length) query.status = status
 
     if (month.length && typeof month == "string") {
@@ -147,7 +159,7 @@ router.get(
       query.dateforSort = { $in: dateforSort }
     }
 
-    const department = await Department.find({}).sort("order")
+    const department = await Department.find({ visibility: true }).sort("order")
     // i want to ask ki what will be your order on the basis of sort.
     const allWebinar = await Webinar.find(query)
       .sort({
@@ -172,11 +184,11 @@ router.get(
       )
       return res.redirect("/")
     }
-
+    console.log(categoryNames, "names")
     return res.render("allwebinar", {
       allWebinar,
       department,
-      categoryList,
+      categoryNames,
       title: "All Webinars",
     })
   })

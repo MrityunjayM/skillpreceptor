@@ -5,19 +5,20 @@
     const query = new URLSearchParams(search);
     let queryStr, selectedCategories, unchecked;
     // filtering based on category --> Indutsry
-    checkedCategories.forEach((element, i) =>
+    checkedCategories.forEach((element) =>
         element.addEventListener('click',
             () => {
-                selectedCategories = query.get('category')
-                if (selectedCategories && !selectedCategories.includes(element.value)) return window.location.search = `?category=${selectedCategories}_${element.value}`
+                selectedCategories = query.get('categoryId')
+                console.log(selectedCategories, 'test1')
+                if (selectedCategories && !selectedCategories.includes(element.value)) return window.location.search = `?categoryId=${selectedCategories}_${element.value}`
 
                 if (selectedCategories && selectedCategories.includes(element.value)) {
                     selectedCategories = selectedCategories.split("_").filter((str) => str !== element.value).join("_")
-                    return window.location.search = `?category=${selectedCategories}`
+                    return window.location.search = `?categoryId=${selectedCategories}`
                 }
-                // if (selectedCategories) return window.location.search = `?category=${selectedCategories}_${element.value}`
+                // if (selectedCategories) return window.location.search = `?categoryId=${selectedCategories}_${element.value}`
 
-                return window.location.search = `?category=${element.value}`
+                return window.location.search = `?categoryId=${element.value}`
             })
     );
 

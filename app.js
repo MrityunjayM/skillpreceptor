@@ -112,9 +112,8 @@ passport.deserializeUser(function (user, done) {
 })
 
 app.use(async (req, res, next) => {
-  req.session.count = 1
   res.locals.currentUser = req.user
-  res.locals.gotmail = req.session.count
+  res.locals.cartCount = req.session.count
   res.locals.error = req.flash("error")
   res.locals.success = req.flash("success")
   res.locals.captcha_error = req.flash("captcha_error")
@@ -204,7 +203,7 @@ app.use((err, req, res, next) => {
 
 // this is for handling unexpected
 app.use((err, req, res, next) => {
-  // console.error(err)
+  console.error(err)
   if (err) {
     req.flash("error", "Something went wrong, please try later.")
     return res.redirect(req.header("Referer") || "/")
