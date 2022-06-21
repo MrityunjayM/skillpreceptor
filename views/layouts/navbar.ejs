@@ -51,9 +51,10 @@
                         </a>
 
                         <ul class="dropdown-menu rounded-0 py-0 mt-1" aria-labelledby="dropdownMenuLink">
-                            <li><a class="dropdown-item py-2 fw-medium fs-1" href="/webinar/all?status=Live">Live
+                            <li><a class="dropdown-item py-2 fw-medium" style="font-size: 1rem;"
+                                    href="/webinar/all?status=Live">Live
                                     Webinars</a></li>
-                            <li><a class="dropdown-item py-2 fw-medium fs-1"
+                            <li><a class="dropdown-item py-2 fw-medium" style="font-size: 1rem;"
                                     href="/webinar/all?status=Recorded">On-Demand</a></li>
                         </ul>
                     </div>
@@ -67,7 +68,7 @@
                         <% if (inds?.length) { %>
                             <ul class="dropdown-menu rounded-0 py-0 mt-1" aria-labelledby="dropdownMenuLink">
                                 <% inds?.forEach(({_id, nameofdepartment})=> { %>
-                                    <li><a class="dropdown-item py-2 fs-1 fw-medium"
+                                    <li><a class="dropdown-item py-2 fw-medium" style="font-size: 1rem;"
                                             href="/seminar/webinar?categoryId=<%=_id%>">
                                             <%= nameofdepartment%>
                                         </a></li>
