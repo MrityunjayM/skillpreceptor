@@ -31,6 +31,11 @@
                                                 <h6 class="card-subtitle mb-2 text-muted">
                                                     <%= webinar.duration %> min | <%= webinar.time %>
                                                 </h6>
+
+                                                <h6 class="card-subtitle mb-2 text-muted text-start">
+                                                    Time: <%= webinar?.addtiminginpacific %> PST
+                                                        | <%= webinar?.addtimingineastern %> EST
+                                                </h6>
                                                 <h6 class="card-subtitle mb-2 text-muted">
                                                     <%= webinar.showingDate %>
                                                 </h6>
@@ -57,7 +62,7 @@
                                                 <div class="card border-0 h-100">
                                                     <div class="position-relative">
                                                         <img class="w-100"
-                                                            src="<%=webinar.image.filename? '/images'+webinar.image.filename: webinar.image.url%>"
+                                                            src="<%=webinar.image.filename? '/images/'+webinar.image.filename: webinar.image.url%>"
                                                             alt="<%= webinar.image.filename%>" width="250"
                                                             height="210" />
                                                         <div class="course-logo">
