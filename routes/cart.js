@@ -1,5 +1,4 @@
 const express = require("express")
-const Webinar = require("../models/webinar.js")
 const Purchase = require("../models/purchase")
 const Cart = require("../models/cart.js")
 const router = express.Router()
@@ -7,7 +6,6 @@ const AppError = require("../controlError/AppError")
 const wrapAsync = require("../controlError/wrapAsync")
 const User = require("../models/user.js")
 const { isLoggedIn } = require("../helper/middleware")
-const { session } = require("passport")
 
 router.get(
   "/checkout",
@@ -136,10 +134,9 @@ router.get(
     const discountinpercentage = req.session.discountinpercentage
     // basically passing query because we need the data of cart which having visibility of true.
     let query1 = { cartSessionId: req.sessionID, visibility: true }
-    // console.log("count", req?.session?.count)
     var cart = await Cart.find(query1).populate("product")
-    // req.session.count = cart.length
-    // await req.session.save()
+    req.session.count = cart.length
+    await req.session.save()
     if (cart.length && req.user) {
       await Cart.find(query1).updateMany({}, { userId: req.user._id })
     }
@@ -166,6 +163,7 @@ router.get(
         TotalPrice,
         discountinpercentage,
         discountinprice,
+        cartCount: cart.length,
       })
     }
 
@@ -188,6 +186,7 @@ router.get(
         TotalPrice,
         discountinpercentage,
         discountinprice,
+        cartCount: cart.length,
       })
     }
 
@@ -195,8 +194,8 @@ router.get(
       var userid = id ? id : req.user._id
       let query2 = { userId: userid, visibility: true }
       var cart = await Cart.find(query2).populate("product")
-      // req.session.count = cart.length
-      // await req.session.save()
+      req.session.count = cart.length
+      await req.session.save()
       return res.render("cart", {
         title: "Cart",
         cart,
@@ -264,7 +263,6 @@ router.get(
         $set: {
           "categoryofprice.$.quantity":
             selectedProduct.quantity + parseInt(action),
-          // "categoryofprice.$.price": (e.quantity + 1) * e.price,
           "categoryofprice.$.totalPrice":
             (selectedProduct.quantity + parseInt(action)) *
             selectedProduct.price,
