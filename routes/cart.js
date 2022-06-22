@@ -7,6 +7,7 @@ const AppError = require("../controlError/AppError")
 const wrapAsync = require("../controlError/wrapAsync")
 const User = require("../models/user.js")
 const { isLoggedIn } = require("../helper/middleware")
+const { session } = require("passport")
 
 router.get(
   "/checkout",
@@ -58,6 +59,7 @@ router.post(
     }
     const cart = await Cart.findOne(query)
     //cart existing and product selected is also existing in that case.
+    // to compare productId, 'equals()', method should be called.
     if (cart && cart.product == id) {
       const hi = cart.categoryofprice.filter((e) => price == e.price)
       //if product exist  but not from the same product category then we are adding that one.
@@ -118,6 +120,7 @@ router.post(
         await user.save()
       }
     }
+    // req.session.count = cart ? cart.length : newCart.length
     return res.redirect("/cart/all")
   })
 )
@@ -133,10 +136,10 @@ router.get(
     const discountinpercentage = req.session.discountinpercentage
     // basically passing query because we need the data of cart which having visibility of true.
     let query1 = { cartSessionId: req.sessionID, visibility: true }
-
+    // console.log("count", req?.session?.count)
     var cart = await Cart.find(query1).populate("product")
-    req.session.count = cart.length
-    await req.session.save()
+    // req.session.count = cart.length
+    // await req.session.save()
     if (cart.length && req.user) {
       await Cart.find(query1).updateMany({}, { userId: req.user._id })
     }
@@ -169,16 +172,13 @@ router.get(
     if (clear && !req.user) {
       if (req.session.discountinprice) {
         delete req.session.discountinprice
-        // console.log("lets,see 1", req.session.discountinprice)
       }
 
       if (req.session.discountinpercentage) {
         delete req.session.discountinpercentage
-        // console.log("lets,see 2", req.session.discountinpercentage)
       }
       delete req.session.count
       await req.session.save()
-      // await Cart.findOneAndDelete({ userId: req.user._id });
       await Cart.deleteMany({ cartSessionId: req.sessionID })
       cart = []
       return res.render("cart", {
@@ -195,8 +195,8 @@ router.get(
       var userid = id ? id : req.user._id
       let query2 = { userId: userid, visibility: true }
       var cart = await Cart.find(query2).populate("product")
-      req.session.count = cart.length
-      await req.session.save()
+      // req.session.count = cart.length
+      // await req.session.save()
       return res.render("cart", {
         title: "Cart",
         cart,
@@ -204,6 +204,7 @@ router.get(
         TotalPrice,
         discountinpercentage,
         discountinprice,
+        cartCount: cart.length,
       })
     }
 
@@ -214,6 +215,7 @@ router.get(
       TotalPrice,
       discountinpercentage,
       discountinprice,
+      cartCount: cart.length,
     })
   })
 )
