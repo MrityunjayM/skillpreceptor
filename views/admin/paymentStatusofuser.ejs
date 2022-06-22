@@ -4,24 +4,24 @@
             <tr>
                 <th scope="col">Name</th>
                 <th scope="col">Email</th>
-                <th scope="col">phone number</th>
-                <th scope="col">verify</th>
+                <th scope="col">Phone Number</th>
+                <th scope="col">Verify</th>
             </tr>
         </thead>
         <tbody>
             <% user?.forEach((u)=>{ %>
                 <tr>
                     <td>
-                        <%=u.firstname %>
+                        <%=u?.firstname %>
                     </td>
                     <td>
-                        <%=u.email %>
+                        <%=u?.email %>
                     </td>
                     <td>
-                        <%=u.phone %>
+                        <%=u?.phone %>
                     </td>
                     <td>
-                        <%=u.verify %>
+                        <%=u?.verify %>
                     </td>
                 </tr>
                 <%}) %>

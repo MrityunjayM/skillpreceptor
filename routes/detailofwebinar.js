@@ -12,7 +12,6 @@ const {
   firsttwomonthfromnow,
 } = require("../helper/date")
 const { isAdmin } = require("../helper/middleware.js")
-const purchase = require("../models/purchase")
 
 // add the first page detail of webinar.
 router.get(
@@ -39,11 +38,12 @@ router.post(
   isAdmin,
   upload.single("image"),
   wrapAsync(async (req, res) => {
-    const { webinartiming, time } = req.body
+    const { webinartiming, time, title } = req.body
     const lastWebinar = await Webinar.find({})
     if (lastWebinar.length) {
       var id = lastWebinar[lastWebinar.length - 1].webinarId
     }
+    req.body.title = title.trim()
     const newWebinar = new Webinar(req.body)
     const portfolio = await Portfolio.findOne({ name: req.body.name })
     newWebinar.portfolio = portfolio._id
@@ -52,14 +52,14 @@ router.post(
     }
     if (!req.body.slug) {
       newWebinar.slug = req.body.seotitle
-        .replace(/[^a-zA-Z]/g, " ")
+        .replace(/[^a-zA-Z0-9]/g, " ")
         .toLowerCase()
         .split(" ")
         .join("-")
     }
     if (req.body.slug) {
       newWebinar.slug = req.body.slug
-        .replace(/[^a-zA-Z]/g, " ")
+        .replace(/[^a-zA-Z0-9]/g, " ")
         .toLowerCase()
         .split(" ")
         .join("-")
@@ -203,22 +203,25 @@ router.get(
   "/:webinarId/:slug",
   wrapAsync(async (req, res) => {
     const { webinarId } = req.params
-    const webinar = await Webinar.findOne({ webinarId }).populate("portfolio")
+    const webinar = await Webinar.findOne({ webinarId })
+      .populate("portfolio")
+      .lean()
     let purchaseQuery = { for: "Webinar_Recorded" }
-    if (webinar?.status == "Live")
-      purchaseQuery.for = { $in: ["Webinar", "Webinar_Recorded"] }
+    if (webinar?.status == "Live") purchaseQuery.for = "Webinar"
 
-    const purchases = await Purchase.find(purchaseQuery).sort("order")
+    const purchases = await Purchase.find(purchaseQuery).lean().sort("order")
     const webinars = (
       await Webinar.find({
-        category: webinar?.category,
-        types: webinar?.types,
+        category: webinar.category,
+        types: webinar.types,
         visibility: true,
         archive: false,
       })
         .populate("portfolio")
         .sort({ webinartiming: -1 })
-    ).slice(0, 4)
+    )
+      .filter((doc) => !doc._id.equals(webinar._id))
+      .slice(0, 4)
 
     if (!webinar?.visibility) {
       req.flash("error", "This webinar is not available.")

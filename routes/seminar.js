@@ -121,7 +121,9 @@ router.get("/:webinarId/:slug", async (req, res) => {
     })
       .populate("portfolio")
       .sort({ webinartiming: -1 })
-  ).slice(0, 4)
+  )
+    .filter((doc) => !doc._id.equals(seminar._id))
+    .slice(0, 4)
 
   if (!seminar?.visibility) {
     req.flash("error", "This webinar is not available.")

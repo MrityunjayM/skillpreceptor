@@ -99,14 +99,14 @@ router.put(
     }
     if (!req.body.slug) {
       webinar.slug = req.body.seotitle
-        .replace(/[^a-zA-Z]/g, " ")
+        .replace(/[^a-zA-Z0-9]/g, " ")
         .toLowerCase()
         .split(" ")
         .join("-")
     }
     if (req.body.slug) {
       webinar.slug = req.body.slug
-        .replace(/[^a-zA-Z]/g, " ")
+        .replace(/[^a-zA-Z0-9]/g, " ")
         .toLowerCase()
         .split(" ")
         .join("-")
@@ -330,8 +330,11 @@ router.post(
   "/listedproductsearching",
   wrapAsync(async (req, res) => {
     if (!req.body.product) {
-      req.flash("error", "No match found")
-      return req.redirect("/admin/allproduct")
+      req.flash(
+        "error",
+        "Oops!! Looks-like you haven't entred any value for search"
+      )
+      return res.redirect("/admin/allproduct")
     }
     str = '"' + req.body.product + '"'
     str1 = "'" + str + "'"

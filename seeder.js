@@ -3,11 +3,13 @@ const { generateString } = require("./helper/string_generator")
 const Department = require("./models/department")
 const Portfolio = require("./models/portfolio")
 const mongoose = require("mongoose")
-const dbUrl = process.env.MONGO_DB_LOCAL
+const dbUrl = process.env.DB_URL
 
-const str = `Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis, temporibus, id iure minima, harum laboriosam
-    ut eligendi facere iste error autem quibusdam doloremque itaque ducimus maxime aliquid. Cupiditate, dolorem
-    asperiores!`
+const str = `Lorem ipsum dolor sit amet consectetur adipisicing elit.
+            Perferendis, temporibus, id iure minima, harum laboriosam
+            ut eligendi facere iste error autem quibusdam doloremque itaque 
+            ducimus maxime aliquid. Cupiditate, dolorem asperiores!
+            `
 mongoose
   .connect(dbUrl, {
     useUnifiedTopology: true,
@@ -26,16 +28,14 @@ async function seedDB(types = "Webinar", status = "Live") {
   const d = Math.floor(Math.random() * department.length)
   const p = Math.floor(Math.random() * portfolio.length)
 
-  for (let i = 0; i < 21; i++) {
+  for (let i = 0; i < 5; i++) {
     const hello = {
-      name: portfolio[0].name,
-      title: generateString(6),
+      webinarId: 108 + i,
+      name: portfolio[i % 2].name,
+      title: generateString(100),
       category: department[d].nameofdepartment,
       description: str,
       about: str,
-      image: {
-        url: "https://images.pexels.com/photos/1229861/pexels-photo-1229861.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-      },
       duration: 90,
       time: `12:40`,
       agenda: str,
@@ -47,8 +47,9 @@ async function seedDB(types = "Webinar", status = "Live") {
       abouttopic: str,
       seotitle: "mrityunjay",
       slug: "mrityunjay-testing",
-      portfolio: portfolio[p]._id,
+      portfolio: portfolio[i % 2]._id,
       visibility: true,
+      archive: false,
     }
     const h = new Webinar(hello)
     await h.save()

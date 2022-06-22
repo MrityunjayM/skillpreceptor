@@ -8,6 +8,7 @@ const WebinarSchema = new mongoose.Schema(
     //bascially name of webinar and seminar.
     title: {
       type: String,
+      unique: true,
     },
     // category is basically type of Industry.
     category: {

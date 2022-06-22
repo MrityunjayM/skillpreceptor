@@ -119,7 +119,7 @@ app.use(async (req, res, next) => {
   res.locals.success = req.flash("success")
   res.locals.captcha_error = req.flash("captcha_error")
 
-  // setting departments into local var
+  // setting departments into local var for displaying on navbar
   res.locals.inds = await Department.find({ visibility: true }).sort("order")
 
   next()
@@ -195,6 +195,13 @@ app.use((err, req, res, next) => {
   if (err.name === "ValidationError") {
     err = handleValidationErr(err)
     req.flash("error", err.message)
+    return res.redirect(req.header("Referer") || "/")
+  }
+  if (err.name === "MongoServerError") {
+    req.flash(
+      "error",
+      "You can't give the same title to two different products."
+    )
     return res.redirect(req.header("Referer") || "/")
   }
   return next(err)

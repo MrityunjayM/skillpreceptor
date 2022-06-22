@@ -134,9 +134,7 @@ router.get(
     // basically passing query because we need the data of cart which having visibility of true.
     let query1 = { cartSessionId: req.sessionID, visibility: true }
 
-    var cart = await Cart.find({
-      query1,
-    }).populate("product")
+    var cart = await Cart.find(query1).populate("product")
     req.session.count = cart.length
     await req.session.save()
     if (cart.length && req.user) {
