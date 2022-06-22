@@ -71,7 +71,6 @@ router.post(
       registeredUser.datetoregister = datetosave.dateformattransaction
       await registeredUser.save()
 
-      req.session.ids = registeredUser._id || null
       if (typeof registeredUser != "undefined") {
         const result = await mailForVerify(email, token)
         // result ko bhi check karna hai.
@@ -94,6 +93,8 @@ router.post(
       req.flash("error", "something went wrong.")
       return res.redirect("/user/register")
     }
+    req.flash("error", "Something went wrong, Please try again.")
+    return res.redirect("/user/register")
   })
 )
 
