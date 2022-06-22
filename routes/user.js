@@ -84,6 +84,12 @@ router.post(
         }
       }
     } catch (e) {
+      if (e.message == "A user with the given username is already registered") {
+        throw new AppError(
+          "A user with the given username is already registered",
+          555
+        )
+      }
       req.flash("error", "something went wrong.")
       return res.redirect("/user/register")
     }

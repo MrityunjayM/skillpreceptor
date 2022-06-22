@@ -196,14 +196,16 @@ app.use((err, req, res, next) => {
 
 app.use((err, req, res, next) => {
   const { statusCode = 500 } = err
+  console.log("hello world", err)
   if (err && err.status == 555) {
-    res.status(statusCode).render("404", { err })
+    req.flash("error", err.message)
+    return res.redirect(req.header("Referer") || "/")
   }
   if (err && err.status == 400) {
     req.flash("error", err.message)
     return res.redirect(req.header("Referer") || "/")
   }
-  next(err)
+  return next(err)
 })
 
 // this is for handling unexpected
