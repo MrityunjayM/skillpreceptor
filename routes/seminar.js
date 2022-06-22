@@ -90,24 +90,24 @@ router.get(
     })
   })
 )
-
-// home page category route all data webinar and seminar.
-router.get("/webinar", async (req, res) => {
-  const { categoryId } = req.query
-  const { nameofdepartment } = await Department.findById(categoryId)
-  const allWebinar = await Webinar.find({
-    category: nameofdepartment,
-  })
-    .populate("portfolio")
-    .sort({ webinartiming: "-1" })
-  return res.render("industries", {
-    title: nameofdepartment,
-    allWebinar,
-  })
-})
+// moved to industry.js
+// // home page category route all data webinar and seminar.
+// router.get("/webinar", async (req, res) => {
+//   const { categoryId } = req.query
+//   const { nameofdepartment } = await Department.findById(categoryId)
+//   const allWebinar = await Webinar.find({
+//     category: nameofdepartment,
+//   })
+//     .populate("portfolio")
+//     .sort({ webinartiming: "-1" })
+//   return res.render("industries", {
+//     title: nameofdepartment,
+//     allWebinar,
+//   })
+// })
 
 // route for show-page.
-router.get("/s/:webinarId/:slug", async (req, res) => {
+router.get("/:webinarId/:slug", async (req, res) => {
   const { agenda = false } = req.query
   const { webinarId } = req.params
   const purchases = await Purchase.find({ for: "Seminar" }).sort("order")

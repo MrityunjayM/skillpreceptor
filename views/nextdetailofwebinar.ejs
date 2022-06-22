@@ -154,7 +154,7 @@
         <div class="card mb-3 bg-transparent w-100 w-md-75 mx-auto">
             <div class="row g-0">
                 <div class="col-md-4">
-                    <img src="<%= webinar?.portfolio?.image?.url || '/assets/img/gallery/peter.png' %>"
+                    <img src="<%= webinar.portfolio?.image?.filename?'/images/'+webinar.portfolio.image.filename: webinar.portfolio?.image?.url %>"
                         class="img-fluid rounded-0" alt="<%= webinar?.portfolio?.name %>" width="180px" height="200px">
                 </div>
                 <div class="col-md-8">
@@ -208,7 +208,7 @@
                                         </h6>
                                         <% } %>
                                             <a class="text-muted fs--1 stretched-link text-decoration-none"
-                                                href="/<%= webinar.types=='Seminar'?'seminar/s': 'webinar/allnext'%>/<%=webinar._id%>/<%=webinar.slug%>">
+                                                href="/<%= webinar.types=='Seminar'?'seminar': 'webinar'%>/<%=webinar._id%>/<%=webinar.slug%>">
                                                 <%= webinar.category %>
                                             </a>
                                 </div>

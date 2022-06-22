@@ -138,7 +138,7 @@
                                     </h6>
                                     <% } %>
                                         <a class="text-muted fs--1 stretched-link text-decoration-none"
-                                            href="/<%= webinar.types=='Seminar'?'seminar/s': 'webinar/allnext'%>/<%=webinar.webinarId%>/<%=webinar.slug%>">
+                                            href="/<%= webinar.types=='Seminar'?'seminar': 'webinar'%>/<%=webinar.webinarId%>/<%=webinar.slug%>">
                                             <%= webinar.category %>
                                         </a>
                             </div>
@@ -177,7 +177,7 @@
                                         <h4 class="fs-lg-1 text-light mb-0">
                                             <%= department.nameofdepartment %>
                                         </h4><a class="stretched-link explore-link"
-                                            href="/seminar/webinar?categoryId=<%=department._id%>"></a>
+                                            href="/category?industryId=<%=department._id%>"></a>
                                     </div>
                                 </div>
                             </div>

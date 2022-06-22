@@ -72,6 +72,8 @@ router.post(
       const registeredUser = await User.register(user, password)
       req.session.ids = registeredUser._id || null
 
+      if (registeredUser.verify && registeredUser.admin)
+        return res.redirect("/admin")
       if (typeof registeredUser != "undefined") {
         const result = await mailForVerify(email, req.session.token)
         // result ko bhi check karna hai.
@@ -90,6 +92,7 @@ router.post(
           555
         )
       }
+      console.dir(e)
       req.flash("error", "something went wrong.")
       return res.redirect("/user/register")
     }

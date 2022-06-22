@@ -35,6 +35,7 @@ const UserDashboard = require("./routes/user_dashboard")
 const Training = require("./routes/training")
 const CustomerFeedback = require("./routes/customer-feedback")
 const TransactionDetail = require("./routes/transation_control_admin")
+const Industry = require("./routes/industry")
 
 const AppError = require("./controlError/AppError")
 const wrapAsync = require("./controlError/wrapAsync")
@@ -137,6 +138,7 @@ app.use("/newsletter", NewsLetter)
 app.use("/transactiondetail", isAdmin, TransactionDetail)
 app.use("/customer-feedback", CustomerFeedback)
 app.use("/training", Training)
+app.use("/category", Industry)
 app.use("/admin/lead", isAdmin, Lead)
 app.use("/coupon", isAdmin, Coupon)
 
@@ -213,6 +215,7 @@ app.use((err, req, res, next) => {
 // this is for handling unexpected
 app.use((err, req, res, next) => {
   if (err) {
+    console.log(err, "Error Unhandeled")
     req.flash("error", "Something went wrong, please try later.")
     return res.redirect(req.header("Referer") || "/")
   }

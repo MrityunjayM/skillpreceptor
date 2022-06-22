@@ -200,7 +200,7 @@ router.get(
 
 // just view the detail route of any webinar or seminar.
 router.get(
-  "/allnext/:webinarId/:slug",
+  "/:webinarId/:slug",
   wrapAsync(async (req, res) => {
     const { webinarId } = req.params
     const webinar = await Webinar.findOne({ webinarId }).populate("portfolio")
