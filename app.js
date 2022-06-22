@@ -186,17 +186,19 @@ app.get("/logout", (_, res) => res.redirect("/user/logout"))
 app.get("/register", (_, res) => res.redirect("/user/register"))
 
 const handleValidationErr = (err) => {
-  return new AppError("Please fill up all the required field carefully", 400)
+  return new AppError("Please fill up all the required field carefully", 550)
 }
 
 app.use((err, req, res, next) => {
-  if (err.name === "ValidationError") err = handleValidationErr(err)
-  next(err)
+  if (err.name === "ValidationError") {
+    err = handleValidationErr(err)
+    req.flash("error", err.message)
+    return res.redirect(req.header("Referer") || "/")
+  }
+  return next(err)
 })
 
 app.use((err, req, res, next) => {
-  const { statusCode = 500 } = err
-  console.log("hello world", err)
   if (err && err.status == 555) {
     req.flash("error", err.message)
     return res.redirect(req.header("Referer") || "/")

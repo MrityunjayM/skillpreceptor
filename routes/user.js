@@ -34,7 +34,7 @@ router.post(
         jobtitle,
       } = req.body)
       // google captcha validation
-      verifyCaptcha(
+      await verifyCaptcha(
         req,
         res
       )({ path: "register", detail: { userData, match: false } })
