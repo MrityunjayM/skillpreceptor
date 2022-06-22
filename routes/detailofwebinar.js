@@ -203,11 +203,10 @@ router.get(
   "/:webinarId/:slug",
   wrapAsync(async (req, res) => {
     const { webinarId } = req.params
-    const webinar = await Webinar.findOne({ webinarId })
-      .populate("portfolio")
-      .lean()
-    let purchaseQuery = { for: "Webinar_Recorded" }
-    if (webinar?.status == "Live") purchaseQuery.for = "Webinar"
+    const webinar = await Webinar.findOne({ webinarId }).populate("portfolio")
+    var purchaseQuery = { for: "Webinar" }
+    if (webinar.status === "Recorded")
+      purchaseQuery = { for: "Webinar_Recorded" }
 
     const purchases = await Purchase.find(purchaseQuery).lean().sort("order")
     const webinars = (
