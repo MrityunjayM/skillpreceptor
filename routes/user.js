@@ -90,7 +90,7 @@ router.post(
         )
       }
 
-      req.flash("error", "something went wrong.")
+      req.flash("error", "Something went wrong.")
       return res.redirect("/user/register")
     }
     req.flash("error", "Something went wrong, Please try again.")
