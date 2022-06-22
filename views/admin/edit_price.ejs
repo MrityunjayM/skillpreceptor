@@ -20,12 +20,19 @@
                                         <select class="form-select rounded-0" name="for" id="category"
                                             style="height: 49px;">
                                             <% if (purchase.for=='Seminar' ) { %>
-                                                <option value="Seminar" selected>Seminar</option>
-                                                <option value="Webinar">Webinar</option>
-                                                <% } else { %>
-                                                    <option value="Seminar">Seminar</option>
-                                                    <option value="Webinar" selected>Webinar</option>
-                                                    <% } %>
+                                                <option value="Webinar">Webinar Live</option>
+                                                <option value="Webinar_Recorded">Webinar Recorded</option>
+                                                <option value="Seminar" selected>Seminar Live</option>
+                                                <% } else if(purchase.for=='Webinar' ){ %>
+                                                    <option value="Webinar" selected>Webinar Live</option>
+                                                    <option value="Webinar_Recorded">Webinar Recorded</option>
+                                                    <option value="Seminar">Seminar Live</option>
+                                                    <% } else{%>
+                                                        <option value="Webinar">Webinar Live</option>
+                                                        <option value="Webinar_Recorded" selected>Webinar Recorded
+                                                        </option>
+                                                        <option value="Seminar">Seminar Live</option>
+                                                        <% } %>
                                         </select>
                                     </div>
                                 </div>

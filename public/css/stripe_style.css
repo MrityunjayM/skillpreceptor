@@ -1,10 +1,10 @@
 .product {
-  display: flex;
+  width: 100% !important;
 }
 .description {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  flex-direction: row;
+  justify-content: space-between;
 }
 .product img {
   border-radius: 6px;

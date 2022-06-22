@@ -145,14 +145,17 @@ app.get(
   "/",
   wrapAsync(async (req, res) => {
     const webinars = (
-      await WebinarModel.find({ visibility: true, status: "Live" }).populate(
-        "portfolio"
-      )
+      await WebinarModel.find({ visibility: true, status: "Live" })
+        .populate("portfolio")
+        .sort({ webinartiming: "-1" })
     ).slice(0, 8)
     const departments = await Department.find({ visibility: true })
-    const instructors = await Instructor.find({})
+    const instructors = await Instructor.find({ visibility: true })
     return res.render("home", {
-      departments,
+      departments: departments.slice(
+        0,
+        (departments.length < 3 ? 3 : departments.length / 3) * 3
+      ),
       webinars,
       instructors,
       title: "Welcome",

@@ -29,7 +29,7 @@ module.exports.timingFormat = (webinartiming) => {
   let day = weekday[date.getDay()]
   var month = String(date.getMonth() + 1).padStart(2, "0")
   var givenDate = String(date.getDate()).padStart(2, "0")
-  var givenDateShowpage = day + "," + monthname + givenDate + "," + year
+  var givenDateShowpage = day + "," + monthname + " " + givenDate + "," + year
   var datePattern = year + "-" + month + "-" + givenDate
   var dateformattransaction = givenDate + "-" + month + "-" + year
   var monthandyear = month + "-" + year
@@ -50,38 +50,41 @@ module.exports.addtimeinAmPmFormat = (timing) => {
   var eastern = 0 // apna wala hai.
   var pacific = 0
   if (a == 00) {
-    pacific = 9 + ":" + parseInt(b) + " PM"
-    eastern = 12 + ":" + parseInt(b) + " AM"
+    pacific = "9" + ":" + b + " PM"
+    eastern = "12" + ":" + b + " AM"
   }
   if (a == 3) {
-    pacific = 12 + ":" + parseInt(b) + " AM"
+    pacific = "12" + ":" + b + " AM"
   }
-
   if (a < 12 && a > 3) {
-    pacific = parseInt(a) - 3 + ":" + parseInt(b) + " AM"
+    const num = parseInt(a) - 3
+    pacific = num.toString() + ":" + b + " AM"
   }
   if (a > 00 && a < 3) {
-    pacific = 21 + parseInt(a) + ":" + parseInt(b) + " PM"
+    pacific = "21" + a + ":" + b + " PM"
   }
 
   if (a < 12 && a != 00) {
-    eastern = a + ":" + parseInt(b) + " AM"
+    eastern = a + ":" + b + " AM"
   }
   if (a == 12) {
-    eastern = parseInt(a) + ":" + parseInt(b) + " PM"
-    pacific = 9 + ":" + parseInt(b) + " AM"
+    eastern = a + ":" + b + " PM"
+    pacific = "9" + ":" + b + "AM"
   }
   if (a == 15) {
-    pacific = 12 + ":" + parseInt(b) + " PM"
+    pacific = "12" + ":" + b + " PM"
   }
   if (a > 12 && a < 15) {
-    pacific = parseInt(a) - 3 + ":" + parseInt(b) + " AM"
+    const num = parseInt(a) - 3
+    pacific = num.toString() + ":" + b + " AM"
   }
   if (a > 15) {
-    pacific = parseInt(a) - 15 + ":" + parseInt(b) + " PM"
+    const num = parseInt(a) - 15
+    pacific = num.toString() + ":" + b + " PM"
   }
   if (a > 12) {
-    eastern = parseInt(a) - 12 + ":" + parseInt(b) + " PM"
+    const num = parseInt(a) - 12
+    eastern = num.toString() + ":" + b + " PM"
   }
   const eastern_pacific = {
     eastern,
@@ -90,6 +93,7 @@ module.exports.addtimeinAmPmFormat = (timing) => {
   // console.log("check it now", eastern_pacific);
   return eastern_pacific
 }
+
 module.exports.transactionWeekFormat = (date) => {
   // If no date object supplied, use current date
   // Copy date so don't modify supplied date

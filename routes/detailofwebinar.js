@@ -12,6 +12,7 @@ const {
   firsttwomonthfromnow,
 } = require("../helper/date")
 const { isAdmin } = require("../helper/middleware.js")
+const purchase = require("../models/purchase")
 
 // add the first page detail of webinar.
 router.get(
@@ -54,6 +55,7 @@ router.post(
       newWebinar.slug = req.body.seotitle
         .replace(/[^a-zA-Z]/g, "")
         .toLowerCase()
+        .join("-")
     }
     if (req.body.slug) {
       newWebinar.slug = req.body.seotitle
@@ -198,15 +200,19 @@ router.get(
 
 // just view the detail route of any webinar or seminar.
 router.get(
-  "/allnext/:id/:slug",
+  "/allnext/:webinarId/:slug",
   wrapAsync(async (req, res) => {
-    const { id } = req.params
-    const purchases = await Purchase.find({ for: "Webinar" }).sort("order")
-    const webinar = await Webinar.findById(id).populate("portfolio")
+    const { webinarId } = req.params
+    const webinar = await Webinar.findOne({ webinarId }).populate("portfolio")
+    let purchaseQuery = { for: "Webinar_Recorded" }
+    if (webinar?.status == "Live")
+      purchaseQuery.for = { $in: ["Webinar", "Webinar_Recorded"] }
+
+    const purchases = await Purchase.find(purchaseQuery).sort("order")
     const webinars = (
       await Webinar.find({
-        category: webinar.category,
-        types: webinar.types,
+        category: webinar?.category,
+        types: webinar?.types,
         visibility: true,
         archive: false,
       })
@@ -222,10 +228,10 @@ router.get(
       webinars,
       webinar,
       purchases,
-      title: webinar.seotitle,
+      title: webinar?.seotitle,
     }
     req.session.backUrl = req.originalUrl
-    if (webinar.archive) renderData.error = "This product is unavailable."
+    if (webinar?.archive) renderData.error = "This product is unavailable."
     // payment options...
     res.render("nextdetailofwebinar", renderData)
   })

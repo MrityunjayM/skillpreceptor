@@ -107,10 +107,11 @@ router.get("/webinar", async (req, res) => {
 })
 
 // route for show-page.
-router.get("/s/:id/:slug", async (req, res) => {
+router.get("/s/:webinarId/:slug", async (req, res) => {
   const { agenda = false } = req.query
+  const { webinarId } = req.params
   const purchases = await Purchase.find({ for: "Seminar" }).sort("order")
-  const seminar = await Webinar.findById(req.params.id).populate("portfolio")
+  const seminar = await Webinar.findOne({ webinarId }).populate("portfolio")
   const seminars = (
     await Webinar.find({
       category: seminar.category,

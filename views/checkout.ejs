@@ -84,9 +84,9 @@
                         <!-- Stripe Payment Form -->
                         <form action="/payment/paymentwithstripe/checkout" method="POST">
                             <div class="product">
-                                <div class="description  mb-2">
-                                    <h3>Your Checkout Total <span class="fs-1">$<%=total %></span>
-                                    </h3>
+                                <div class="description mb-3">
+                                    <p class="fw-medium">Your Checkout Total</p>
+                                    <span class="fs-1 ms-auto me-4">$ <%=total %></span>
                                     <input type="hidden" name="totalprice" value="<%=total %>">
                                 </div>
                             </div>
