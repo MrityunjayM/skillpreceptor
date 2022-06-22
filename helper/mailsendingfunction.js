@@ -13,7 +13,7 @@ module.exports.mailForVerify = async (email, token) => {
   })
   const hello = await smtp.sendMail({
     to: email,
-    from: "achyutkr1122@gmail.com",
+    from: process.env.SMTP_FROM_EMAIL,
     subject: "Mail Verification",
     html: `Click here to verify:  
             <br> 
@@ -36,7 +36,7 @@ module.exports.mailForForgetpassword = async (email, token) => {
   })
   const hello = await smtp.sendMail({
     to: email,
-    from: "achyutkr1122@gmail.com",
+    from: process.env.SMTP_FROM_EMAIL,
     subject: "Mail Verification",
     html: `Click here to verify it's you:  
               <br> 

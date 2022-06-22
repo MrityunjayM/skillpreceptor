@@ -40,7 +40,6 @@ router.post(
   upload.single("image"),
   wrapAsync(async (req, res) => {
     const { webinartiming, time } = req.body
-    // console.log({ ...req.body });
     const lastWebinar = await Webinar.find({})
     if (lastWebinar.length) {
       var id = lastWebinar[lastWebinar.length - 1].webinarId
@@ -53,13 +52,14 @@ router.post(
     }
     if (!req.body.slug) {
       newWebinar.slug = req.body.seotitle
-        .replace(/[^a-zA-Z]/g, "")
+        .replace(/[^a-zA-Z]/g, " ")
         .toLowerCase()
+        .split(" ")
         .join("-")
     }
     if (req.body.slug) {
-      newWebinar.slug = req.body.seotitle
-        .replace(/[^a-zA-Z]/g, "")
+      newWebinar.slug = req.body.slug
+        .replace(/[^a-zA-Z]/g, " ")
         .toLowerCase()
         .split(" ")
         .join("-")
