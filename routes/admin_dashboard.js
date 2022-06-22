@@ -88,6 +88,7 @@ router.put(
   "/edit_product/:id",
   upload.single("image"),
   wrapAsync(async (req, res) => {
+    const { time, webinartiming } = req.body
     const { id } = req.params
     const webinar = await Webinar.findByIdAndUpdate(id, req.body, {
       runValidators: true,
@@ -95,6 +96,20 @@ router.put(
     })
     if (typeof req.file != "undefined") {
       webinar.image.filename = req.file.filename
+    }
+    if (!req.body.slug) {
+      webinar.slug = req.body.seotitle
+        .replace(/[^a-zA-Z]/g, " ")
+        .toLowerCase()
+        .split(" ")
+        .join("-")
+    }
+    if (req.body.slug) {
+      webinar.slug = req.body.slug
+        .replace(/[^a-zA-Z]/g, " ")
+        .toLowerCase()
+        .split(" ")
+        .join("-")
     }
     if (time) {
       const timeinFormat = addtimeinAmPmFormat(time)
