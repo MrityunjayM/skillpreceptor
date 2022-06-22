@@ -11,6 +11,7 @@ const {
 } = require("../helper/mailsendingfunction")
 const { generateString } = require("../helper/string_generator")
 const { verifyCaptcha } = require("../helper/middleware")
+const { timingFormat } = require("../helper/date")
 
 // register form route
 router.get("/register", (_, res) =>
@@ -34,7 +35,7 @@ router.post(
         jobtitle,
       } = req.body)
       // google captcha validation
-      await verifyCaptcha(
+      verifyCaptcha(
         req,
         res
       )({ path: "register", detail: { userData, match: false } })
@@ -48,34 +49,31 @@ router.post(
         return res.render("register", { userData })
       }
       // storing token for verification purpose..
-      req.session.token = jwt.sign(
+      var token = (req.session.token = jwt.sign(
         { firstname, email, password },
         process.env.JWT_ACC_ACTIVATE,
         { expiresIn: "24h" }
-      )
-      // below are the code for checking the expiry period of token
-      var decoded = jwt.decode(req.session.token, { complete: true })
-      const exp = decoded.payload.exp
-      req.session.exp = exp
+      ))
       // registering new user here.
       const user = new User({
         firstname,
         lastname,
         username: email,
         email,
-        token: req.session.token,
+        token: token,
         phone,
         address,
         company,
         jobtitle,
       })
       const registeredUser = await User.register(user, password)
-      req.session.ids = registeredUser._id || null
+      const datetosave = timingFormat(registeredUser.createdAt)
+      registeredUser.datetoregister = datetosave.dateformattransaction
+      await registeredUser.save()
 
-      if (registeredUser.verify && registeredUser.admin)
-        return res.redirect("/admin")
+      req.session.ids = registeredUser._id || null
       if (typeof registeredUser != "undefined") {
-        const result = await mailForVerify(email, req.session.token)
+        const result = await mailForVerify(email, token)
         // result ko bhi check karna hai.
         if (result.accepted[0]) {
           req.flash(
@@ -92,7 +90,7 @@ router.post(
           555
         )
       }
-      console.dir(e)
+
       req.flash("error", "something went wrong.")
       return res.redirect("/user/register")
     }
@@ -135,31 +133,34 @@ router.get(
   "/login/:id",
   wrapAsync(async (req, res, next) => {
     const id = req.params.id
+    var decoded = jwt.decode(id, { complete: true })
+    const exp = decoded.payload.exp
+    const user = await User.findOne({ token: id })
+    if (user.verify) {
+      req.flash("success", "you are already verified")
+      return res.redirect("/user/login")
+    }
     // checking if the token is expired;
-    if (!req.session.exp) {
+    //added this.
+    if (Date.now() >= exp * 1000) {
       return res.redirect("/user/sendthemailagain")
     }
-    if (Date.now() >= req.session.exp * 1000) {
-      delete req.session.token
-      delete req.session.exp
-      await req.session.save()
-      return res.redirect("/user/sendthemailagain")
-    }
-    if (id === req.session.token) {
-      const user = await User.findOneAndUpdate(
-        { token: req.session.token },
+    // below are the code for checking the expiry period of token
+    // new added code.
+
+    if (Date.now() < exp * 1000) {
+      await User.findOneAndUpdate(
+        { token: id },
         { verify: true },
         {
           new: true,
         }
       )
-      // deleting the token from the session after verification.
-      delete req.session.token
-      // delete req.session.exp
-      await req.session.save()
       req.flash("success", "YOU ARE VERIFIED NOW")
       return res.redirect("/user/login")
     }
+    req.flash("error", "something going wrong, please try again")
+    return res.redirect("/user/register")
   })
 )
 // forget password route page taking user email.
@@ -180,22 +181,17 @@ router.post(
     if (!user) throw new AppError("Email not Registered", 555)
     if (user) {
       // all these things are used for generating token 1.
-      const name = generateString(5)
+      const name = generateString(8)
       const email_fortoken = generateString(10)
       const password = generateString(8)
       // storing token for verification purpose..
-      req.session.token = jwt.sign(
+      var token = (req.session.token = jwt.sign(
         { name, email_fortoken, password },
         process.env.JWT_ACC_ACTIVATE,
         { expiresIn: "24h" }
-      )
-      // below are the code for setting the expiry period of token1.
-      var decoded = jwt.decode(req.session.token, { complete: true })
-      const exp = decoded.payload.exp
-      req.session.exp = exp
-
+      ))
       //idhar result kuch unexpected bhi aa sakta hai kya.
-      const result = await mailForForgetpassword(email, req.session.token)
+      const result = await mailForForgetpassword(email, token)
       if (result.accepted[0]) {
         req.flash(
           "success",
@@ -215,25 +211,20 @@ router.post(
 router.get(
   "/detailforchange/:id",
   wrapAsync(async (req, res, next) => {
-    if (!req.session.exp) {
-      req.session.forget = 1
-      return res.redirect("/user/sendthemailagain")
-    }
-    if (Date.now() >= req.session.exp * 1000) {
-      delete req.session.token
-      delete req.session.exp
-      await req.session.save()
-      req.session.forget = 1
-      return res.redirect("/user/sendthemailagain")
-    }
     const id = req.params.id
-    if (id === req.session.token) {
-      delete req.session.token
-      // delete req.session.exp
-      await req.session.save()
-      return res.render("detailforchangepassword", { title: "Forget Password" })
+    var decoded = jwt.decode(id, { complete: true })
+    const exp = decoded.payload.exp
+    if (Date.now() >= exp * 1000) {
+      req.session.forget = 1
+      return res.redirect("/user/sendthemailagain")
     }
-    throw new AppError("Something went wrong", 555)
+    if (Date.now() < exp * 1000) {
+      req.flash("success", "please enter the password")
+      return res.render("detailforchangepassword", {
+        title: "Forget Password",
+      })
+    }
+    throw new AppError("Something went wrong,Please try again", 555)
   })
 )
 
@@ -287,6 +278,7 @@ router.post(
 router.get("/changepassword", async (req, res) => {
   res.render("userdashboard/changepassword", { title: "Change Password" })
 })
+
 // changing user password.
 router.post("/changepassword", async (req, res) => {
   const user = await User.findById(req.user._id)
@@ -339,22 +331,14 @@ router.post(
     const email = generateString(10)
     const password = generateString(8)
     // storing token for verification purpose..
-    req.session.token = jwt.sign(
+    var token = (req.session.token = jwt.sign(
       { name, email, password },
       process.env.JWT_ACC_ACTIVATE,
       { expiresIn: "24h" }
-    )
-
-    // below are the code for checking the expiry period of token
-    var decoded = jwt.decode(req.session.token, { complete: true })
-    const exp = decoded.payload.exp
-    req.session.exp = exp
-
+    ))
     //below if statement will execute in only in the case of forget password.
     if (req.session.forget) {
-      const result = await mailForForgetpassword(email, req.session.token)
-      delete req.session.forget
-      await req.session.save()
+      const result = await mailForForgetpassword(email, token)
       if (result.accepted[0]) {
         req.flash(
           "success",
@@ -369,7 +353,7 @@ router.post(
     // updating the user token with current token.
     const findingTheuser = await User.findOneAndUpdate(
       { email: req.body.email },
-      { token: req.session.token },
+      { token: token },
       { new: true }
     )
     if (!findingTheuser) {
@@ -377,7 +361,7 @@ router.post(
       return res.redirect("/user/sendthemailagain")
     }
     // now sending the mail again.
-    const result = await mailForVerify(req.body.email, req.session.token)
+    const result = await mailForVerify(req.body.email, token)
     // result ko bhi check karna hai.
     if (result.accepted[0]) {
       req.flash(

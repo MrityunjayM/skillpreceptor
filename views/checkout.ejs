@@ -6,55 +6,51 @@
                 <div class="row flex-center">
                     <div class="col col-md-7">
                         <div class="card">
-                            <div class="row ">
-                                <div class="col col-3 fs-2">Name:</div>
-                                <div class="col fs-2">
-                                    <%= userdata?.firstname%>
-                                        <%= userdata?.lastname%>
+                            <form action="/cart/edit/profile" method="post">
+                                <div class="row mb-2">
+                                    <label for="name" class="col-3 card-subtitle fs-2 mb-3">Name: </label>
+                                    <input class="col-sm-3 pe-sm-2 user-detail-input me-2" type="text" name="firstname"
+                                        id="name" placeholder="Your Name" value="<%= userdata?.firstname %>" required />
+                                    <input class="col-sm-3 pe-sm-2 user-detail-input" type="text" name="lastname"
+                                        id="name" placeholder="Your Name" value="<%= userdata?.lastname %>" />
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col col-3 fs-2">Email:</div>
-                                <div class="col fs-2">
-                                    <%= userdata?.email%>
+                                <div class="row mb-2">
+                                    <label for="email" class="col-3 card-subtitle fs-2 mb-3">Email Address: </label>
+                                    <input class="col-sm-4 pe-sm-2 user-detail-input" type="email" name="email"
+                                        id="email" placeholder="Your Email" value="<%= userdata?.email %>" disabled />
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col col-3 fs-2">Phone:</div>
-                                <div class="col fs-2">
-                                    <%= userdata?.phone%>
+                                <div class="row mb-2">
+                                    <label for="phone" class="col-3 card-subtitle fs-2 mb-3">Phone: </label>
+                                    <input class="col-sm-4 pe-sm-2 user-detail-input" type="tel" name="phone" id="phone"
+                                        placeholder="Your Contact no." minlength="10" value="<%= userdata?.phone %>" />
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col col-3 fs-2">Company:</div>
-                                <div class="col  fs-2">
-                                    <%= userdata?.company%>
+                                <div class="row mb-2">
+                                    <label for="address" class="col-3 card-subtitle fs-2 mb-3">Address: </label>
+                                    <input class="col-sm-4 pe-sm-2 user-detail-input" type="text" name="address"
+                                        id="address" placeholder="Your Address" value="<%= userdata?.address %>" />
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col col-3 fs-2">Job Title:</div>
-                                <div class="col  fs-2">
-                                    <%= userdata?.jobtitle%>
+                                <div class="row mb-2">
+                                    <label for="job-title" class="col-3 card-subtitle fs-2 mb-3">Job Title: </label>
+                                    <input class="col-sm-4 pe-sm-2 user-detail-input" type="text" name="jobtitle"
+                                        id="job-title" placeholder="Job Title" value="<%= userdata?.jobtitle %>" />
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col col-3 fs-2">State:</div>
-                                <div class="col  fs-2">
-                                    <%= userdata?.state%>
+                                <div class="row mb-2">
+                                    <label for="country" class="col-3 card-subtitle fs-2 mb-3">Country: </label>
+                                    <input class="col-sm-4 pe-sm-2 user-detail-input" type="text" name="country"
+                                        id="country" placeholder="Your Country Name" value="<%= userdata?.country %>" />
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col col-3 fs-2">Country:</div>
-                                <div class="col  fs-2">
-                                    <%= userdata?.country%>
+                                <div class="row mb-2">
+                                    <label for="state" class="col-3 card-subtitle fs-2 mb-3">State: </label>
+                                    <input class="col-sm-4 pe-sm-2 user-detail-input" type="text" name="state"
+                                        id="state" placeholder="Your State" value="<%= userdata?.state %>" />
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col col-3 fs-2">Zip Code:</div>
-                                <div class="col  fs-2">
-                                    <%= userdata?.zipcode%>
+                                <div class="row mb-2">
+                                    <label for="zip-code" class="col-3 card-subtitle fs-2 mb-3">Zip Code: </label>
+                                    <input class="col-sm-4 pe-sm-2 user-detail-input" type="text" name="zipcode"
+                                        id="zip-code" placeholder="86352" value="<%= userdata?.zipcode %>" />
                                 </div>
-                            </div>
+                                <button type="submit" class="btn btn-secondary">Save</button>
+                            </form>
                         </div>
                     </div>
                     <div class="col">

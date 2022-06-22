@@ -280,4 +280,42 @@ router.get(
   })
 )
 
+router.post(
+  "/edit/profile",
+  isLoggedIn,
+  wrapAsync(async (req, res) => {
+    console.log("hello world balajee")
+    const { _id: userId } = req.user
+    const userdata = await User.findById(userId)
+    const {
+      firstname = userdata.firstname,
+      lastname = userdata.lastname,
+      phone = userdata.phone,
+      address = userdata.address,
+      company = userdata.company,
+      jobtitle = userdata.jobtitle,
+      industry = userdata.industry,
+      country = userdata.country,
+      state = userdata.state,
+      zipcode = userdata.zipcode,
+    } = req.body
+
+    await userdata.update({
+      firstname,
+      lastname,
+      phone,
+      address,
+      company,
+      jobtitle,
+      industry,
+      country,
+      state,
+      zipcode,
+    })
+    // await userdata.save()
+    req.flash("success", "Your details has been updated.")
+    return res.status(200).redirect("/cart/checkout")
+  })
+)
+
 module.exports = router

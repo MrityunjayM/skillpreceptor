@@ -70,26 +70,32 @@ router.post(
   "/paymentwithstripe/checkout",
   wrapAsync(async (req, res) => {
     // storing session here so that we can store the amount in success route.
-    req.session.amount = req.body.totalprice
-    const session = await stripe.checkout.sessions.create({
-      line_items: [
-        {
-          price_data: {
-            currency: "usd",
-            product_data: {
-              name: req?.user?.firstname || "" + req?.user?.lastname || "",
-            },
-            unit_amount: req.body.totalprice * 100,
-          },
-          quantity: 1,
-        },
-      ],
-      mode: "payment",
-      success_url: `${YOUR_DOMAIN}/payment/success`,
-      cancel_url: `${YOUR_DOMAIN}/payment/canceltransaction`,
-    })
 
-    res.redirect(303, session.url)
+    const { address, phone, country, state, jobtitle, zipcode } = req.user
+    if (address && phone && country && state && jobtitle && zipcode) {
+      req.session.amount = req.body.totalprice
+      const session = await stripe.checkout.sessions.create({
+        line_items: [
+          {
+            price_data: {
+              currency: "usd",
+              product_data: {
+                name: req?.user?.firstname || "" + req?.user?.lastname || "",
+              },
+              unit_amount: req.body.totalprice * 100,
+            },
+            quantity: 1,
+          },
+        ],
+        mode: "payment",
+        success_url: `${YOUR_DOMAIN}/payment/success`,
+        cancel_url: `${YOUR_DOMAIN}/payment/canceltransaction`,
+      })
+      res.redirect(303, session.url)
+    } else {
+      req.flash("error", "Please enter all your detail first")
+      return res.redirect("/cart/checkout")
+    }
   })
 )
 
@@ -160,45 +166,51 @@ router.get(
 router.post(
   "/paymentwithpaypal",
   wrapAsync(async (req, res, next) => {
-    const priced = req.body.totalpayment
-    req.session.amount = priced
-    const create_payment_json = {
-      intent: "sale",
-      payer: {
-        payment_method: "paypal",
-      },
-      redirect_urls: {
-        return_url: `${YOUR_DOMAIN}/payment/successtransaction`,
-        cancel_url: `${YOUR_DOMAIN}/payment/canceltransaction`,
-      },
-      transactions: [
-        {
-          item_list: {
-            items: [],
-          },
-          amount: {
-            currency: "USD",
-            total: priced,
-          },
-          description: "Thank you for purchasing",
+    const { address, phone, country, state, jobtitle, zipcode } = req.user
+    if (address && phone && country && state && jobtitle && zipcode) {
+      const priced = req.body.totalpayment
+      req.session.amount = priced
+      const create_payment_json = {
+        intent: "sale",
+        payer: {
+          payment_method: "paypal",
         },
-      ],
-    }
+        redirect_urls: {
+          return_url: `${YOUR_DOMAIN}/payment/successtransaction`,
+          cancel_url: `${YOUR_DOMAIN}/payment/canceltransaction`,
+        },
+        transactions: [
+          {
+            item_list: {
+              items: [],
+            },
+            amount: {
+              currency: "USD",
+              total: priced,
+            },
+            description: "Thank you for purchasing",
+          },
+        ],
+      }
 
-    paypal.payment.create(
-      create_payment_json,
-      wrapAsync(async (error, payment) => {
-        if (error) {
-          throw error
-        } else {
-          for (let i = 0; i < payment.links.length; i++) {
-            if (payment.links[i].rel === "approval_url") {
-              res.redirect(payment.links[i].href)
+      paypal.payment.create(
+        create_payment_json,
+        wrapAsync(async (error, payment) => {
+          if (error) {
+            throw error
+          } else {
+            for (let i = 0; i < payment.links.length; i++) {
+              if (payment.links[i].rel === "approval_url") {
+                res.redirect(payment.links[i].href)
+              }
             }
           }
-        }
-      })
-    )
+        })
+      )
+    } else {
+      req.flash("error", "Please enter all your detail first")
+      return res.redirect("/cart/checkout")
+    }
   })
 )
 // success route of payment with paypal processing
