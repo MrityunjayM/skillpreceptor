@@ -154,15 +154,17 @@
                 <div class="col-md-4 d-flex flex-column justify-content-center">
                     <div class="overflow-hidden instructor-img-container">
                         <img src="<%= webinar.portfolio?.image?.filename?'/images/'+webinar.portfolio.image.filename: webinar.portfolio?.image?.url %>"
-                            class="img-fluidrounded-0" alt="<%= webinar?.portfolio?.name %>" width="180px"
+                            class="img-fluid rounded-0" alt="<%= webinar?.portfolio?.name %>" width="180px"
                             height="200px">
                     </div>
                     <h4 class="card-title text-center mt-2 mb-0">
-                        <%= webinar?.portfolio?.name || '{Instructor Name}' %>
+                        <a href="/instructor/<%= webinar?.portfolio?._id%>" class="nav-link">
+                            <%= webinar?.portfolio?.name || '{Instructor Name}' %>
+                        </a>
                     </h4>
-                    <h5 class="card-title text-center">
+                    <h6 class="card-title text-center">
                         <%= webinar?.portfolio?.designation || '{Instructor Designation}' %>
-                    </h5>
+                    </h6>
                 </div>
                 <div class="col">
                     <div class="card-body">
