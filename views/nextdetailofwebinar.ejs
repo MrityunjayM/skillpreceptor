@@ -20,8 +20,8 @@
                             Date: <%= webinar?.showingDate %>
                         </h4>
                         <h4 class="card-subtitle mb-2 text-muted text-start">
-                            Time: <%= webinar?.addtiminginpacific %> PST
-                                | <%= webinar?.addtimingineastern %> EST
+                            Time: <%= webinar?.addtimingineastern %> EDT
+                                | <%= webinar?.addtiminginpacific %> PDT
                         </h4>
                         <% } %>
                             <h4 class="card-subtitle mb-2 text-muted">Duration: <%= webinar.duration %> min</h4>
@@ -37,9 +37,7 @@
                     <div class="card-body">
                         <h2 class="card-title">Overview</h2>
                         <h4 class="card-subtitle fw-semibold mt-2 text-muted">
-                            <p>
-                                <%- webinar.description %>
-                            </p>
+                            <%- webinar.description %>
                         </h4>
                     </div>
                 </div>
@@ -150,21 +148,27 @@
     </section>
     <!-- Instructor Details -->
     <section id='instructor' class="container-fluid bg-soft-primary mb-6 px-md-4 px-lg-9">
-        <h4 class="text-center">Instructor</h4>
-        <div class="card mb-3 bg-transparent w-100 w-md-75 mx-auto">
+        <h3 class="text-center text-secondary">Instructor</h3>
+        <div class="card mb-3 bg-transparent w-100 w-xxl-75 mx-auto">
             <div class="row g-0">
-                <div class="col-md-4">
-                    <img src="<%= webinar.portfolio?.image?.filename?'/images/'+webinar.portfolio.image.filename: webinar.portfolio?.image?.url %>"
-                        class="img-fluid rounded-0" alt="<%= webinar?.portfolio?.name %>" width="180px" height="200px">
+                <div class="col-md-4 d-flex flex-column justify-content-center">
+                    <div class="overflow-hidden instructor-img-container">
+                        <img src="<%= webinar.portfolio?.image?.filename?'/images/'+webinar.portfolio.image.filename: webinar.portfolio?.image?.url %>"
+                            class="img-fluidrounded-0" alt="<%= webinar?.portfolio?.name %>" width="180px"
+                            height="200px">
+                    </div>
+                    <h4 class="card-title text-center mt-2 mb-0">
+                        <%= webinar?.portfolio?.name || '{Instructor Name}' %>
+                    </h4>
+                    <h5 class="card-title text-center">
+                        <%= webinar?.portfolio?.designation || '{Instructor Designation}' %>
+                    </h5>
                 </div>
-                <div class="col-md-8">
+                <div class="col">
                     <div class="card-body">
-                        <h3 class="card-title">
-                            <%= webinar?.portfolio?.name || '{Instructor Name}' %>
-                        </h3>
-                        <p class="card-text h5">
-                            <%= webinar?.portfolio?.description || '{Instructor Detail}' %>
-                        </p>
+                        <div class="card-text text-justify h5 instructor-desc">
+                            <%- webinar?.portfolio?.description || '{Instructor Detail}' %>
+                        </div>
                     </div>
                 </div>
             </div>

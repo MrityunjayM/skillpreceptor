@@ -25,14 +25,14 @@ mongoose
 let id = 0
 async function seedDB(types = "Webinar", status = "Live") {
   const department = await Department.find({})
-  const portfolio = await Portfolio.find({})
+  const portfolio = await Portfolio.find({ _id: "62b5687e761555dd5862aecb" })
   const d = Math.floor(Math.random() * department.length)
 
   for (let i = 0; i < 5; i++) {
     id += i
     const hello = {
       webinarId: 108 + id,
-      name: portfolio[i % 2].name,
+      name: portfolio[0].name,
       title: generateString(100),
       category: department[d].nameofdepartment,
       description: str,
@@ -48,7 +48,7 @@ async function seedDB(types = "Webinar", status = "Live") {
       abouttopic: str,
       seotitle: "mrityunjay",
       slug: "mrityunjay-testing",
-      portfolio: portfolio[i % 2]._id,
+      portfolio: portfolio[0]._id,
       visibility: true,
       archive: false,
     }

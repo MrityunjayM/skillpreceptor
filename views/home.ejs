@@ -149,7 +149,6 @@
             </div>
         </div>
         <!-- end of .container-->
-
     </section>
     <!-- <section> close ============================-->
     <!-- ============================================-->
@@ -416,9 +415,6 @@
     <!-- <section> close ============================-->
     <!-- ============================================-->
 
-
-
-
     <!-- ============================================-->
     <!-- <section> begin ============================-->
     <section>
@@ -434,16 +430,17 @@
                                 <% instructors.forEach(instructor=> { %>
 
                                     <div class="swiper-slide scale">
-                                        <div class="text-center product">
+                                        <div class="text-center product card-body">
                                             <img class="w-100 photograph"
                                                 src="<%= instructor.image.filename? '/images/'+instructor.image.filename : instructor?.image?.url%>"
                                                 alt="<%= instructor.name%>" width="215" height="215" />
                                             <h3 class="fw-normal font-base lh-1 text-black mt-3">
                                                 <%- instructor.name.split(' ').join(' <br />') %>
                                             </h3>
-                                            <p class="mb-0">
+                                            <a href="/instructor/<%= instructor._id%>"
+                                                class="stretched-link text-decoration-none text-muted mb-0">
                                                 <%= instructor.designation %>
-                                            </p>
+                                            </a>
                                         </div>
                                     </div>
                                     <% }) %>

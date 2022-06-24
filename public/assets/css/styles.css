@@ -114,6 +114,18 @@ button.input-box-icon {
   padding-left: 4px;
 }
 
+.instructor-img-container {
+  width: 180px !important;
+  height: 190px !important;
+  margin: 0 auto !important;
+}
+@media screen and (min-width: 576px) {
+  .instructor-desc {
+    max-height: 300px !important;
+    overflow-y: hidden !important;
+  }
+}
+
 /* Utility classes */
 .flex {
   display: flex !important;
