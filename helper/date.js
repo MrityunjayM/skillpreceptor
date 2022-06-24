@@ -29,7 +29,7 @@ module.exports.timingFormat = (webinartiming) => {
   let day = weekday[date.getDay()]
   var month = String(date.getMonth() + 1).padStart(2, "0")
   var givenDate = String(date.getDate()).padStart(2, "0")
-  var givenDateShowpage = day + "," + monthname + " " + givenDate + "," + year
+  var givenDateShowpage = day + ", " + monthname + " " + givenDate + ", " + year
   var datePattern = year + "-" + month + "-" + givenDate
   var dateformattransaction = givenDate + "-" + month + "-" + year
   var monthandyear = month + "-" + year
@@ -115,6 +115,7 @@ module.exports.transactionWeekFormat = (date) => {
   return [monday, sunday] // but isko shi lane ke liye jo sabse upar me hai usko call krna
   // console.log("balajee mishra", sundayNumber, sunday, monday);
 }
+
 module.exports.firsttwomonthfromnow = () => {
   var date = new Date()
   var year = date.getFullYear()
