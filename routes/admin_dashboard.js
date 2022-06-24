@@ -379,4 +379,28 @@ router.get(
   })
 )
 
+// route for choosing bestSellers
+router.get("/bestseller/:id", async (req, res) => {
+  const { id } = req.params
+  const webinartoUpdate = await Webinar.findById(id).lean()
+  // updating the category.
+  if (webinartoUpdate.status == "Recorded") {
+    await Webinar.findByIdAndUpdate(
+      id,
+      {
+        bestSeller: !webinartoUpdate.bestSeller,
+      },
+      {
+        runValidators: true,
+        new: true,
+      }
+    )
+    req.flash("success", "Selected product is one of the bestseller product")
+    return res.redirect(red.header("Referer"))
+  } else {
+    req.flash("error", "Please select only the recorded webinar")
+    return res.redirect(req.header("Referer"))
+  }
+})
+
 module.exports = router

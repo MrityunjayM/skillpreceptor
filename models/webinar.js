@@ -113,6 +113,10 @@ const WebinarSchema = new mongoose.Schema(
     urlofseminar: {
       type: String,
     },
+    bestSeller: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 )

@@ -147,10 +147,15 @@ app.use("/transactiondetail", isAdmin, TransactionDetail)
 // Home route
 app.get(
   "/",
-  wrapAsync(async (req, res) => {
+  wrapAsync(async (_, res) => {
     const webinars = (
-      await WebinarModel.find({ visibility: true, status: "Live" })
+      await WebinarModel.find({
+        visibility: true,
+        status: "Live",
+        bestSeller: true,
+      })
         .populate("portfolio")
+        .lean()
         .sort({ webinartiming: "-1" })
     ).slice(0, 8)
     const departments = await Department.find({ visibility: true })
@@ -158,7 +163,7 @@ app.get(
     return res.render("home", {
       departments: departments.slice(
         0,
-        (departments.length < 3 ? 3 : departments.length / 3) * 3
+        ((departments.length < 3 ? 3 : departments.length) / 3) * 3
       ),
       webinars,
       instructors,

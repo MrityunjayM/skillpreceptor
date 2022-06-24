@@ -38,7 +38,7 @@ async function seedDB(types = "Webinar", status = "Live") {
       description: str,
       about: str,
       duration: 90,
-      time: `12:40`,
+      time: `01:40`,
       agenda: str,
       types,
       webinartiming: new Date(),
@@ -57,6 +57,5 @@ async function seedDB(types = "Webinar", status = "Live") {
   }
 }
 seedDB("Webinar", "Recorded")
-seedDB("Seminar", "Recorded")
 seedDB("Seminar", "Live")
 seedDB().then(() => process.exit(0))
