@@ -13,7 +13,9 @@ router.get(
       portfolio: instructorId,
       visibilty: true,
       archive: false,
-    }).lean()
+    })
+      .populate("portfolio")
+      .lean()
 
     return res.render("instructor", {
       instructor,
