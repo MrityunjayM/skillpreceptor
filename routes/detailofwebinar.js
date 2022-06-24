@@ -243,8 +243,8 @@ router.get(
 router.post(
   "/search",
   wrapAsync(async (req, res) => {
+    const selectedMonth = (categoryNames = [])
     const department = await Department.find({}).sort("order")
-
     if (!req.body.courses) {
       req.flash("error", "No match found")
       return req.redirect("/")
@@ -257,9 +257,15 @@ router.post(
       searchedWebinar = await Webinar.find({
         $text: { $search: str1 },
       }).populate("portfolio")
+
       if (searchedWebinar.length > 0) {
         const allWebinar = searchedWebinar
-        return res.render("allwebinar", { allWebinar, department })
+        return res.render("allwebinar", {
+          allWebinar,
+          department,
+          selectedMonth, // was missing earlier --> By Mrityunjay
+          categoryNames, // was missing earlier --> By Mrityunjay
+        })
       }
     }
     if (!searchedWebinar.length) {
@@ -275,7 +281,8 @@ router.post(
         return res.render("allwebinar", {
           allWebinar,
           department,
-          categoryList: [],
+          categoryNames, // was missing earlier --> By Mrityunjay
+          selectedMonth, // was missing earlier --> By Mrityunjay
         })
       }
     }

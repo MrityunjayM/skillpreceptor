@@ -7,11 +7,10 @@
                     <%= webinar.title %>
                 </h2>
                 <div class="ps-6">
-
-                    <h5 class="card-subtitle mb-2 text-muted">Product ID: #<%= webinar.webinarId %>
+                    <h5 class="card-subtitle mb-2 text-muted">Product ID: <%= webinar.webinarId %>
                     </h5>
                     <h4 class="card-subtitle mb-2 text-muted">Instructor: <a href="#instructor"
-                            class="d-inline nav-link">
+                            class="d-inline nav-link px-0">
                             <%= webinar.name %>
                         </a>
                     </h4>
@@ -36,33 +35,33 @@
                 <div class="card">
                     <div class="card-body">
                         <h2 class="card-title">Overview</h2>
-                        <h4 class="card-subtitle fw-semibold mt-2 text-muted">
+                        <p class="card-subtitle fw-semibold mt-2 text-dark">
                             <%- webinar.description %>
-                        </h4>
+                        </p>
                     </div>
                 </div>
                 <div class="card">
                     <div class="card-body">
                         <h2 class="card-title">Why you should attend ? </h2>
-                        <h4 class="card-subtitle fw-semibold mt-2 text-muted">
+                        <p class="card-subtitle fw-semibold mt-2 text-dark">
                             <%- webinar.advantageous %>
-                        </h4>
+                        </p>
                     </div>
                 </div>
                 <div class="card">
                     <div class="card-body">
                         <h2 class="card-title">Areas Covered</h2>
-                        <h4 class="card-subtitle fw-semibold mt-2 text-muted">
+                        <p class="card-subtitle fw-semibold mt-2 text-dark">
                             <%- webinar.abouttopic %>
-                        </h4>
+                        </p>
                     </div>
                 </div>
                 <div class="card">
                     <div class="card-body">
                         <h2 class="card-title">Who will benefit ?</h2>
-                        <h4 class="card-subtitle fw-semibold mt-2 text-muted">
+                        <p class="card-subtitle fw-semibold mt-2 text-dark">
                             <%- webinar.bestfor %>
-                        </h4>
+                        </p>
                     </div>
                 </div>
 
@@ -77,7 +76,7 @@
                             height: var(--wh-size);
                         }
                     </style>
-                    <h4>Purchase Options</h4>
+                    <p>Purchase Options</h4>
                     <form title="purchasePlans" action="/cart/<%= webinar._id%>" method="post">
 
                         <div class="input-group mb-3">
@@ -102,7 +101,7 @@
                 </div>
                 <hr />
                 <div class="container-fluid p-0 mb-3">
-                    <h4>Enquery:</h4>
+                    <h4>Enquiry:</h4>
                     <form action="/customer-feedback/enquery" method="post">
                         <div class="mb-3 ">
                             <input type="text" class="form-control rounded-0" id="name" placeholder="Your Name"
@@ -205,7 +204,7 @@
                                         <p class="fw-medium mb-2 text-secondary" style="font-size: 1rem !important;">
                                             Instructor: <%= webinar?.portfolio?.name %>
                                         </p>
-                                        <h6 class="card-subtitle mb-2 text-muted">
+                                        <h6 class="card-subtitle mb-2 text-dark">
                                             Date: <%= webinar.showingDate %>
                                         </h6>
 

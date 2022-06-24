@@ -117,6 +117,10 @@ const WebinarSchema = new mongoose.Schema(
   { timestamps: true }
 )
 
-WebinarSchema.index({ title: "text", name: "text", description: "text" })
+WebinarSchema.index({
+  title: "text",
+  name: "text",
+  description: "text",
+})
 
 module.exports = mongoose.model("Webinar", WebinarSchema)

@@ -8,10 +8,10 @@
                 </h2>
                 <div class="ps-6">
 
-                    <h5 class="card-subtitle mb-2 text-muted">Product ID: #<%= seminar?.webinarId %>
+                    <h5 class="card-subtitle mb-2 text-muted">Product ID: <%= seminar?.webinarId %>
                     </h5>
                     <h4 class="card-subtitle mb-2 text-muted">Instructor: <a href="#instructor"
-                            class="d-inline nav-link">
+                            class="d-inline nav-link px-0">
                             <%= seminar?.name %>
                         </a>
                     </h4>
@@ -31,7 +31,7 @@
     </div>
     <section class="container-xxl px-md-4 px-lg-9">
         <div class="row">
-            <div class="col-md-8">
+            <div class="col col-md-8">
                 <p class="card-title">
                     <a href="/seminar/<%= seminar.webinarId%>/<%=seminar.slug%>"
                         class="btn btn<%=agenda?'-outline':''%>-secondary">
@@ -44,50 +44,50 @@
                 <%if(!agenda){%>
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-subtitle fw-semibold mt-2 text-muted">
+                            <p class="text-dark fw-semibold mt-2">
                                 <%- seminar?.description%>
-                            </h4>
+                            </p>
                         </div>
                     </div>
 
                     <div class="card">
                         <div class="card-body">
                             <h2 class="card-title">Why you should attend ? </h2>
-                            <h4 class="card-subtitle fw-semibold mt-2 text-muted">
+                            <p class="text-dark fw-semibold mt-2">
                                 <%- seminar?.advantageous %>
-                            </h4>
+                            </p>
                         </div>
                     </div>
                     <div class="card">
                         <div class="card-body">
                             <h2 class="card-title">Areas Covered</h2>
-                            <h4 class="card-subtitle fw-semibold mt-2 text-muted">
+                            <p class="text-dark fw-semibold mt-2">
                                 <%- seminar?.abouttopic %>
-                            </h4>
+                            </p>
                         </div>
                     </div>
                     <div class="card">
                         <div class="card-body">
                             <h2 class="card-title">Who will benefit ?</h2>
-                            <h4 class="card-subtitle fw-semibold mt-2 text-muted">
+                            <p class="text-dark fw-semibold mt-2">
                                 <%- seminar?.bestfor %>
-                            </h4>
+                            </p>
                         </div>
                     </div>
                     <%}else{%>
                         <div class="card">
                             <div class="card-body">
-                                <h4 class="card-subtitle fw-semibold mt-2 text-muted">
+                                <p class="text-dark fw-semibold mt-2">
                                     <%- seminar?.agenda %>
                                         <%= (seminar.agenda && !seminar.agenda.length)? '' :'No agenda' %>
-                                </h4>
+                                </p>
                             </div>
                         </div>
                         <%}%>
 
             </div>
             <!-- Side bar  -->
-            <div class="col-md-4">
+            <div class="col col-md-4">
                 <div class="container-fluid p-0 mb-3">
                     <style>
                         input[type='checkbox'] {
@@ -122,7 +122,7 @@
                 </div>
                 <hr />
                 <div class="container-fluid p-0 mb-3">
-                    <h4>Enquery:</h4>
+                    <h4>Enquiry:</h4>
                     <form action="/customer-feedback/enquery" method="post">
                         <div class="mb-3 ">
                             <input type="text" class="form-control rounded-0" id="name" placeholder="Your Name"
