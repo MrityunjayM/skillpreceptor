@@ -37,7 +37,7 @@ router.get("/edit_coupon/:id", async (req, res) => {
   res.render("admin/editCouponedetail", { edit_coupon_code })
 })
 
-//route for saving the detail taken in  form of edition of coupon.
+//route for saving the detail taken in form of editation of coupon.
 router.put(
   "/edit_coupon/:id",
   wrapAsync(async (req, res) => {

@@ -16,27 +16,6 @@ paypal.configure({
   client_secret: process.env.PAYPAL_CLIENT_SECRET,
 })
 
-// checking if a user got a coupone code.
-router.get("/haveaCouponecode", (req, res) =>
-  res.render("haveaCouponecode", { title: "Apply coupon code" })
-)
-
-// checking whether the user entering the right coupon code or not.
-router.post(
-  "/haveaCouponecode",
-  wrapAsync(async (req, res) => {
-    const { coupon } = req.body
-    const [matchingtheCouponCode] = await Coupon.find({ coupon })
-    // console.log(matchingtheCouponCode)
-    if (matchingtheCouponCode) {
-      req.session.discountinpercentage =
-        matchingtheCouponCode.discountinpercentage
-      req.session.discountinprice = matchingtheCouponCode.discountinprice
-      return res.redirect("/cart/all")
-    }
-    return res.redirect("/payment/haveaCouponecode")
-  })
-)
 // payment with stripe input form.
 router.get(
   "/paymentwithstripe",

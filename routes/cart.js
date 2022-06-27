@@ -6,7 +6,9 @@ const AppError = require("../controlError/AppError")
 const wrapAsync = require("../controlError/wrapAsync")
 const User = require("../models/user.js")
 const { isLoggedIn } = require("../helper/middleware")
+const Coupon = require("../models/coupon_code")
 
+// checkout for payment
 router.get(
   "/checkout",
   isLoggedIn,
@@ -34,6 +36,25 @@ router.get(
       total: total.toFixed(2),
       userdata: cart[0].userId,
     })
+  })
+)
+
+// checking whether the user entering the right coupon code or not.
+router.post(
+  "/haveaCouponecode",
+  wrapAsync(async (req, res) => {
+    const { coupon } = req.body
+    if (!coupon.length) req.flash("error", "Please enter a Coupon code.")
+    const [matchingtheCouponCode] = await Coupon.find({ coupon })
+
+    if (matchingtheCouponCode) {
+      req.session.discountinpercentage =
+        matchingtheCouponCode.discountinpercentage
+      req.session.discountinprice = matchingtheCouponCode.discountinprice
+    } else if (!matchingtheCouponCode && coupon.length) {
+      req.flash("error", "Coupon Code has Expired.")
+    }
+    return res.redirect("/cart/all")
   })
 )
 
@@ -278,6 +299,7 @@ router.get(
   })
 )
 
+// Verfying user detail before checkout..
 router.post(
   "/edit/profile",
   isLoggedIn,

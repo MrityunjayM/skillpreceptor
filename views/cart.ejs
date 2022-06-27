@@ -59,11 +59,19 @@
                                                     </tr>
                     </tbody>
                 </table>
-                <div class="row px-sm-3">
-                    <a href="/payment/haveaCouponecode" class="nav-link text-secondary me-auto col-md-4" role="button">
-                        Do you have a coupon code?
-                    </a>
-                    <div class="col col-md-4 d-flex justify-content-between align-items-center">
+                <div class="row px-sm-3 my-2">
+                    <div class="col">
+                        <form method="POST" action="/cart/haveaCouponecode">
+                            <div class="row">
+                                <div class="form-group col col-md-7">
+                                    <input class="form-control rounded-0" type="text" name="coupon" id="coupon"
+                                        placeholder="Enter the Coupone Code">
+                                </div>
+                                <button class="btn btn-secondary col col-md-2 px-md-2" type="submit">Apply</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col col-md-4 d-flex justify-content-around align-items-center">
                         <% if( discountinpercentage ) { %>
                             <p class="d-inline fw-medium">Discount: <%= discountinpercentage %>%</p>
                             <% TotalPrice=TotalPrice-TotalPrice*(discountinpercentage/100); %>
