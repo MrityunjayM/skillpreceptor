@@ -1,13 +1,29 @@
 <%- include('layouts/header');%>
 
     <div class="container-fluid bg-soft-secondary my-5 my-md-9 py-7 shadow">
-        <form action="/newsletter/unsubscribe" method="post">
-            <div class="row flex-center">
-                <div class="col-12 col-md-4 mb-3 pt-3">
+        <style>
+            .unsubscribe-form {
+                width: 100% !important;
+                max-width: 600px !important;
+                margin: auto;
+            }
+        </style>
+        <form action="/newsletter/unsubscribe" method="post" class="unsubscribe-form">
+            <div class="row">
+                <div class="col-12 mb-3">
+                    <h3 class="">Unsubscribe from our newsletter</h3>
+                    <p class="">
+                        We are sorry to see you leave.<br />
+                        To stop receiving communications from Skill Preceptor,<br /> simply enter your email address in
+                        the
+                        box provided below, and click “Unsubscribe”
+                    </p>
+                </div>
+                <div class="col-12 mb-3 pt-3">
                     <input type="email" name="email" id="email" class="form-control rounded-0"
                         placeholder="Your Email" />
                 </div>
-                <button type="submit" class="btn btn-secondary col col-xl-2 col-md-3 mx-3">Unsubscribe</button>
+                <button type="submit" class="btn btn-secondary col col-md-4 mx-3">Unsubscribe</button>
             </div>
         </form>
     </div>

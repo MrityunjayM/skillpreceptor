@@ -10,16 +10,19 @@ router.post(
   wrapAsync(async (req, res) => {
     const { email } = req.body
     const dateNow = timingFormat(new Date())
-    const newUser = new Email({
+    const newSubscriber = new Email({
       email: email,
       date: dateNow.dateformattransaction,
     })
-    await newUser.save()
-    if (!newUser) {
+    await newSubscriber.save()
+    if (!newSubscriber) {
       throw new AppError("Something going wrong", 404)
     }
-    req.flash("success", "Thanks for subscribing our news letter.")
-    return res.redirect("/")
+    req.flash(
+      "subscribe",
+      "Thank you for subscribing to Skill Preceptor news letter."
+    )
+    return res.redirect("/#newsletter")
   })
 )
 

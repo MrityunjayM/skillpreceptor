@@ -104,48 +104,9 @@
         <div class="container">
             <div class="row">
                 <h1 class="header-title display-4 header text-start mb-5"> UPCOMING COURSES</h1>
-                <%webinars.forEach((webinar)=> { %>
-                    <div class="col-sm-6 col-lg-3 mb-4 scale">
-                        <div class="card border-0 h-100">
-                            <div class="position-relative">
-                                <img class="w-100"
-                                    src="<%= webinar.image.filename? '/images/'+webinar.image.filename : webinar.image.url%>"
-                                    alt="<%= webinar.image.filename%>" width="250" height="210" />
-                                <div class="course-logo">
-                                    <img src="<%= webinar?.portfolio?.image?.filename? '/images/'+webinar?.portfolio?.image?.filename : webinar?.portfolio?.image?.url%>"
-                                        alt="logo" width="68" height="68" />
-                                </div>
-                            </div>
-                            <div class="card-body px-0 py-3">
-                                <h5
-                                    class="mb-1 font-sans-serif fw-bold fs-md-0 fs-lg-1 <%= webinar.title.length<26? 'mb-5':''%>">
-                                    <%= webinar.title.slice(0,75) %>
-                                </h5>
-                                <% if (webinar.status=='Live' ) { %>
-                                    <p class="fw-medium mb-2 text-secondary" style="font-size: 1rem !important;">
-                                        Instructor: <%= webinar?.portfolio?.name %>
-                                    </p>
-                                    <h6 class="card-subtitle mb-2 text-muted">
-                                        Date: <%= webinar.showingDate %>
-                                    </h6>
-
-                                    <h6 class="card-subtitle mb-2 text-muted text-start">
-                                        Time: <%= webinar?.addtimingineastern %> EDT | <%= webinar?.addtiminginpacific
-                                                %> PDT
-                                    </h6>
-                                    <h6 class="card-subtitle mb-2 text-muted">
-                                        Duration: <%= webinar.duration %> Mins
-                                    </h6>
-
-                                    <% } %>
-                                        <a class="text-muted fs--1 stretched-link text-decoration-none product"
-                                            href="/<%= webinar.types=='Seminar'?'seminar': 'webinar'%>/<%=webinar.webinarId%>/<%=webinar.slug%>">
-                                            <%= webinar.category %>
-                                        </a>
-                            </div>
-                        </div>
-                    </div>
-                    <%})%>
+                <%webinars.forEach((doc)=> { %>
+                    <%- include('./partials/productGrid',{doc}) %>
+                        <%})%>
             </div>
         </div>
         <!-- end of .container-->
@@ -168,7 +129,8 @@
                             <div class="card-body d-flex align-items-center px-4 px-lg-2 px-xl-4 scale">
                                 <div class="d-flex align-items-center">
                                     <div class="icon-box">
-                                        <img class="eduprix-icon" src="assets/img/icons/data-science.png"
+                                        <img class="eduprix-icon"
+                                            src="assets/img/icons/Industry_Icons/<%= department.nameofdepartment %>.png"
                                             alt="explore" />
                                         <img class="eduprix-icon-hover" src="assets/img/icons/data-science.svg"
                                             alt="explore" />
@@ -388,23 +350,26 @@
     <section class="bg-soft-primary">
 
         <div class="container">
-            <div class="row flex-center">
+            <div class="row justify-content-center align-items-start">
                 <div class="col-12 col-md-6 col-lg-3 text-center mb-5 mb-lg-0"><img class="mb-5"
                         src="assets/img/illustrations/top-course.png" height="140" alt="rectangle" />
-                    <h1 class="text-secondary">1257</h1>
+                    <h1 class="text-secondary">500+</h1>
                     <h1 class="fw-normal text-secondary">Top <br> Courses</h1>
-                    <p>Take courses from the world's best <br> instructors and universities. </p>
+                    <p>Cost effective webinars, on-demand courses, and virtual classroom trainings for all regulated
+                        industries.
+                    </p>
                 </div>
                 <div class="col-12 col-md-6 col-lg-3 text-center mb-5 mb-lg-0"><img class="mb-5"
                         src="assets/img/illustrations/happy-learners.png" height="140" alt="rectangle" />
-                    <h1 class="text-secondary">99981</h1>
-                    <h1 class="fw-normal text-secondary">Happy <br> Learners</h1>
-                    <p>Learners from all around <br> the world.</p>
+                    <h1 class="text-secondary">200+</h1>
+                    <h1 class="fw-normal text-secondary">Leading <br> Instructors</h1>
+                    <p>Training sessions led by experts having 30+ years of experience with regulatory agencies such as
+                        FDA, SEC etc.</p>
                 </div>
                 <div class="col-12 col-md-6 col-lg-3 text-center mb-5 mb-lg-0"><img class="mb-5"
                         src="assets/img/illustrations/instructors.png" height="140" alt="rectangle" />
-                    <h1 class="text-secondary">578</h1>
-                    <h1 class="fw-normal text-secondary">Eminent <br> Instructors</h1>
+                    <h1 class="text-secondary">100+</h1>
+                    <h1 class="fw-normal text-secondary">Customized <br> Trainings</h1>
                     <p>Learn your favourite course with <br> world-class instructors. </p>
                 </div>
             </div>
@@ -479,7 +444,7 @@
 
     <!-- ============================================-->
     <!-- <section> begin ============================-->
-    <section class="bg-soft-primary">
+    <section class="bg-soft-primary" id="newsletter">
 
         <div class="container">
             <div class="row flex-center">
@@ -489,19 +454,25 @@
                 <div class="col-lg-5 col-xl-4">
                     <h1 class="fw-normal text-secondary mb-4">Get Regular <br />Updates from</h1><img
                         src="assets/img/logos/newsletter_logo.png" height="75" alt="..." />
-                    <h5 class="text-secondary fw-normal my-3">SUBSCRIBE TO NEWSLETTER </h5>
-                    <form class="row gx-2 gy-2 align-items-center" action="/newsletter/subscribe" method="post">
-                        <div class="col">
-                            <div class="input-group-icon">
-                                <label class="visually-hidden" for="inputEmailCta">Address</label>
-                                <input class="form-control input-box form-eduprix-control text-light" name="email"
-                                    id="inputEmailCta" type="email" placeholder="Email" />
-                            </div>
-                        </div>
-                        <div class="d-grid">
-                            <button class="btn btn-secondary" type="submit">Subscribe</button>
-                        </div>
-                    </form>
+                    <h5 class="text-secondary fw-normal my-3">SUBSCRIBE TO OUR NEWSLETTER </h5>
+                    <% if (subscribe.length) { %>
+                        <p class="text-dark">
+                            <%= subscribe %>
+                        </p>
+                        <% } %>
+                            <form class="row gx-2 gy-2 align-items-center" action="/newsletter/subscribe" method="post">
+                                <div class="col">
+                                    <div class="input-group-icon">
+                                        <label class="visually-hidden" for="inputEmailCta">Email Address</label>
+                                        <input class="form-control input-box form-eduprix-control text-dark"
+                                            name="email" id="inputEmailCta" type="email" placeholder="Email" />
+                                    </div>
+                                </div>
+                                <div class="d-grid">
+                                    <button class="btn btn-secondary" type="submit">Subscribe</button>
+                                </div>
+                            </form>
+
                 </div>
             </div>
         </div>

@@ -184,47 +184,8 @@
                 <h3 class="mb-2">Related Topics</h3>
                 <% } %>
                     <%webinars.forEach((webinar)=> { %>
-                        <div class="col-sm-6 col-lg-3 mb-4 scale">
-                            <div class="card border-0 h-100">
-                                <div class="position-relative">
-                                    <img class="w-100"
-                                        src="<%= webinar.image.filename? '/images/'+webinar.image.filename : webinar.image.url%>"
-                                        alt="<%= webinar.image.filename%>" width="250" height="230" />
-                                    <div class="course-logo">
-                                        <img src="<%= webinar?.portfolio?.image?.filename? '/images/'+webinar?.portfolio?.image?.filename : webinar?.portfolio?.image?.url%>"
-                                            alt="logo" width="68" height="68" />
-                                    </div>
-                                </div>
-                                <div class="card-body px-0 py-3">
-                                    <h5
-                                        class="mb-1 font-sans-serif fw-bold fs-md-0 fs-lg-1 <%= webinar.title.length<26? 'mb-5':''%>">
-                                        <%= webinar.title.slice(0,75) %>
-                                    </h5>
-                                    <% if (webinar.status=='Live' ) { %>
-                                        <p class="fw-medium mb-2 text-secondary" style="font-size: 1rem !important;">
-                                            Instructor: <%= webinar?.portfolio?.name %>
-                                        </p>
-                                        <h6 class="card-subtitle mb-2 text-dark">
-                                            Date: <%= webinar.showingDate %>
-                                        </h6>
-
-                                        <h6 class="card-subtitle mb-2 text-muted text-start">
-                                            Time: <%= webinar?.addtimingineastern %> EDT | <%=
-                                                    webinar?.addtiminginpacific %> PDT
-                                        </h6>
-                                        <% } %>
-                                            <h6 class="card-subtitle mb-2 text-muted">
-                                                Duration: <%= webinar.duration %> Mins
-                                            </h6>
-
-                                            <a class="text-muted fs--1 stretched-link text-decoration-none product"
-                                                href="/<%= webinar.types=='Seminar'?'seminar': 'webinar'%>/<%=webinar.webinarId%>/<%=webinar.slug%>">
-                                                <%= webinar.category %>
-                                            </a>
-                                </div>
-                            </div>
-                        </div>
-                        <%})%>
+                        <%- include('./partials/productGrid', {doc:webinar}) %>
+                            <%})%>
         </div>
     </section>
     <!-- Category catalog End -->

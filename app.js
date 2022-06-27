@@ -118,6 +118,7 @@ app.use(async (req, res, next) => {
   res.locals.cartCount = req.session.count
   res.locals.error = req.flash("error")
   res.locals.success = req.flash("success")
+  res.locals.subscribe = req.flash("subscribe")
   res.locals.captcha_error = req.flash("captcha_error")
 
   // setting departments into local var for displaying on navbar
