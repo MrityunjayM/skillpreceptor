@@ -168,7 +168,7 @@ app.get(
       departments: filteredDepartments,
       webinars,
       instructors,
-      title: "Welcome",
+      title: "Your Partener in Compliance Education",
     })
   })
 )
