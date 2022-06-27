@@ -200,6 +200,7 @@ const handleValidationErr = (err) => {
 }
 
 app.use((err, req, res, next) => {
+  console.log("Error form Handler 1\n", err)
   if (err.name === "ValidationError") {
     err = handleValidationErr(err)
     req.flash("error", err.message)
@@ -216,6 +217,7 @@ app.use((err, req, res, next) => {
 })
 
 app.use((err, req, res, next) => {
+  console.log("Error form Handler 2\n", err)
   if (err && err.status == 555) {
     req.flash("error", err.message)
     return res.redirect(req.header("Referer") || "/")
@@ -230,7 +232,7 @@ app.use((err, req, res, next) => {
 // this is for handling unexpected
 app.use((err, req, res, next) => {
   if (err) {
-    console.log(err, "Error Unhandeled")
+    console.log(err, "\nError Unhandeled")
     req.flash("error", "Something went wrong, please try later.")
     return res.redirect(req.header("Referer") || "/")
   }
