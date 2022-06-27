@@ -395,12 +395,11 @@ router.get("/bestseller/:id", async (req, res) => {
         new: true,
       }
     )
-    req.flash("success", "Selected product is one of the bestseller product")
-    return res.redirect(red.header("Referer"))
+    req.flash("success", "Product Updated.")
   } else {
     req.flash("error", "Please select only the recorded webinar")
-    return res.redirect(req.header("Referer"))
   }
+  return res.redirect(req.header("Referer") || "/admin/allproduct")
 })
 
 module.exports = router

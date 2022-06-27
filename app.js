@@ -152,20 +152,20 @@ app.get(
     const webinars = (
       await WebinarModel.find({
         visibility: true,
-        status: "Live",
         bestSeller: true,
       })
         .populate("portfolio")
         .lean()
         .sort({ webinartiming: "-1" })
     ).slice(0, 8)
-    const departments = await Department.find({ visibility: true })
-    const instructors = await Instructor.find({ visibility: true })
+    const departments = await Department.find({ visibility: true }).lean()
+    const instructors = await Instructor.find({ visibility: true }).lean()
+    let filteredDepartments = departments.slice(
+      0,
+      ((departments.length < 3 ? 3 : departments.length) / 3) * 3
+    )
     return res.render("home", {
-      departments: departments.slice(
-        0,
-        ((departments.length < 3 ? 3 : departments.length) / 3) * 3
-      ),
+      departments: filteredDepartments,
       webinars,
       instructors,
       title: "Welcome",

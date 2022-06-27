@@ -18,12 +18,17 @@
                     </form>
 
                 </div>
+                <style>
+                    .table> :not(caption)>*>* {
+                        padding: 0 !important;
+                    }
+                </style>
                 <table class="table table-striped" id="all_product">
                     <thead>
                         <tr>
                             <th scope="col">ID</th>
                             <th scope="col">Product Title</th>
-                            <th scope="col">Instructor Name</th>
+                            <th scope="col">Instructor</th>
                             <th scope="col">Industry</th>
                             <th scope="col">Type</th>
                             <th scope="col">Action</th>
@@ -35,8 +40,8 @@
                                 <th scope="row">
                                     <%=e.webinarId %>
                                 </th>
-                                <td>
-                                    <a href="/admin/product/<%= e._id %>" class="nav-link" target="_blank"
+                                <td width="360px">
+                                    <a href="/admin/product/<%= e._id %>" class="nav-link text-wrap" target="_blank"
                                         rel="noopener noreferrer">
                                         <%=e.title %>
                                     </a>
@@ -48,7 +53,8 @@
                                     <%=e.category%>
                                 </td>
                                 <td>
-                                    <%=e.types%>
+                                    <%=e.types%><br />
+                                        <%= e.status %>
                                 </td>
                                 <td>
                                     <a href="/admin/update_the_visibility/<%=e._id %>" class="me-2">
@@ -56,10 +62,15 @@
                                     </a>
 
                                     <a href="/admin/edit_product/<%=e._id %>" class="me-2">Edit</a>
+
+                                    <a href="/admin/bestseller/<%=e._id %>" class="me-2">
+                                        <%= e.bestSeller? 'Unmark BestSeller' :'Mark BestSeller' %>
+                                    </a>
+
                                     <a href="/admin/delete_product/<%=e._id %>?archive=1">Archive</a>
                                 </td>
                             </tr>
-                            <%}); %>
+                            <%}) %>
                     </tbody>
                 </table>
             </div>
