@@ -101,10 +101,10 @@ router.post(
   isAdmin,
   wrapAsync(async (req, res) => {
     const { id: _id } = req.params
-    const { advantageous, abouttopic, bestfor, agenda } = req.body
+    const { advantageous, abouttopic, bestfor, agenda, description } = req.body
     await Webinar.findOneAndUpdate(
       { _id },
-      { advantageous, abouttopic, bestfor, agenda }
+      { advantageous, abouttopic, bestfor, agenda, description }
     )
     // delete added-webinar from session
     delete req.session.newWebinarData
