@@ -1,3 +1,4 @@
-node_modules
-.env
-public/images/*
+/node_modules
+/.env
+/public/images/*
+/seeder.js
