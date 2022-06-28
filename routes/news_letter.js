@@ -1,6 +1,7 @@
 const router = require("express").Router()
 const Email = require("../models/newsLetter")
 
+const AppError = require("../controlError/AppError")
 const wrapAsync = require("../controlError/wrapAsync")
 const { timingFormat } = require("../helper/date")
 
@@ -14,7 +15,11 @@ router.post(
       email: email,
       date: dateNow.dateformattransaction,
     })
-    await newSubscriber.save()
+
+    await newSubscriber.save().catch((err) => {
+      throw new AppError("You are already subscribed", 555)
+    })
+
     if (!newSubscriber) {
       throw new AppError("Something going wrong", 404)
     }

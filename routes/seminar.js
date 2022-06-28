@@ -4,6 +4,7 @@ const Department = require("../models/department")
 const Purchase = require("../models/purchase")
 
 const wrapAsync = require("../controlError/wrapAsync")
+const { firsttwomonthfromnow } = require("../helper/date.js")
 
 router.get(
   "/all",
@@ -81,12 +82,19 @@ router.get(
       req.flash("error", "No match found")
       return res.redirect("/webinar/all")
     }
+    const currentmonth = firsttwomonthfromnow().monthnameandyear
+    const nextmonth = firsttwomonthfromnow().nextnameandyear
+    const tonextmonth = firsttwomonthfromnow().tonextnameandyear
+
     return res.render("allwebinar", {
-      title: "All Catalog",
       allWebinar,
       department,
-      selectedMonth,
       categoryNames,
+      selectedMonth,
+      currentmonth,
+      nextmonth,
+      tonextmonth,
+      title: "All Seminars",
     })
   })
 )

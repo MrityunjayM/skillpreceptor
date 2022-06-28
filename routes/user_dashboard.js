@@ -6,6 +6,8 @@ const Department = require("../models/department")
 // this model is just for storing purchased data from cart.
 const PurchaseOfUser = require("../models/purchase_Schema")
 
+const { isAdmin } = require("../helper/middleware")
+
 // user dashboard
 router.get(
   "/",
@@ -21,7 +23,7 @@ router.get(
   })
 )
 
-// purchase historyyy
+// purchase history
 router.get(
   "/purchase_history",
   wrapAsync(async (req, res) => {
@@ -32,8 +34,8 @@ router.get(
     })
       .populate("product")
       .sort({ modifiedOn: "-1" })
-    // res.send(purchase_history);
-    res.render("userdashboard/purchasehistory", {
+
+    return res.render("userdashboard/purchasehistory", {
       title: "Purchase History",
       purchase_history,
       Total,
@@ -43,6 +45,7 @@ router.get(
   })
 )
 
+// download invoice
 router.get(
   "/download/invoice/:orderId",
   wrapAsync(async (req, res) => {
@@ -60,6 +63,7 @@ router.get(
   })
 )
 
+// edit user profile
 router
   .route("/edit_profile")
   .get(
@@ -154,5 +158,22 @@ router.get("/recorded", async (req, res) => {
     purchase_history,
   })
 })
+
+// for admin
+router.get(
+  "/:id",
+  isAdmin,
+  wrapAsync(async (req, res) => {
+    const { id } = req.params
+    const userdata = await User.findById(id)
+    const industries = await Department.find({ visibilty: true }).sort("order")
+    return res.render("admin/user_profile", {
+      title: userdata.firstname,
+      userdata,
+      industries,
+      path: "dashboard",
+    })
+  })
+)
 
 module.exports = router

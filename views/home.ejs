@@ -103,8 +103,8 @@
     <section class="py-6" id="product">
         <div class="container">
             <div class="row">
-                <h1 class="header-title display-4 header text-start mb-5"> TOP COURSES</h1>
-                <%webinars.forEach((doc)=> { %>
+                <h1 class="header-title display-4 header text-start mb-5"> UPCOMING COURSES</h1>
+                <%webinars.filter(doc=> !doc.bestSeller).slice(0,8).forEach((doc)=> { %>
                     <%- include('./partials/productGrid',{doc}) %>
                         <%})%>
             </div>
@@ -155,6 +155,23 @@
     <!-- ============================================-->
 
 
+    <!-- ============================================-->
+    <!-- <section> begin ============================-->
+    <section class="py-6" id="product">
+        <div class="container">
+            <div class="row">
+                <h1 class="header-title display-4 header text-start mb-5"> TOP COURSES</h1>
+                <%webinars.filter(doc=> doc.bestSeller).slice(0,8).forEach((doc)=> { %>
+                    <%- include('./partials/productGrid',{doc}) %>
+                        <%})%>
+            </div>
+        </div>
+        <!-- end of .container-->
+    </section>
+    <!-- <section> close ============================-->
+    <!-- ============================================-->
+
+    <!--  -->
     <section id="testimonial">
         <div class="container">
             <div class="row justify-content-end">

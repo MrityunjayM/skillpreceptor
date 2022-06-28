@@ -109,7 +109,7 @@ router.post(
     // delete added-webinar from session
     delete req.session.newWebinarData
     await req.session.save()
-    res.redirect("/admin")
+    res.redirect("/admin/allproduct")
   })
 )
 // all webinar and seminar route for user.
@@ -188,11 +188,19 @@ router.get(
       req.flash("error", "Product not availale")
       return res.redirect("/")
     }
+
+    const currentmonth = firsttwomonthfromnow().monthnameandyear
+    const nextmonth = firsttwomonthfromnow().nextnameandyear
+    const tonextmonth = firsttwomonthfromnow().tonextnameandyear
+
     return res.render("allwebinar", {
       allWebinar,
       department,
       categoryNames,
       selectedMonth,
+      currentmonth,
+      nextmonth,
+      tonextmonth,
       title: "All Webinars",
     })
   })

@@ -6,7 +6,8 @@
                 <th scope="col">Email</th>
                 <th scope="col">phone number</th>
                 <th scope="col">Date of Registraion</th>
-                <th scope="col">verify</th>
+                <th scope="col">Verify</th>
+                <th scope="col">Details</th>
             </tr>
         </thead>
         <tbody>
@@ -26,6 +27,9 @@
                     </td>
                     <td>
                         <%=u.verify %>
+                    </td>
+                    <td>
+                        <a href="/user/dashboard/<%=u._id%>">Details</a>
                     </td>
                 </tr>
                 <%}) %>

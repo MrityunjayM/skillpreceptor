@@ -1,6 +1,5 @@
 const router = require("express").Router()
 const Cart = require("../models/cart")
-const Coupon = require("../models/coupon_code")
 const wrapAsync = require("../controlError/wrapAsync")
 const paypal = require("paypal-rest-sdk")
 const { isSuccess } = require("../helper/successtransaction_middleware")
@@ -49,8 +48,8 @@ router.post(
   "/paymentwithstripe/checkout",
   wrapAsync(async (req, res) => {
     // storing session here so that we can store the amount in success route.
-
-    const { address, phone, country, state, jobtitle, zipcode } = req.user
+    const { address, phone, country, state, jobtitle, zipcode } =
+      await User.findById(req.user._id).lean()
     if (address && phone && country && state && jobtitle && zipcode) {
       req.session.amount = req.body.totalprice
       const session = await stripe.checkout.sessions.create({
@@ -85,7 +84,7 @@ router.get(
     //new added code.
     if (req.session.amount) {
       req.session.method = "Stripe"
-      isSuccess(req, res, next)
+      await isSuccess(req, res, next)
     }
     // payment status -> success
     const updatingTheUser = await User.findOne({ _id: req.user._id })
@@ -93,7 +92,7 @@ router.get(
       updatingTheUser.statusofPayment = false
       await updatingTheUser.save()
     }
-
+    req.session.count = 0
     return res.redirect("/user/dashboard/purchase_history")
   })
 )
@@ -145,7 +144,8 @@ router.get(
 router.post(
   "/paymentwithpaypal",
   wrapAsync(async (req, res, next) => {
-    const { address, phone, country, state, jobtitle, zipcode } = req.user
+    const { address, phone, country, state, jobtitle, zipcode } =
+      await User.findById(req.user._id).lean()
     if (address && phone && country && state && jobtitle && zipcode) {
       const priced = req.body.totalpayment
       req.session.amount = priced
@@ -214,13 +214,13 @@ router.get(
     paypal.payment.execute(
       paymentId,
       execute_payment_json,
-      (error, payment) => {
+      async (error, payment) => {
         //When error occurs when due to non-existent transaction, throw an error else logging the transaction details in the console then send a Success string reposponse to the user.
         if (error) {
           throw error
         } else {
           req.session.method = "Paypal"
-          isSuccess(req, res, next)
+          await isSuccess(req, res, next)
         }
       }
     )
@@ -230,6 +230,7 @@ router.get(
       updatingTheUser.statusofPayment = false
       await updatingTheUser.save()
     }
+    req.session.count = 0
     return res.redirect("/user/dashboard/purchase_history")
   })
 )

@@ -7,7 +7,7 @@ const User = require("../models/user")
 const wrapAsync = require("../controlError/wrapAsync")
 const { timingFormat } = require("../helper/date")
 // this is the middleware that will execute after payment succession.
-module.exports.isSuccess = wrapAsync(async (req, res, next) => {
+module.exports.isSuccess = async (req, res, next) => {
   // taking all cart on the basis of userid so that we can store the purchased item in other
   // schema named PurchaseOfUser.
   const allCartofuser = await Cart.find({ userId: req.user._id })
@@ -78,8 +78,4 @@ module.exports.isSuccess = wrapAsync(async (req, res, next) => {
   user.cart = null
   user.orderId = orderId
   await user.save()
-  // await PurchaseOfUser.find({ userId: req.user._id }).updateMany(
-  //   {},
-  //   { purchaseId: Date.now() }
-  // );
-})
+}

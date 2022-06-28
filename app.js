@@ -149,15 +149,12 @@ app.use("/transactiondetail", isAdmin, TransactionDetail)
 app.get(
   "/",
   wrapAsync(async (_, res) => {
-    const webinars = (
-      await WebinarModel.find({
-        visibility: true,
-        bestSeller: true,
-      })
-        .populate("portfolio")
-        .lean()
-        .sort({ webinartiming: "-1" })
-    ).slice(0, 8)
+    const webinars = await WebinarModel.find({
+      visibility: true,
+    })
+      .populate("portfolio")
+      .lean()
+      .sort({ webinartiming: "-1" })
     const departments = await Department.find({ visibility: true }).lean()
     const instructors = await Instructor.find({ visibility: true }).lean()
     let filteredDepartments = departments.slice(

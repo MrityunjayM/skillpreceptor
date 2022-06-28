@@ -1,0 +1,89 @@
+<%- include("../layouts/header"); -%>
+
+    <div class="container my-5">
+        <div class="card mx-auto">
+            <div class="row mb-2">
+                <a href="/admin/lead/alldata" class="col col-md-2 btn btn-sm btn-secondary pt-3">Go Back</a>
+            </div>
+            <div class="row">
+                <div class="col col-md-6">
+                    <div class="row">
+                        <p class="col-3 card-subtitle fs-2 mb-3">Name: </p>
+                        <p class="col-9 card-subtitle fs-2 mb-3">
+                            <%= userdata?.firstname %>
+                                <%= userdata?.lastname%>
+                        </p>
+                    </div>
+                    <div class="row">
+                        <p class="col-3 card-subtitle fs-2 mb-3">Email Address: </p>
+                        <p class="col-9 card-subtitle fs-2 mb-3">
+                            <%= userdata?.email %>
+                        </p>
+                    </div>
+                    <div class="row">
+                        <p class="col-3 card-subtitle fs-2 mb-3">Phone: </p>
+                        <p class="col-9 card-subtitle fs-2 mb-3">
+                            <%= userdata?.phone %>
+                        </p>
+                    </div>
+                    <div class="row">
+                        <p class="col-3 card-subtitle fs-2 mb-3">Address: </p>
+                        <p class="col-9 card-subtitle fs-2 mb-3">
+                            <%= userdata?.address %>
+                        </p>
+                    </div>
+                    <div class="row">
+                        <p class="col-3 card-subtitle fs-2 mb-3">Job Title: </p>
+                        <p class="col-9 card-subtitle fs-2 mb-3">
+                            <%= userdata?.jobtitle %>
+                        </p>
+                    </div>
+
+                </div>
+                <div class="col col-md-6">
+                    <div class="row">
+                        <p class="col-3 card-subtitle fs-2 mb-3">Company Name: </p>
+                        <p class="col-9 card-subtitle fs-2 mb-3">
+                            <%= userdata?.company%>
+                        </p>
+                    </div>
+                    <div class="row">
+                        <p class="col-3 card-subtitle fs-2 mb-3">Country: </p>
+                        <p class="col-9 card-subtitle fs-2 mb-3">
+                            <%= userdata?.country %>
+                        </p>
+                    </div>
+                    <div class="row">
+                        <p class="col-3 card-subtitle fs-2 mb-3">State: </p>
+                        <p class="col-9 card-subtitle fs-2 mb-3">
+                            <%= userdata?.state %>
+                        </p>
+                    </div>
+                    <div class="row">
+                        <p class="col-3 card-subtitle fs-2 mb-3">Zip Code: </p>
+                        <p class="col-9 card-subtitle fs-2 mb-3">
+                            <%= userdata?.zipcode %>
+                        </p>
+                    </div>
+                    <div class="row">
+                        <p class="card-subtitle fs-2 mb-3 col-3">Industry:</p>
+                        <div class="card col row flex-row">
+                            <% userdata?.industry?.forEach((industry)=>{%>
+                                <div class="form-check col-md-4">
+                                    <input class="form-check-input" type="checkbox" name="industry"
+                                        value="<%= industry %>" id="<%= industry %>" disabled checked />
+                                    <label for="<%= industry %>" class="form-check-label">
+                                        <%= industry %>
+                                    </label>
+                                </div>
+                                <%})%>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+    <%- include("../layouts/footer"); -%>
