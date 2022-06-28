@@ -10,7 +10,6 @@
 
 <body>
 
-    <button class="btn btn-secondary mt-3 mx-auto" onclick="downloadPdf();">Download</button>
     <main class="container px-2 d-hidden" id="element-to-print">
         <h1 class="text-center">INVOICE</h1>
         <!-- divider -->
@@ -116,7 +115,8 @@
             <!-- company detail -->
             <div class="row ">
                 <div class="col-2 border-end border-2 border-dark">SkillPreceptor</div>
-                <div class="col-4 border-end border-2 border-dark">Lorem ipsum dolor sit amet.</div>
+                <div class="col-4 border-end border-2 border-dark">1309 Coffeene Avenue STE 1200<br /> Sheridan, Wyoming
+                    82801</div>
                 <div class="col-3 border-end border-2 border-dark">support@skillpreceptor.com</div>
                 <div class="col-2">+1-(855)-202-3299</div>
             </div>
@@ -128,7 +128,7 @@
     <script src="/cdnjs/html2pdf.bundle.min.js"></script>
     <script>
         var element = document.getElementById('element-to-print');
-        const downloadPdf = () => html2pdf(element);
+        html2pdf(element);
     </script>
 </body>
 
