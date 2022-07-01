@@ -169,4 +169,8 @@ button.input-box-icon {
 }
 
 @media (max-width: 576px) {
+  .navbar-brand > img,
+  .logo_footer {
+    width: 45vw !important;
+  }
 }
