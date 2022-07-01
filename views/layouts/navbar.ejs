@@ -9,7 +9,7 @@
             <i class="bi bi-facebook"></i>
         </a>
     </div>
-    <div class="flex flex-wrap" style="gap: 10px;">
+    <div class="flex flex-wrap justify-content-sm-start flex-sm-column" style="gap: 10px;">
         <a href="tel:+1-(855)-202-3299" class="phone">
             <i class="bi bi-telephone-fill"></i>
             +1-(855)-202-3299</a>
@@ -22,7 +22,8 @@
 <!-- header  -->
 <nav class="navbar navbar-expand-lg sticky-top" style="background-color: #023859;">
     <div class="container-fluid justify-content-between">
-        <a href="/" class="navbar-brand"><img src="/assets/img/logos/logo_1.png" alt="logo"></a>
+        <a href="/" class="navbar-brand">
+            <img src="/assets/img/logos/logo_1.png" alt="logo"></a>
         <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class=""><i class="bi bi-list"></i></span>
@@ -32,8 +33,8 @@
 
             <form method="POST" action="/webinar/search">
                 <div class="input-group d-flex flex-end-center">
-                    <input class="form-control form-eduprixsearch-control rounded-pill" id="formGroupExampleInput"
-                        type="text" name="courses" placeholder="Search" required />
+                    <input class="form-control form-eduprixsearch-control rounded-pill text-dark"
+                        id="formGroupExampleInput" type="text" name="courses" placeholder="Search" required />
                     <button type="submit" class="input-box-icon border-0 rounded-circle p-0">
                         <img src="/assets/img/illustrations/search.png" width="36" alt="search" />
                     </button>
