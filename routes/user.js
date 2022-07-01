@@ -85,7 +85,7 @@ router.post(
     } catch (e) {
       if (e.message == "A user with the given username is already registered") {
         throw new AppError(
-          "A user with the given username is already registered",
+          "A user with the given username is already registered.",
           555
         )
       }

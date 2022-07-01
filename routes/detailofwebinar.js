@@ -285,12 +285,19 @@ router.post(
         .populate("portfolio")
         .sort({ score: { $meta: "textScore" } })
 
+      const currentmonth = firsttwomonthfromnow().monthnameandyear // was missing earlier --> By Mrityunjay
+      const nextmonth = firsttwomonthfromnow().nextnameandyear // was missing earlier --> By Mrityunjay
+      const tonextmonth = firsttwomonthfromnow().tonextnameandyear // was missing earlier --> By Mrityunjay
+
       if (allWebinar.length) {
         return res.render("allwebinar", {
           allWebinar,
           department,
-          categoryNames, // was missing earlier --> By Mrityunjay
-          selectedMonth, // was missing earlier --> By Mrityunjay
+          categoryNames,
+          selectedMonth,
+          currentmonth, // was missing earlier --> By Mrityunjay
+          nextmonth, // was missing earlier --> By Mrityunjay
+          tonextmonth, // was missing earlier --> By Mrityunjay
         })
       }
     }
